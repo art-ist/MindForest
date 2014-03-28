@@ -305,6 +305,7 @@
     <Content Include="Images\zoomin.png" />
     <Content Include="Images\zoomout.png" />
     <Content Include="App\main.js" />
+    <Content Include="index.html" />
     <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1362011911881491897.png" />
     <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1536885918101686518.png" />
     <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_160823999387444819.png" />
