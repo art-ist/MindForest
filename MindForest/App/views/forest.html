@@ -1,0 +1,59 @@
+﻿<div id="forestPage" class="page tool-left">
+
+  <div class="nav-bar navbar-fixed-top metro-navbar">
+    <div class="navbar-inner win-commandlayout">
+      <div class="header-container">
+        <h1>Start</h1>
+      </div>
+      <!--
+      <a href="#" class="win-command" rel="tootlip" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
+        <span class="win-commandicon win-commandring" data-bind="class: $root.settings.edit() === false ? 'icon-pencil' : 'icon-eye'"></span>
+        <span class="win-label" data-bind="text: $root.settings.edit() === false ? 'Edit' : 'View'"></span>
+      </a>
+
+      <a href="#" class="win-command" data-bind="click: $root.addChild">
+        <span class="win-commandicon win-commandring icon-plus"></span>
+        <span class="win-label">Add Tree</span>
+      </a>
+      -->
+
+      <div class="btn-group pull-right dropdown">
+        <a href="#" class="win-command dropdown-toggle" data-toggle="dropdown">
+          <span class="win-commandicon win-commandring  icon-cog"></span>
+          <!--<span class="win-label">Settings</span>-->
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li data-bind="visible: !app.user.isAuthenticated()"><a tabindex="-1" href="#login" data-toggle="modal"><span data-localize="app.login">Login</span></a></li>
+          <li data-bind="visible: app.user.isAuthenticated"><a tabindex="-1" href="#"><span data-bind="click: logout, text: app.user.name()"></span> - <span data-localize="app.logout">Logout</span></a></li>
+          <li class="nav-header" data-localize="app.settings.language">Language</li>
+          <li><a tabindex="-1" href="#">Deutsch</a></li>
+          <li><a tabindex="-1" href="#">English</a></li>
+
+          <li class="nav-header" data-localize="app.settings.visualization">Visualization</li>
+          <li><a tabindex="-1" href="#" data-bind="click: setMapToOutline"><span data-localize="app.settings.visualization-outline">Outline</span> <i class="icon-ok" data-bind="visible: app.settings.map === 'outline'"></i></a></li>
+          <li><a tabindex="-1" href="#" data-bind="click: setMapToMM"><span data-localize="app.settings.visualization-mindmap">Mind Map</span> <i class="icon-ok" data-bind="visible: app.settings.map === 'mm'"></i></a></li>
+
+          <li class="nav-header" data-localize="app.settings.showDetails">Show details</li>
+          <li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-right">dock right <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'tool-right'"></i></a></li>
+          <li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-slideshow">slideshow <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'lightBox'"></i></a></li>
+
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div id="alerts-container"></div>
+
+  <div class="page-region">
+    <div class="page-region-content metro">
+      <ul id="forest" class="list_view grid-layout" data-bind="template: { foreach: trees }">
+        <li class="tile app bg-color-gray" data-bind="click: $parent.openTree, clickBubble: false">
+          <div class="app-label">
+            <div class="name" data-bind="text: Title"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

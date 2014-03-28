@@ -1,0 +1,138 @@
+﻿#mm .page-region {
+  position: relative;
+}
+
+#mm-container /*=#mm .page-region-content*/ {
+  position: absolute;
+  border: none;
+  white-space: nowrap;
+  /*border: 1px dashed magenta;*/
+}
+
+#mm ul, #mm ol {
+  display: inline-block;
+  position: relative;
+  list-style: none;
+  /*margin: 5px 0 0 15px;*/
+}
+
+#mm li {
+  position: relative;
+}
+
+.mm-item-container {
+  position: relative;
+  display:inline-block;
+  overflow: visible;
+  margin: 2px;
+  z-index: 1;
+}
+
+.mm-cloud {
+  position: absolute;
+
+  width: 100%; height: 100%;/*
+  margin: -3px 0 0 -3px;  /*increase left and top offset
+  padding: 3px 0 3px 3px; /*compensate margin and increase right and top offsets*/
+  top: 0; right: 0; bottom: -3px; left: -3px; 
+
+  border-radius: 45% 25px 25px 45%;
+  
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.mm-node-container, .mm-children-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+.mm-node-container {
+  margin: 3px 3px 3px 3px;
+}
+.mm-children-container {
+  margin: 0 3px 0 3px;
+}
+#mm .item {
+  position: relative;
+  padding: 3px 7px;
+  background-color: #e6e7e8;
+  border: 1px solid #b4b4b4;
+  color: black;
+  max-width: 350px;
+  white-space: normal;
+  border-radius: 3px;
+  z-index: 9;
+}
+  #mm .item:hover {  /*siehe moden.css,2974: .tile:hover*/
+    outline: 3px solid #225a68;
+  }
+  #mm .item.current {
+    outline: 3px solid #3a3a3a;
+  }
+  #mm .item-title {
+    display: inline;
+  }
+.mm-root-item {
+  border: none !important;
+  max-width: none !important;
+  background-color: transparent !important;
+  margin-right: 20px;
+}
+
+#mm button.expand-button,
+#mm button.details-button {
+  float: right;
+  min-width: 24px;
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}
+
+.mm-connector .path {
+  /*stroke: #666;
+  stroke-width: 2;*/
+  z-index: 8;
+}
+
+#mm-menu-container {
+  position: absolute;
+  position: fixed;
+  z-index: 1000;
+  right: 10px;
+  top: 14px;
+  width: auto;
+  height: 36px;
+}
+#mm-menu-container .dropdown-menu {
+  display: none;
+}
+#mm-menu-container .open > .dropdown-menu {
+  display: block;
+}
+
+#mm-zoom-container {
+  position: absolute;
+  position: fixed;
+  z-index: 1000;
+  right: 10px;
+  bottom: 14px;
+  width: auto;
+  height: 36px;
+}
+#mm-zoom-container>* {
+  display: inline-block;
+}
+#mm-zoom-value {
+  font-size: 1.1em;
+  margin: 8px -10px;
+}
+
+.command-overlay {
+  opacity: 0.5;
+}
+.command-overlay:hover {
+  opacity: 1;
+}

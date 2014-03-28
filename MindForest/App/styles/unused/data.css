@@ -1,0 +1,98 @@
+﻿
+
+
+#content
+{
+  position: relative;
+  padding: 0 10px 10px 120px;
+}
+
+#mindTree
+{
+  /*width: 44%;*/
+  padding: 0 3% 0 0;
+  /*float: left;*/
+}
+  #mindTree ol
+  {
+    margin-top: 3px;
+  }
+  #mindTree li
+  {
+    width: 100%;
+    margin-bottom: 3px;
+    list-style-type:  none;
+    min-height:  40px;
+  }
+
+.caption, #nodeDetails {
+  position: relative;
+  border-left-width: 15px;
+  border-top-width: 3px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-left-color: #929292;
+  border-top-color: #929292;
+  border-right-color: #dadada;
+  border-bottom-color: #dadada;
+  background-color: #f6f6f6;
+  padding: 3px 3px 3px 6px;
+}
+.captionSelected {
+  background-color: #FF9933;
+}
+.rightPanel
+{  
+  position: absolute;
+  right: 0;
+}
+.expand
+{
+  display:inline-block;
+  width: 20px;
+  text-align: center;
+}
+.color
+{
+  display: inline-block;
+  width: 15px;
+}
+
+#nodeDetails
+{
+  display: none;
+  width: 42.5%;
+  margin: 3px 1.5% 0 3%;
+  padding: 10px 1.5% 10px 1.5%;
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+  #nodeDetails h2
+  {
+    margin-top: 0;
+  }
+  #nodeDetails label, #nodeDetails label *
+  {
+    width: 100%;
+  }
+  #nodeDetails label
+  {
+    color: #565656;
+  }
+  .rightPanel {
+    float: right;
+  }
+  
+ a img {
+  border-style: none;
+ }
+
+ /* MutMap */
+#forest, #tree, #details {
+  float: left;
+  height: 100%;
+  width: 20%;
+}
+

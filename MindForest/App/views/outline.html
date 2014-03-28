@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>MindForest - TreeView</title>
+
+  <meta http-equiv="cache-control" content="no-cache" />
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="expires" content="-1" />
+  
+  <!-- NodeTemplate -->
+ <!--
+  <script type="text/html" id="NodeTemplate">
+    <li>
+
+      <div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
+
+      <div class="item" data-bind="class: ToNode().Class 
+                                 , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
+                                 , click: $root.nodeClick, clickBubble: false
+                                 " >
+        <!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
+        <!--<button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false "></button>
+        <button class="expand-button" data-bind="click: $root.expandNode
+                                                , clickBubble: false
+                                                , css: { 'icon-arrow-down': !cIsExpanded(), 'icon-arrow-up': cIsExpanded() }
+                                                , visible: HasChildren()
+                                                "></button>
+        <span class="item-title" data-bind="html: ToNode().Title"></span>
+      </div>
+
+      <ol data-bind="visible: cIsExpanded(),  template: {foreach: ToNode().ChildConnections, name:'NodeTemplate'}">
+      </ol>
+
+    </li>
+  </script>-->
+  
+  <!-- SortableNodeTemplate -->
+  
+  <script type="text/html" id="NodeTemplate">
+    <li>
+
+      <div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
+
+      <div class="item" data-bind="class: ToNode().Class
+                                 , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
+                                 , click: $root.nodeClick, clickBubble: false
+                                 " >
+        <!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
+        <button class="details-button  icon-untitled-2" data-bind="click: $root.showDetails, clickBubble: false "></button>
+        <button class="expand-button" data-bind="click: $root.expandNode
+                                                , clickBubble: false
+                                                , css: { 'icon-arrow-down-8': !cIsExpanded(), 'icon-arrow-up-7': cIsExpanded() }
+                                                , visible: HasChildren()
+                                                "></button>
+        <span class="item-title" data-bind="html: ToNode().Title"></span>
+      </div>
+
+      <ol class="" data-bind="visible: cIsExpanded(), 
+                              sortable: {
+                                data: ToNode().ChildConnections,
+                                template: 'NodeTemplate',
+                                afterMove: $parent.afterMoveNode
+                              }">
+      </ol>
+
+    </li>
+  </script>
+
+</head>
+<body>
+
+<!--  <div class="container" data-bind="sortable: data.connections"></div>-->
+  
+  <div class="page secondary" id="outline">
+
+    <div class="nav-bar navbar-fixed-top metro-navbar  bg-color-greenLight">
+      <div class="navbar-inner win-commandlayout">
+        <div class="header-container">
+          <a href="#" class="win-backbutton"></a>
+          <h1 data-bind="text: title"></h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-region">
+      <div class="page-region-content">
+      <!--   
+      <ol data-bind="template: {foreach: data.connections, name:'NodeTemplate'}">
+      </ol>
+        <hr />
+        -->
+        <div>
+          <ol data-bind="sortable: { data: data.currentTree().ChildConnections, template: 'NodeTemplate', afterMove: afterMoveNode } "></ol>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

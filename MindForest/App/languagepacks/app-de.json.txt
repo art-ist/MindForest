@@ -1,0 +1,54 @@
+﻿{
+  "app": {
+		"ok"							: "OK",
+		"cancel"					: "Abbrechen",
+		"loading"					: "Landen...",
+		"loadingExternal"	: "Lade externe daten...",		 
+		"login"						: "Login...",
+		"logout"					: "Logout",
+		"edit"						: "Bearbeiten",
+		"view"						: "Ansehen",
+		"settings" : {
+			"language"							: "Sprache",
+			"visualization"					: "Darstellung",
+			"visualization-outline"	: "hierarchisch",
+			"visualization-mindmap"	: "Mind Map",
+			"showDetails"						: "Details anzeigen",
+			"showDetails-right"			: "rechts",
+			"showDetails-slideshow" : "Diashow"
+		}
+  },
+  "details-slide": {
+    "more": "Mehr"
+  },
+	"webpage" : {
+		"title" : "Externe Webpage"
+	},
+	"login"		: {
+		"title" : "Anmelden",
+		"username" : "Benutzername",
+		"password" : "Passwort"
+	},
+	"edit"		: {
+		"add"			: {
+			"child"		:	"Unterknoten hinzufügen",
+			"sibling"	:	"Nachbarknoten hinzufügen",
+			"description" : "Beschreibung hinzufügen",
+			"link"		: "Link hinzufügen"
+		},
+		"delete"	:	"Löschen",
+		"save"		:	"Speichern",
+		"class"		: "Klasse",
+		"parents"	: "Gehört zu",
+		"details" : "Details",
+		"notes"		: "Notizen",
+		"style"		: "Stil",
+		"nodeColor" : "Knotenfarbe",
+		"textColor" :	"Textfarbe",
+		"cloudColor" : "Gruppenfarbe",
+		"info"		: "Info",
+		"createdAt"	:	"Erstellt",
+		"modifiedAt"	: "Letzte Änderung",
+		"by"			: "von"
+	}
+}

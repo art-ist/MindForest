@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1AE2BD95-1452-4DF4-8762-9329745CEEF3}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MindForest</RootNamespace>
+    <AssemblyName>MindForest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Breeze.ContextProvider">
+      <HintPath>..\packages\Breeze.Server.ContextProvider.1.4.11\lib\Breeze.ContextProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Breeze.ContextProvider.EF6">
+      <HintPath>..\packages\Breeze.Server.ContextProvider.EF6.1.4.11\lib\Breeze.ContextProvider.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Breeze.WebApi2">
+      <HintPath>..\packages\Breeze.Server.WebApi2.1.4.11\lib\Breeze.WebApi2.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.ActiveDirectory">
+      <HintPath>..\packages\Microsoft.Owin.Security.ActiveDirectory.2.1.0\lib\net45\Microsoft.Owin.Security.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.2.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.2.1.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.2.1.0\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.2.1.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.2.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.Types\11.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Selectors" />
+    <Reference Include="System.IdentityModel.Services" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.1.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Spatial, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.1.1\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.1.1\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.0.0\lib\net45\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Web.Optimization">
+      <HintPath>..\packages\Web.Optimization.0.0.7\lib\net40\Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App\main - OLD.js" />
+    <Content Include="App\services\data.js" />
+    <Content Include="App\services\logger.js" />
+    <Content Include="App\services\platform.js" />
+    <Content Include="App\services\_globals.js" />
+    <Content Include="App\services\_ko.bindingHandlers.js" />
+    <Content Include="App\styles\toastr.css" />
+    <Content Include="App\views\forest.html" />
+    <Content Include="App\views\mm.js" />
+    <Content Include="App\views\forest.js" />
+    <Content Include="App\views\details-slide.css" />
+    <Content Include="App\views\details-slide.html" />
+    <Content Include="App\views\mm.css" />
+    <Content Include="App\views\mm.html" />
+    <Content Include="App\views\details-dock.html" />
+    <Content Include="App\views\_shell.html" />
+    <Content Include="App\views\_shell.js" />
+    <Content Include="App\styles\colorpicker\pick-a-color-1.1.7.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-icons.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-responsive.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-ui-light.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro.css" />
+    <Content Include="App\styles\themes\bootmetro\css\datepicker.css" />
+    <Content Include="App\styles\themes\bootmetro\css\fonts.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-icons.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-responsive.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-ui-light.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro.min.css" />
+    <Content Include="App\styles\themes\bootmetro\font\icomoon.dev.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\LICENSE.txt" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-light.gif" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-ring-light-small.gif" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-ring-light.gif" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-charms.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-icons-ie7.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-panorama.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-pivot.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootstrap-datepicker.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootstrap.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery-1.10.0.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery-1.10.0.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.mousewheel.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.mousewheel.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.touchSwipe.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.touchSwipe.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-charms.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-icons-ie7.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-panorama.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-pivot.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootstrap.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\modernizr-2.6.2.min.js" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap-responsive.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap-responsive.min.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.min.css" />
+    <Content Include="App\styles\images\glyphicons-halflings-white.png" />
+    <Content Include="App\styles\images\glyphicons-halflings.png" />
+    <Content Include="App\styles\qunit.css" />
+    <Content Include="App\styles\themes\normalize.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\alert.png" />
+    <Content Include="Images\buttonback.png" />
+    <Content Include="Images\buttondown.png" />
+    <Content Include="Images\buttonright.png" />
+    <Content Include="Images\buttonup.png" />
+    <Content Include="Images\camera.png" />
+    <Content Include="Images\export.png" />
+    <Content Include="Images\fullscreen.png" />
+    <Content Include="Images\fullscreenoff.png" />
+    <Content Include="Images\gotoend.png" />
+    <Content Include="Images\gotostart.png" />
+    <Content Include="Images\arrowleft.png" />
+    <Content Include="Images\arrowdown.png" />
+    <Content Include="Images\arrowup.png" />
+    <Content Include="Images\arrowright.png" />
+    <Content Include="Images\directionleft.png" />
+    <Content Include="Images\directionback.png" />
+    <Content Include="Images\directionright.png" />
+    <Content Include="Images\directionfront.png" />
+    <Content Include="Images\checkmark.png" />
+    <Content Include="Images\help.png" />
+    <Content Include="Images\link.png" />
+    <Content Include="Images\question.png" />
+    <Content Include="Images\import.png" />
+    <Content Include="Images\linkexternal.png" />
+    <Content Include="Images\linkinternal.png" />
+    <Content Include="Images\list.png" />
+    <Content Include="Images\mindmap.png" />
+    <Content Include="Images\new.png" />
+    <Content Include="Images\pause.png" />
+    <Content Include="Images\play.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\search.png" />
+    <Content Include="Images\settings.png" />
+    <Content Include="Images\tree.png" />
+    <Content Include="Images\view.png" />
+    <Content Include="Images\zoomin.png" />
+    <Content Include="Images\zoomout.png" />
+    <Content Include="App\main.js" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1362011911881491897.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1536885918101686518.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_160823999387444819.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2314113340864404837.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2408254117573553143.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_243496517750814866.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2443685099352430516.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_256785661890026960.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2850829171476211725.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_381829620600780052.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_3884993239420279788.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4078771207467609191.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4134186827465947519.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4507383825116029775.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4741555578914932290.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5333517035776781069.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5639296371360788734.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5828332802814624990.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_603446392551889536.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6043904736788817895.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6336022234909600267.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6396869968406929992.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6417983437059407855.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6768050311751866222.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7116577930431918253.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7931319110052864497.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7934471615216587340.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_795291888637639394.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8235230054481586486.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8311813795078639346.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8376053451461750942.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8448379864530392050.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8534133408988300417.png" />
+    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_997429383053809492.png" />
+    <Content Include="media\Mutmacherei\logo.png" />
+    <Content Include="media\Mutmacherei\logo_en.png" />
+    <Content Include="README.html">
+      <DependentUpon>README.md</DependentUpon>
+    </Content>
+    <Content Include="App\libraries\Base64.js" />
+    <Content Include="App\libraries\colorpicker-ui.js" />
+    <Content Include="App\libraries\colorpicker.js" />
+    <Content Include="App\libraries\d3.v3.js" />
+    <Content Include="App\libraries\d3.v3.min.js" />
+    <Content Include="App\libraries\durandal\activator.js" />
+    <Content Include="App\libraries\durandal\app.js" />
+    <Content Include="App\libraries\durandal\binder.js" />
+    <Content Include="App\libraries\durandal\composition.js" />
+    <Content Include="App\libraries\durandal\events.js" />
+    <Content Include="App\libraries\durandal\plugins\dialog.js" />
+    <Content Include="App\libraries\durandal\plugins\history.js" />
+    <Content Include="App\libraries\durandal\plugins\http.js" />
+    <Content Include="App\libraries\durandal\plugins\observable.js" />
+    <Content Include="App\libraries\durandal\plugins\router.js" />
+    <Content Include="App\libraries\durandal\plugins\serializer.js" />
+    <Content Include="App\libraries\durandal\plugins\widget.js" />
+    <Content Include="App\libraries\durandal\system.js" />
+    <Content Include="App\libraries\durandal\transitions\entrance.js" />
+    <Content Include="App\libraries\durandal\viewEngine.js" />
+    <Content Include="App\libraries\durandal\viewLocator.js" />
+    <Content Include="App\libraries\eye.js" />
+    <Content Include="App\languagepacks\app.json.txt" />
+    <Content Include="App\languagepacks\app-de.json.txt" />
+    <None Include="App\libraries\jquery-2.0.3.intellisense.js" />
+    <Content Include="App\libraries\glimpse-knockout.js" />
+    <Content Include="App\libraries\r.js" />
+    <Content Include="App\libraries\require.js" />
+    <Content Include="App\libraries\text.js" />
+    <Content Include="App\libraries\toastr.js" />
+    <Content Include="App\libraries\toastr.min.js" />
+    <Content Include="App\libraries\typings\requirejs\require.d.ts" />
+    <Content Include="App\libraries\_jsPlumb DEMOCODE can be deleted.js" />
+    <Content Include="App\libraries\jquery-2.0.3.js" />
+    <Content Include="App\libraries\jquery-2.0.3.min.js" />
+    <Content Include="App\libraries\jquery.js" />
+    <Content Include="App\libraries\jquery.jsPlumb-1.5.2-min.js" />
+    <Content Include="App\libraries\jquery.jsPlumb-1.5.2.js" />
+    <Content Include="App\libraries\jquery.localize.js" />
+    <Content Include="App\libraries\jquery.scrollTo-1.4.3.1-min.js" />
+    <Content Include="App\libraries\knockout-sortable.js" />
+    <Content Include="App\libraries\colorpicker\pick-a-color-1.1.7.min.js" />
+    <Content Include="App\libraries\colorpicker\tinycolor-0.9.15.min.js" />
+    <Content Include="App\libraries\modernizr-2.6.2.js" />
+    <None Include="App\libraries\breeze.intellisense.js" />
+    <Content Include="App\libraries\breeze.debug.js" />
+    <Content Include="App\libraries\breeze.min.js" />
+    <Content Include="App\libraries\q.js" />
+    <Content Include="App\libraries\q.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="_sql\1 Create Database.sql" />
+    <Content Include="_sql\1 DB Updates.sql" />
+    <Content Include="_sql\2 Import FreeMind.sql" />
+    <Content Include="App\libraries\jquery-2.0.3.min.map" />
+    <Content Include="App\libraries\toastr.min.js.map" />
+    <None Include="App\libraries\_references.js" />
+    <Content Include="App\libraries\utils.js" />
+    <Content Include="App\styles\colorpicker.css" />
+    <EntityDeploy Include="Models\Forest.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Forest.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Forest.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Forest.edmx</DependentUpon>
+      <LastGenOutput>Forest.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Forest.edmx.diagram">
+      <DependentUpon>Forest.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Forest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Forest.edmx</DependentUpon>
+      <LastGenOutput>Forest.cs</LastGenOutput>
+    </Content>
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.woff" />
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\w3.pubxml" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.js" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.min.js" />
+    <Content Include="App\libraries\jquery-ui-1.10.3.js" />
+    <Content Include="App\libraries\jquery-ui-1.10.3.min.js" />
+    <Content Include="App\libraries\jquery.scrollTo-1.4.3.1.js" />
+    <Content Include="App\libraries\knockout-2.2.1.debug.js" />
+    <Content Include="App\libraries\knockout-2.2.1.js" />
+    <Content Include="App\libraries\models\dataModel.bug.js" />
+    <Content Include="App\libraries\models\forestModel.bug.js" />
+    <Content Include="App\services\app.js" />
+    <Content Include="App\libraries\models\treeModel.bug.js" />
+    <Content Include="App\styles\app.css" />
+    <Content Include="App\views\details-dock.css" />
+    <Content Include="App\views\forest.css" />
+    <Content Include="App\styles\themes\modern\modern-responsive.css" />
+    <Content Include="App\styles\themes\modern\modern.css" />
+    <Content Include="App\views\outline.css" />
+    <Content Include="App\styles\_MartialArts.css" />
+    <Content Include="App\styles\_Mutmacherei.css" />
+    <Content Include="App\views\outline.html" />
+    <Content Include="App\views\outline.js" />
+    <None Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <None Include="WebConfig.base.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SecurityConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\Connection.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConnectionInfo.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\MindController.cs" />
+    <Compile Include="Models\ConnectionExtensions.cs" />
+    <Compile Include="Models\Forest.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forest.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Membership.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MindContext.cs" />
+    <Compile Include="Models\MindContextProvider.cs" />
+    <Compile Include="Models\NodeExtensions.cs" />
+    <Compile Include="Models\Forest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Forest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forest.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OAuthMembership.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParentsLookup.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserProfile.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Node.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="README.md" />
+    <Compile Include="Security\ClaimsTransformer.cs" />
+    <Compile Include="Controllers\IdentityController.cs" />
+    <Compile Include="Security\SecurityExceptionFilter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App\styles\themes\base\images\" />
+    <Folder Include="App\styles\themes\base\minified\images\" />
+    <Folder Include="App\styles\unused\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>43753</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:19193/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Target Name="AfterBuild">
+    <TransformXml Source="WebConfig.base.config" Transform="Web.$(Configuration).config" Destination="Web.config" StackTrace="true" />
+  </Target>
+</Project>

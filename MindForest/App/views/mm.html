@@ -1,0 +1,129 @@
+﻿  <link rel="stylesheet" type="text/css" href="App/views/mm.css" />
+
+  <script type="text/html" id="NodeTemplate">
+    <li>
+      <div class="mm-item-container" data-bind="attr: { id: 'container-' + ToNode().Id() }">
+        <div class="mm-cloud" data-bind="attr: { id: 'cloud-' + ToNode().Id() }
+                                       , style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px '+ToNode().CloudColor() }
+                                       , visible: ToNode().CloudColor
+                                       "></div>
+        <div class="mm-node-container">
+
+          <div class="item" data-bind="class: ToNode().Class
+                                     , css: { 'current': isCurrent }
+                                     , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
+                                     , click: $root.nodeClick, clickBubble: false, dblClickBubble: false
+                                     , attr: { id : 'node-' + ToNode().Id() }
+                                     ">
+            <!--
+            <img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()
+            <button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false, visible: !HasChildren() "></button>
+                        <button class="expand-button" data-bind="click: $root.expandNode
+                                                          , clickBubble: false
+                                                          , css: { 'icon-arrow-down': !cIsExpanded(), 'icon-arrow-up': cIsExpanded() }
+                                                          , visible: HasChildren()
+                                                          ">
+            </button>
+            -->
+            <span class="item-title" data-bind="html: ToNode().Title"></span>
+          </div>
+
+        </div>
+        <div class="mm-children-container">
+          <ul class="" data-bind="attr: { id : 'childrenOf-' + ToNode().Id() },
+                                  visible: cIsExpanded(),
+                                  sortable: {
+                                    data:         ToNode().ChildConnections,
+                                    template:     'NodeTemplate',
+                                    afterRender:  $root.afterBindingRenderedTemplate,
+                                    afterAdd:     $root.afterBindingAddedElement,
+                                    beforeRemove: $root.beforeBindingRemovedElement,
+                                    afterMove:    $root.afterMoveNode
+                                  }"></ul>
+        </div>
+      </div>
+    </li>
+  </script>
+  
+  <div id="mm" class="page secondary">
+
+    <!--<div class="nav-bar navbar-fixed-top metro-navbar  bg-color-greenLight" data-bind="visible: app.settings.appBar() !== 'hide'">
+      <div class="navbar-inner win-commandlayout">
+        <div class="header-container">
+          <a href="#" class="win-backbutton" onclick="app.showForest();"></a>
+          <h1 data-bind="text: title"></h1>
+        </div>
+      </div>
+    </div>-->
+
+    <div class="page-region">
+
+      <div id="mm-menu-container" class="command-overlay">
+        <div class="dropdown">
+          <a href="#" class="win-command  win-command-small dropdown-toggle" data-toggle="dropdown">
+            <span class="win-commandicon win-commandring icon-cog"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li data-bind="visible: !app.user.isAuthenticated()"><a tabindex="-1" href="#login" data-toggle="modal"><span data-localize="app.login">Login</span></a></li>
+            
+            <!-- ko if: app.user.isAuthenticated -->
+            
+            <li data-bind="visible: app.user.isAuthenticated"><a tabindex="-1" href="#" data-bind="click: app.logout"><span data-bind="  text: app.user.name()"></span> - <span data-localize="app.logout">Logout</span></a></li>
+            <li data-bind="visible: app.user.mayEdit"><a tabindex="-1" href="#" data-bind="click: app.toggleEdit">
+              <span data-localize="app.edit">Bearbeiten</span> <i class="icon-checkmark" data-bind="visible: app.state.edit"></i>
+            </a></li>
+
+            <!-- /ko -->
+
+            <!--<li class="nav-header" data-localize="app.settings.showDetails">Show details</li>
+            <li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-right">dock right <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'tool-right'"></i></a></li>
+            <li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-slideshow">slideshow <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'lightBox'"></i></a></li>-->
+          </ul>
+        </div>
+      </div>
+
+      <div id="mm-container" class="page-region-content">
+
+        <div class="mm-root-container" data-bind="with: data.currentTree(), attr: { id: 'container-' + data.currentTree().Id() }">
+
+          <div class="mm-node-container">
+
+            <div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
+                                               , click: $root.nodeClick, clickBubble: false
+                                               ">
+              <img data-bind="attr: { src: Icon, alt: Title }, visible: Icon" />
+              <h2 class="item-title" data-bind="html: Title, visible: !Icon()"></h2>
+            </div>
+
+          </div>
+          <div class="mm-children-container">
+            <ul data-bind="sortable: {
+                                        data: ChildConnections,
+                                        template: 'NodeTemplate',
+                                        afterRender:  $root.afterBindingRenderedTemplate,
+                                        afterAdd:     $root.afterBindingAddedElement,
+                                        beforeRemove: $root.beforeBindingRemovedElement,
+                                        afterMove:    $root.afterMoveNode
+                                      } "></ul>
+          </div>
+        </div>
+
+      </div> <!--page-region-content-->
+
+      <div id="mm-zoom-container" class="command-overlay">
+        <button class="win-command  win-command-small" title="Zoom: -10%" data-bind="click: zoomOut">
+          <span class="win-commandicon win-commandring icon-minus"></span>
+        </button>
+        <!--<div id="mm-zoom-slider">zoom slider</div>-->
+        <span id="mm-zoom-value" data-bind="text: (app.settings.mm.zoom() * 100) + '%'">100%</span>
+        <button class="win-command win-command-small" title="Zoom: +10%" data-bind="click: zoomIn">
+          <span class="win-commandicon win-commandring icon-plus"></span>
+        </button>
+        <!--        <button class="win-command win-command-small" rel="tootlip" title="Fit">
+          <span class="win-commandicon win-commandring  icon-expand-2"></span>
+        </button>   -->
+      </div> <!--mm-zoom-container-->
+
+    </div> <!--page-region-->
+
+  </div>

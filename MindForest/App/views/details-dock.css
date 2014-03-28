@@ -1,0 +1,38 @@
+﻿/*#detailsPage .page-region-content {
+  padding-left: 80px;  
+  padding-right: 60px;
+}*/
+
+#detailsPage.tool-right {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+}
+
+#details-dock li {
+  clear: both;
+  display: block;
+  padding: 5px 0 5px 5px;
+  margin: 0 0 5px 5px;
+  position: relative;
+}
+
+#details-dock .item {
+  position: relative;
+  padding: 5px 0 5px 5px;
+  margin: 0px 0px 0px 0px;
+  background-color: #e6e7e8;
+  color: black;
+  border: 1px solid ActiveBorder;
+}
+
+  #details-dock .item:hover {  /*siehe moden.css,2974: .tile:hover*/
+    outline: 3px #3a3a3a solid;
+  }
+
+#details-dock .item-title {
+  display: inline-block;
+}
+
+#details-dock .edit-details-list li {
+  background-color: #e6e7e8;
+}

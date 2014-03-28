@@ -1,0 +1,54 @@
+﻿{
+  "app": {
+		"ok"							: "OK",
+		"cancel"					: "Cancel",
+		"loading"					: "Loading...",
+		"loadingExternal"	: "Loading external resources...",		 
+		"login"						: "Login...",
+		"logout"					: "Logout",
+		"edit"						: "Edit",
+		"view"						: "View",
+		"settings" : {
+			"language"							: "Language",
+			"visualization"					: "Visualization",
+			"visualization-outline"	: "Outline",
+			"visualization-mindmap"	: "Mind Map",
+			"showDetails"						: "Show details",
+			"showDetails-right"			: "dock right",
+			"showDetails-slideshow" : "slideshow"
+		}
+  },
+  "details-slide": {
+    "more": "More"
+  },
+	"webpage" : {
+		"title" : "External Webpage"
+	},
+	"login"		: {
+		"title" : "Login",
+		"username" : "Username",
+		"password" : "Password"
+	},
+	"edit"		: {
+		"add"			: {
+			"child"		:	"Add Child",
+			"sibling"	:	"Add Sibling",
+			"description" : "Add Description",
+			"link"		: "Add Link"
+		},
+		"delete"	:	"Delete",
+		"save"		:	"Save",
+		"class"		: "Class",
+		"parents"	: "Parents",
+		"details" : "Details",
+		"notes"		: "Notes",
+		"style"		: "Style",
+		"nodeColor" : "Nodecolor",
+		"textColor" :	"Textcolor",
+		"cloudColor" : "Cloudcolor",
+		"info"		: "Info",
+		"createdAt"	:	"Created at",
+		"modifiedAt"	: "Last modification at",
+		"by"			: "by"
+	}
+}

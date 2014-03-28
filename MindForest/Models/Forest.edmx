@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MindForestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Connections">
+          <Key>
+            <PropertyRef Name="UniqueId" />
+          </Key>
+          <Property Name="FromId" Type="bigint" Nullable="false" />
+          <Property Name="ToId" Type="bigint" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
+          <Property Name="IsVisible" Type="bit" />
+          <Property Name="IsExpanded" Type="bit" />
+          <Property Name="Style" Type="varchar" MaxLength="10" />
+          <Property Name="Color" Type="varchar" MaxLength="10" />
+          <Property Name="Width" Type="varchar" MaxLength="10" />
+          <Property Name="Hook" Type="nvarchar(max)" />
+          <Property Name="ForeignId" Type="varchar" MaxLength="40" />
+          <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UniqueId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nodes">
+          <Key>
+            <PropertyRef Name="UniqueId" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Lang" Type="varchar" MaxLength="2" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="NodeType" Type="varchar" MaxLength="10" />
+          <Property Name="IsTreeRoot" Type="bit" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RichTitle" Type="nvarchar(max)" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IconStreamId" Type="uniqueidentifier" />
+          <Property Name="Class" Type="nvarchar" MaxLength="200" />
+          <Property Name="Style" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Color" Type="varchar" MaxLength="10" />
+          <Property Name="BackColor" Type="varchar" MaxLength="10" />
+          <Property Name="CloudColor" Type="varchar" MaxLength="10" />
+          <Property Name="FontName" Type="nvarchar" MaxLength="100" />
+          <Property Name="FontSize" Type="varchar" MaxLength="10" />
+          <Property Name="FontWeight" Type="varchar" MaxLength="10" />
+          <Property Name="FontStyle" Type="varchar" MaxLength="10" />
+          <Property Name="ReminderAt" Type="datetime2" Precision="2" />
+          <Property Name="Progress" Type="tinyint" />
+          <Property Name="Link" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MediaStreamId" Type="varchar" MaxLength="50" />
+          <Property Name="MediaType" Type="varchar" MaxLength="50" />
+          <Property Name="MediaOffest" Type="decimal" Precision="7" Scale="2" />
+          <Property Name="MediaLength" Type="decimal" Precision="7" Scale="2" />
+          <Property Name="MediaCycle" Type="bit" />
+          <Property Name="Hook" Type="nvarchar(max)" />
+          <Property Name="ForeignId" Type="varchar" MaxLength="40" />
+          <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UniqueId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
+          <Property Name="LinkStatus" Type="smallint" />
+          <Property Name="TreeSettings" Type="xml" />
+        </EntityType>
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ProviderUserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Settings" Type="xml" />
+        </EntityType>
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_Web_UsersInRoles_RoleId">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Web_UsersInRoles_UserId">
+          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1" />
+          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfiles">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetChildConnections" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+          <Parameter Name="NodeId" Type="int" Mode="In" />
+          <Parameter Name="Levels" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="FromId" Type="bigint" />
+                <Property Name="ToId" Type="bigint" />
+                <Property Name="Position" Type="int" />
+                <Property Name="IsVisible" Type="bit" />
+                <Property Name="IsExpanded" Type="bit" />
+                <Property Name="Style" Type="varchar" MaxLength="10" />
+                <Property Name="Color" Type="varchar" MaxLength="10" />
+                <Property Name="Width" Type="varchar" MaxLength="10" />
+                <Property Name="Hook" Type="nvarchar(max)" />
+                <Property Name="ForeignId" Type="varchar" MaxLength="40" />
+                <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
+                <Property Name="CreatedAt" Type="datetime2" Precision="7" />
+                <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="ModifiedAt" Type="datetime2" Precision="7" />
+                <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="UniqueId" Type="uniqueidentifier" />
+                <Property Name="Level" Type="int" />
+                <Property Name="HasChildren" Type="bit" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="GetNodeDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+          <Parameter Name="NodeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetParentConnections" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+          <Parameter Name="NodeId" Type="int" Mode="In" />
+          <Parameter Name="Levels" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="FromId" Type="bigint" />
+                <Property Name="ToId" Type="bigint" />
+                <Property Name="Position" Type="int" />
+                <Property Name="IsVisible" Type="bit" />
+                <Property Name="IsExpanded" Type="bit" />
+                <Property Name="Style" Type="varchar" MaxLength="10" />
+                <Property Name="Color" Type="varchar" MaxLength="10" />
+                <Property Name="Width" Type="varchar" MaxLength="10" />
+                <Property Name="Hook" Type="nvarchar(max)" />
+                <Property Name="ForeignId" Type="varchar" MaxLength="40" />
+                <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
+                <Property Name="CreatedAt" Type="datetime2" Precision="7" />
+                <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="ModifiedAt" Type="datetime2" Precision="7" />
+                <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="UniqueId" Type="uniqueidentifier" />
+                <Property Name="Level" Type="int" />
+                <Property Name="HasChildren" Type="bit" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="GetTreeInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="MindForestModelStoreContainer">
+          <EntitySet Name="Connections" EntityType="Self.Connections" Schema="Mind" store:Type="Tables" />
+          <EntitySet Name="Nodes" EntityType="Self.Nodes" Schema="Mind" store:Type="Tables" />
+          <EntitySet Name="Membership" EntityType="Self.Membership" Schema="Web" store:Type="Tables" />
+          <EntitySet Name="OAuthMembership" EntityType="Self.OAuthMembership" Schema="Web" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="Web" store:Type="Tables" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="Web" store:Type="Tables" />
+          <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="Web" store:Type="Tables" />
+          <AssociationSet Name="fk_Web_UsersInRoles_RoleId" Association="Self.fk_Web_UsersInRoles_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Web_UsersInRoles_UserId" Association="Self.fk_Web_UsersInRoles_UserId">
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MindForest.Models" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="ForestEntities" p1:LazyLoadingEnabled="false">
+          <FunctionImport Name="GetTreeInfo" EntitySet="Nodes" ReturnType="Collection(MindForest.Models.Node)">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetChildConnections" IsComposable="true" ReturnType="Collection(MindForest.Models.ConnectionInfo)">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+            <Parameter Name="NodeId" Mode="In" Type="Int32" />
+            <Parameter Name="Levels" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Nodes" EntityType="MindForest.Models.Node" />
+          <FunctionImport Name="GetNodeDetails" EntitySet="Nodes" ReturnType="Collection(MindForest.Models.Node)">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+            <Parameter Name="NodeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Connections" EntityType="MindForest.Models.Connection" />
+          <FunctionImport Name="GetParentConnections" IsComposable="true" ReturnType="Collection(MindForest.Models.ConnectionInfo)">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+            <Parameter Name="NodeId" Mode="In" Type="Int32" />
+            <Parameter Name="Levels" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetParentsLookup" ReturnType="Collection(MindForest.Models.ParentsLookup)">
+            <Parameter Name="TreeId" Mode="In" Type="Int64" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Memberships" EntityType="MindForest.Models.Membership" />
+          <EntitySet Name="OAuthMemberships" EntityType="MindForest.Models.OAuthMembership" />
+          <EntitySet Name="Roles" EntityType="MindForest.Models.Role" />
+          <EntitySet Name="UserProfiles" EntityType="MindForest.Models.UserProfile" />
+          <AssociationSet Name="UsersInRoles" Association="MindForest.Models.UsersInRoles">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="ConnectionInfo">
+          <Property Type="Int32" Name="Level" Nullable="true" />
+          <Property Type="Boolean" Name="HasChildren" Nullable="true" />
+          <Property Type="Int64" Name="FromId" Nullable="true" />
+          <Property Type="Int64" Name="ToId" Nullable="true" />
+          <Property Type="Int32" Name="Position" Nullable="true" />
+          <Property Type="Boolean" Name="IsVisible" Nullable="true" />
+          <Property Type="Boolean" Name="IsExpanded" Nullable="true" />
+          <Property Type="String" Name="Style" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Color" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Width" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Hook" Nullable="true" />
+          <Property Type="String" Name="ForeignId" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="ForeignOrigin" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="true" Precision="27" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="128" />
+          <Property Type="DateTime" Name="ModifiedAt" Nullable="true" Precision="27" />
+          <Property Type="String" Name="ModifiedBy" Nullable="false" MaxLength="128" />
+          <Property Type="Guid" Name="UniqueId" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="UniqueId" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Lang" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="UserId" />
+          <Property Type="String" Name="NodeType" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="IsTreeRoot" Nullable="false" DefaultValue="false" />
+          <Property Type="String" Name="Title" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RichTitle" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Content" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Icon" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="IconStreamId" />
+          <Property Type="String" Name="Class" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Style" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Color" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BackColor" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CloudColor" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FontName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FontSize" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FontWeight" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FontStyle" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ReminderAt" Precision="2" />
+          <Property Type="Byte" Name="Progress" />
+          <Property Type="String" Name="Link" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MediaType" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="MediaOffest" Precision="7" Scale="2" />
+          <Property Type="Decimal" Name="MediaLength" Precision="7" Scale="2" />
+          <Property Type="Boolean" Name="MediaCycle" />
+          <Property Type="String" Name="Hook" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ForeignId" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ForeignOrigin" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="false" Precision="0" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Type="DateTime" Name="ModifiedAt" Nullable="false" Precision="0" />
+          <Property Type="String" Name="ModifiedBy" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Type="Guid" Name="UniqueId" Nullable="false" />
+          <Property Type="String" Name="MediaStreamId" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LinkTestedAt" Precision="2" />
+          <Property Type="Int16" Name="LinkStatus" />
+          <Property Name="TreeSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Connection">
+          <Key>
+            <PropertyRef Name="UniqueId" />
+          </Key>
+          <Property Type="Int64" Name="FromId" Nullable="false" />
+          <Property Type="Int64" Name="ToId" Nullable="false" />
+          <Property Type="Int32" Name="Position" Nullable="false" />
+          <Property Type="Boolean" Name="IsVisible" />
+          <Property Type="Boolean" Name="IsExpanded" />
+          <Property Type="String" Name="Style" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Color" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Width" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Hook" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ForeignId" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ForeignOrigin" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="false" Precision="0" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ModifiedAt" Nullable="false" Precision="0" />
+          <Property Type="String" Name="ModifiedBy" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="UniqueId" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="ParentsLookup">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Lang" Nullable="true" MaxLength="2" />
+        </ComplexType>
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="MindForest.Models.UsersInRoles" FromRole="Role" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Settings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Roles" Relationship="MindForest.Models.UsersInRoles" FromRole="UserProfile" ToRole="Role" />
+        </EntityType>
+        <Association Name="UsersInRoles">
+          <End Type="MindForest.Models.Role" Role="Role" Multiplicity="*" />
+          <End Type="MindForest.Models.UserProfile" Role="UserProfile" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MindForestModelStoreContainer" CdmEntityContainer="ForestEntities">
+          <FunctionImportMapping FunctionImportName="GetTreeInfo" FunctionName="MindForestModel.Store.GetTreeInfo">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetChildConnections" FunctionName="MindForestModel.Store.GetChildConnections">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MindForest.Models.ConnectionInfo">
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="HasChildren" ColumnName="HasChildren" />
+                <ScalarProperty Name="FromId" ColumnName="FromId" />
+                <ScalarProperty Name="ToId" ColumnName="ToId" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+                <ScalarProperty Name="IsExpanded" ColumnName="IsExpanded" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Hook" ColumnName="Hook" />
+                <ScalarProperty Name="ForeignId" ColumnName="ForeignId" />
+                <ScalarProperty Name="ForeignOrigin" ColumnName="ForeignOrigin" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Nodes">
+            <EntityTypeMapping TypeName="MindForest.Models.Node">
+              <MappingFragment StoreEntitySet="Nodes">
+                <ScalarProperty Name="TreeSettings" ColumnName="TreeSettings" />
+                <ScalarProperty Name="LinkStatus" ColumnName="LinkStatus" />
+                <ScalarProperty Name="LinkTestedAt" ColumnName="LinkTestedAt" />
+                <ScalarProperty Name="MediaStreamId" ColumnName="MediaStreamId" />
+                <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ForeignOrigin" ColumnName="ForeignOrigin" />
+                <ScalarProperty Name="ForeignId" ColumnName="ForeignId" />
+                <ScalarProperty Name="Hook" ColumnName="Hook" />
+                <ScalarProperty Name="MediaCycle" ColumnName="MediaCycle" />
+                <ScalarProperty Name="MediaLength" ColumnName="MediaLength" />
+                <ScalarProperty Name="MediaOffest" ColumnName="MediaOffest" />
+                <ScalarProperty Name="MediaType" ColumnName="MediaType" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Progress" ColumnName="Progress" />
+                <ScalarProperty Name="ReminderAt" ColumnName="ReminderAt" />
+                <ScalarProperty Name="FontStyle" ColumnName="FontStyle" />
+                <ScalarProperty Name="FontWeight" ColumnName="FontWeight" />
+                <ScalarProperty Name="FontSize" ColumnName="FontSize" />
+                <ScalarProperty Name="FontName" ColumnName="FontName" />
+                <ScalarProperty Name="CloudColor" ColumnName="CloudColor" />
+                <ScalarProperty Name="BackColor" ColumnName="BackColor" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="IconStreamId" ColumnName="IconStreamId" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="RichTitle" ColumnName="RichTitle" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="IsTreeRoot" ColumnName="IsTreeRoot" />
+                <ScalarProperty Name="NodeType" ColumnName="NodeType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Lang" ColumnName="Lang" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetNodeDetails" FunctionName="MindForestModel.Store.GetNodeDetails">
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Connections">
+            <EntityTypeMapping TypeName="MindForest.Models.Connection">
+              <MappingFragment StoreEntitySet="Connections">
+                <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ForeignOrigin" ColumnName="ForeignOrigin" />
+                <ScalarProperty Name="ForeignId" ColumnName="ForeignId" />
+                <ScalarProperty Name="Hook" ColumnName="Hook" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="IsExpanded" ColumnName="IsExpanded" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ToId" ColumnName="ToId" />
+                <ScalarProperty Name="FromId" ColumnName="FromId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetParentConnections" FunctionName="MindForestModel.Store.GetParentConnections">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="MindForest.Models.ConnectionInfo">
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="HasChildren" ColumnName="HasChildren" />
+                <ScalarProperty Name="FromId" ColumnName="FromId" />
+                <ScalarProperty Name="ToId" ColumnName="ToId" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+                <ScalarProperty Name="IsExpanded" ColumnName="IsExpanded" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Hook" ColumnName="Hook" />
+                <ScalarProperty Name="ForeignId" ColumnName="ForeignId" />
+                <ScalarProperty Name="ForeignOrigin" ColumnName="ForeignOrigin" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Memberships">
+            <EntityTypeMapping TypeName="MindForest.Models.Membership">
+              <MappingFragment StoreEntitySet="Membership">
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OAuthMemberships">
+            <EntityTypeMapping TypeName="MindForest.Models.OAuthMembership">
+              <MappingFragment StoreEntitySet="OAuthMembership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="MindForest.Models.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="MindForest.Models.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="Settings" ColumnName="Settings" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UsersInRoles" TypeName="MindForest.Models.UsersInRoles" StoreEntitySet="UsersInRoles">
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams />
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,82 @@
+﻿
+<div id="details-slide" data-bind="with: data.currentConnection().ToNode">
+
+  <a id="details-command-close"
+     class="win-command win-command-small"
+     rel="tootlip" title="Close details"
+     href="#" onclick="app.toggleDetails('hide');">
+    <span class="win-commandicon win-commandring icon-close"></span>
+  </a>
+
+  <!-- <div class="page-region">-->
+
+  <div class="page-region-content">
+    <!--data-bind="visible: $root.settings.edit() === false"-->
+
+    <h1 data-bind="html: Title"></h1>
+    <p data-bind="html: Content"></p>
+
+    <article data-bind="foreach: Details">
+      <p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
+        <!-- ko if: Link && !MediaType -->
+        <img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
+        <!-- ko if: MediaType == 'image' -->
+        <img src="#" data-bind="attr: { src: Link, alt: Title, title: Title }" /><!-- /ko -->
+        <!-- ko if: Icon -->
+        <!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+        <!-- /ko -->
+        <span class="item-title" data-bind="html: Title"></span>
+      </p>
+    </article>
+    <!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
+
+    <div class="listview grid-layout" data-bind="foreach: Details">
+
+      <!-- ko if: Class()=='details_link' && MediaType != 'video/youtube' -->
+      <div class="listview-item bg-color-gray"
+           data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }
+           , click: app.showWebPage, clickbubble: false
+           ">
+        <div class="pull-left" href="#">
+          <img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
+        </div>
+        <div class="listview-item-body">
+          <h4 class="listview-item-heading" data-bind="text: Title">Titles</h4>
+          <a class="two-lines" data-bind="text: Link, attr: { href: Link }"></a>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: MediaType == 'video/youtube' -->
+      <div class="listview-item bg-color-redDark"
+           data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }
+           , click: app.showWebPage, clickbubble: false
+           ">
+        <div class="pull-left" href="#">
+          <img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
+        </div>
+        <div class="listview-item-body">
+          <h4 class="listview-item-heading" data-bind="text: Title">Titles</h4>
+          <span class="two-lines" data-bind="text: Content"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+
+    </div>
+
+    <!-- Children -->
+    <label data-bind="visible: ChildConnections().length > 0 && Details().length > 0">
+      <span data-localize="details-slide.more">More</span>
+    </label>
+    <article data-bind="foreach: ChildConnections">
+      <div class="slide-subnode item"
+           data-bind="class: ToNode().Class
+           , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
+           , click: app.select, clickbubble: false">
+        <h3 class="item-title" data-bind="text: ToNode().Title"></h3>
+      </div>
+    </article>
+
+  </div> <!--.page-region-content-->
+  <!--</div>-->
+
+</div>

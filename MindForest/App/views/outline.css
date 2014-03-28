@@ -1,0 +1,60 @@
+﻿/*#outline .page-region-content {
+  padding-right: 40px;
+}*/
+
+#outline #doc-container {
+  margin: 15px 15px 15px 20px;
+}
+
+#outline ul, #outline ol {
+  position: relative;
+  float: none;
+  list-style: none;
+  margin: 5px 0 0 15px;
+}
+
+#outline li {
+  position: relative;
+  clear: both;
+  display: block;
+  padding: 5px 0 5px 5px;
+  margin: 0 0 5px 5px;
+}
+
+#outline .item {
+  position: relative;
+  padding: 5px 0 5px 5px;
+  margin: 0px 0px 0px 0px;
+  background-color: #e6e7e8;
+  color: black;
+  border: 1px solid ActiveBorder;
+}
+
+  #outline .item:hover {  /*siehe moden.css,2974: .tile:hover*/
+    outline: 3px #3a3a3a solid;
+  }
+
+#outline .item-title {
+  display: inline;
+}
+
+#outline .cloud {
+  width: 180px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#outline button.expand-button,
+#outline button.details-button {
+  float: right;
+  min-width: 24px;
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  margin-top: -2px;
+}

@@ -1,0 +1,22 @@
+﻿
+ /* tree list 
+.tree_list {
+  list-style: none;
+}
+  .tree_list li {
+    display: block;
+    float: left;
+    margin: 0 0 20px 20px;
+  }
+  .tree_list li:hover {
+    margin: -5px -5px 15px 15px;
+    border-width: 5px;
+    border-color: ActiveBorder;
+    border-style: solid;
+  }  
+  .tree_list .item {
+    width: 150px;
+    height: 150px;
+    background-color: InactiveBorder;
+  }
+*/ 

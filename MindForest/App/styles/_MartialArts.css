@@ -1,0 +1,27 @@
+﻿/*#region App theming TODO: move to themes*/
+
+#forestPage > .nav-bar {
+  background-color: #e1a31c;
+}
+
+/*#endregion App theming TODO: move to themes*/
+
+
+/*#region Forest (content) specific classes*/
+
+.Kyu5 { background-color: #ffd600 !important; }
+.Kyu4 { background-color: #e3a21a; }
+.Kyu3 { background-color: #99b433; }
+.Kyu2 { background-color: #2d89ef; }
+.Kyu1 { background-color: #b77b26; }
+.Dan1 { background-color: #282828; color: #ffffff;}
+
+.left { background-image: url(/Images/directionleft.png); background-position: left center; background-repeat: no-repeat; }
+.right{ background-image: url(/Images/directionright.png); background-position: left center; background-repeat: no-repeat; }
+.front{ background-image: url(/Images/directionfront.png); background-position: left center; background-repeat: no-repeat; }
+.back { background-image: url(/Images/directionback.png); background-position: left center; background-repeat: no-repeat; }
+  .left .item-title, .right .item-title, .front .item-title, .back .item-title {
+    margin-left: 26px;
+  }
+
+/*#endregion Forest (content) specific classes*/
