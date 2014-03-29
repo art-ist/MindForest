@@ -270,7 +270,7 @@
         //data.trees = result;
         //data.trees([]);
         result.results.forEach(function (item) {
-          var a = mindContext.getEntityByKey("Node", item.UniqueId);
+          var a = mindContext.getEntityByKey("Node", item.UniqueId());
           if (typeof a === 'undefined' || a === null) {
             //store and delete extended node data
             var maxChildPosition = item.MaxChildPosition; delete item.MaxChildPosition;

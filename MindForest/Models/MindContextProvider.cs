@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Diagnostics;
-using Breeze.ContextProvider.EF6;
 using Breeze.ContextProvider;
-using MindForest.Models;
+using Breeze.ContextProvider.EF6;
 
 namespace MindForest.Models {
   public class MindContextProvider : EFContextProvider<ForestEntities> {

@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Linq;
 using System.Web.Http;
-using System.Web;
-using System.Diagnostics;
+using System.Collections.Generic;
+
+using Breeze.WebApi2;
+using Breeze.ContextProvider.EF6;
 using Breeze.ContextProvider;
 using Newtonsoft.Json.Linq;
 using MindForest.Models;
+using System.Web.Http.Cors;
 
 namespace MindForest.Controllers {
+
+  [EnableCors("*", "*", "*")]
+  [BreezeController]
   public class MindController : ApiController {
 
     //readonly EFContextProvider<ForestEntities> _contextProvider =
@@ -26,32 +28,27 @@ namespace MindForest.Controllers {
     // ~/api/Mind/Trees
     // ~/api/Mind/Trees?$filter=IsArchived eq false&$orderby=CreatedAt
     [HttpGet]
-    public IEnumerable<Node> Trees(string Forest = null, string Lang = null) {
+    public IQueryable<Node> Trees(string Forest = null, string Lang = null) {
       var db = new MindContextProvider(Forest);
       //prepare parameters
       string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
       string lang = Lang ?? "%";
       //get tree nodes
-      Node[] result = db.Context.GetTreeInfo(user, lang).ToArray();
-      //calculate and attach MaxChildPosition
-      long[] ids = result.Select(n => n.Id).ToArray();
-      var maxChildPositions = db.Context.Connections
-                                .Where(c => ids.Contains(c.FromId))
-                                .GroupBy(c => c.FromId)
-                                .Select(group => new { Id = group.Key, MaxPos = group.Max(c => c.Position) })
-                                .ToDictionary(it => it.Id, it => it.MaxPos)
-                                ;
-      foreach (var nd in result) {
-        nd.MaxChildPosition = maxChildPositions.ContainsKey(nd.Id) ? maxChildPositions[nd.Id] : 0;
-      }   
-      //return result
-      return result;
-    }
-
-    [HttpGet]
-    public IQueryable<Node> TestNodes() {
-      var db = new MindContextProvider("Mutmacherei");
-      return db.Context.Nodes.Take(20);
+      return db.Context.GetTreeInfo(user, lang).AsQueryable();
+      //Node[] result = db.Context.GetTreeInfo(user, lang).ToArray();
+      ////calculate and attach MaxChildPosition
+      //long[] ids = result.Select(n => n.Id).ToArray();
+      //var maxChildPositions = db.Context.Connections
+      //                          .Where(c => ids.Contains(c.FromId))
+      //                          .GroupBy(c => c.FromId)
+      //                          .Select(group => new { Id = group.Key, MaxPos = group.Max(c => c.Position) })
+      //                          .ToDictionary(it => it.Id, it => it.MaxPos)
+      //                          ;
+      //foreach (var nd in result) {
+      //  nd.MaxChildPosition = maxChildPositions.ContainsKey(nd.Id) ? maxChildPositions[nd.Id] : 0;
+      //}   
+      ////return result
+      //return result.AsQueryable();
     }
 
     // ~/api/Mind/GetChildNodes
@@ -75,12 +72,12 @@ namespace MindForest.Controllers {
       var maxChildPositions = db.Context.Connections
                                   .Where(c => ids.Contains(c.FromId))
                                   .GroupBy(c => c.FromId)
-                                  .Select(group => new { Id = group.Key, MaxPos = group.Max( c => c.Position )  } )
+                                  .Select(group => new { Id = group.Key, MaxPos = group.Max(c => c.Position) })
                                   .ToDictionary(it => it.Id, it => it.MaxPos)
                                   ;
       foreach (var nd in nodes) {
         nd.MaxChildPosition = maxChildPositions.ContainsKey(nd.Id) ? maxChildPositions[nd.Id] : 0;
-      }                            
+      }
 
       foreach (var conn in result) {
         conn.Node = nodes.Where(n => n.Id == conn.ToId).FirstOrDefault();
