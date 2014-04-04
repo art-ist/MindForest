@@ -62,7 +62,6 @@
 
     undoChanges: undoChanges,
     saveChanges: saveChanges
-
   };
 
   //#region Constructor
@@ -98,52 +97,33 @@
     // and: http://www.breezejs.com/documentation/extending-entities
 
     //Node
-    var Node = function (mindContext) {
-      this.MaxChildPosition = 0;
+    var Node = function () {
+      var eventRate = { rateLimit: 50, method: "notifyWhenChangesStop" }; //rateLimit: notify of changes max every XX ms, delay until no change for XX ms 
+      //server extensions
+      this.MaxChildPosition = ko.observable(null);
+      //client extensions
+      this.Details = ko.observableArray();            this.Details.extend(eventRate); 
+      this.ChildConnections = ko.observableArray();   this.ChildConnections.extend(eventRate); 
+      //TODO//this.ChildConnections.Id = nodeEntity.Id(); //add Id of current node to Children Collection (needed for app.moveNode)
+      this.isDeleted = ko.observable(false);
     }
     mindMetadata.registerEntityTypeCtor("Node:#MindForest.Models", Node);
 
     //Connection
     var Connection = function () {
-      this.Node = null;
+      //server extensions
+      this.ToNode = ko.observable(null);
+      //client extensions
+      this.Level = ko.observable(null);
+      this.HasChildren = ko.observable(false);
+      this.cIsExpanded = ko.observable(false);
+      this.isCurrent = new ko.computed(function () {
+        return this === data.currentConnection();
+      }, this);
     }
     mindMetadata.registerEntityTypeCtor("Connection:#MindForest.Models", Connection);
 
-    } //extendEntities
-
-  function guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-                 .toString(16)
-                 .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-           s4() + '-' + s4() + s4() + s4();
-  }
-
-  function addExtendedNodePoroperties(nodeEntity, maxChildPosition) {
-    nodeEntity.MaxChildPosition = ko.observable(maxChildPosition);
-    nodeEntity.Details = ko.observableArray([]);
-    nodeEntity.ChildConnections = ko.observableArray([]);
-    nodeEntity.ChildConnections.Id = nodeEntity.Id(); //add Id of current node to Children Collection (needed for app.moveNode)
-    nodeEntity.isDeleted = ko.observable(false);
-    //nodeEntity.isCurrent = new ko.computed(function () {
-    //  if (data.currentConnection().ToNode)
-    //    return nodeEntity === data.currentConnection().ToNode();
-    //  else
-    //    return nodeEntity === self.currentTree();
-    //}, this);
-  } //addExtendedNodePoroperties
-
-  function addExtendedConnectionPoroperties(connectionEntity, nodeEntity, level, hasChildren, isExpanded) {
-    connectionEntity.Level = ko.observable(level);
-    connectionEntity.HasChildren = ko.observable(hasChildren);
-    connectionEntity.ToNode = ko.observable(nodeEntity);
-    connectionEntity.cIsExpanded = ko.observable(isExpanded);
-    connectionEntity.isCurrent = new ko.computed(function () {
-      return connectionEntity === data.currentConnection();
-    }, this);
-  }
+  } //extendEntities
 
   function getCachedConnections(fromId, toId) {
     var custType = mindContext.metadataStore.getEntityType("Connection");
@@ -209,8 +189,7 @@
         success(result);
       },
       error: function (err) {
-        //-console.log('[data.js - login] error: ' + errMsg.responseText);
-        error(err.statusText); //ToDo: display or handdle error
+        logger.error('Login failed. ' + err.login, 'ERROR|data - loadTrees');
       }
     }); //ajax
   } //login
@@ -223,74 +202,27 @@
   ///   <summary>Load all trees of the selected forest. The forest is taken from the URL parameter 'forest' if none is given the servers default forest will be used.</summary>
   /// </signature>
   function loadTrees() {
-    /*
-    var queryPars = new queryParameters();
-    queryPars.addParameter(lang);
-    queryPars.addParameter(forest);
-    $.ajax({
-      type: "GET",
-      url: "/MindForestService.svc/GetTrees" + queryPars.toString(),
-      //contentType: "application/json",
-      //dataType: "json",
-      success: function (result) {
-       //-console.log('[data.js - loadTrees] success');
-
-        var data = result.d;
-        //trees
-        if (data === "") {
-          data.trees([]); //ggf. vorhandene Trees löschen
-          return;
-        }
-        data.trees([]);
-        for (var i = 0; i < data.length; i++) {
-          var toNode = new Node(data[i]);
-          data.trees.push(toNode);
-         //-console.log('[data.js - loadTrees] adding node: ' + ko.toJSON(toNode));
-        }
-       //-console.log('[data.js - loadTrees] trees loaded: ' + ko.toJSON(data.trees()));
-      },
-      error: function (errMsg) {
-       //-console.log('[data.js - loadTrees] error: ' + errMsg.responseText);
-      
-        alert(errMsg.responseText); //ToDo: display or handdle error
-      }
-    }); //ajax
-    */
-
-    //console.log(forest);
     var query = new breeze.EntityQuery()
         .from("Trees")
         .withParameters({ Lang: lang, Forest: forest });
 
-    return mindContext
-      .executeQuery(query)
+    return mindContext.executeQuery(query)
       .then(function (result) {
-        logger.log('Trees received', 'data - loadTrees', result);
-
-        //data.trees = result;
-        //data.trees([]);
         result.results.forEach(function (item) {
-          var a = mindContext.getEntityByKey("Node", item.UniqueId());
-          if (typeof a === 'undefined' || a === null) {
             //store and delete extended node data
-            var maxChildPosition = item.MaxChildPosition; delete item.MaxChildPosition;
-
-            var nodeEntity = mindContext.createEntity('Node', item, breeze.EntityState.Unchanged);
-            addExtendedNodePoroperties(nodeEntity, maxChildPosition);
-            data.trees.push(nodeEntity);
-          } //if a
+            //var maxChildPosition = item.MaxChildPosition; delete item.MaxChildPosition;
+            //addExtendedNodePoroperties(item, maxChildPosition);
+            data.trees.push(item);
         }); //result.results.forEach
-        return result;
       })
-      .fail(function (e) {
-        logger.error('Trees ERROR - ' + e , 'data - loadTrees', e);
-        alert("data - loadTrees: " + e); //ToDo: display or handdle error
-      });
+      .fail(function (ex) {
+        logger.error('Could not load trees. ' + ex , 'ERROR|data - loadTrees');
+      })
+    ; //mindContext.executeQuery(query)
 
   } //loadTrees
 
   function loadNodes(FromNode, selectChild) {
-    //-console.log("data loadNodes", FromNode);
 
     var query = new breeze.EntityQuery()
         .from("GetChildNodes")
@@ -300,101 +232,60 @@
           NodeId: FromNode.Id(),
           Levels: "1"
         });
-
     query.tag = { FromNode: FromNode, selectChild: selectChild };
 
-    return mindContext
-      .executeQuery(query)
+    return mindContext.executeQuery(query)
       .then(function (result) {
-        //target = result;
-        //target([]);
-        result.results
-          .forEach(function (item) {
-            //item.Details = ko.observableArray([]);
-            if (getCachedConnections(item.FromId, item.ToId) === null) {
-
-              //store and delete extended connection data
-              var level = item.Level; delete item.Level;
-              var hasChildren = item.HasChildren; delete item.HasChildren;
-              var toNode = item.Node; delete item.Node;
-              //store and delete extended node data
-              var maxChildPosition = toNode.MaxChildPosition; delete toNode.MaxChildPosition;
-
-              var nodeEntity = mindContext.createEntity('Node', toNode, breeze.EntityState.Unchanged);
-              addExtendedNodePoroperties(nodeEntity, maxChildPosition);
-
-              var connectionEntity = mindContext.createEntity('Connection', item, breeze.EntityState.Unchanged);
-              addExtendedConnectionPoroperties(connectionEntity, nodeEntity, level, hasChildren, item.IsExpanded);
-
-              if (item.IsVisible) {
-                FromNode.ChildConnections.push(connectionEntity);
-              }
-              else {
-                FromNode.Details.push(nodeEntity);
-                //console.log("Node: " + FromNode.ChildConnections()[0].ToNode().Title() + ",### currentTree: " + data.currentTree.ChildConnections()[0].ToNode().Title());
-              }
-
-            }
-            else {
-              //-console.log("item alredy attached"); 
-            }
-          }); //result.results.forEach
-        return result.query.tag;
+        //result.results
+        //  .forEach(function (item) {
+        //    if (getCachedConnections(item.FromId, item.ToId) === null) {
+        //      if (item.IsVisible) {
+        //        FromNode.ChildConnections.push(item);
+        //      }
+        //      else {
+        //        FromNode.Details.push(item.Node);
+        //      }
+        //    }
+        //    //else { console.log("item alredy attached"); }
+        //  }); //result.results.forEach
+        ////return result.query.tag;
+        FromNode.ChildConnections = ko.observableArray(
+          ko.utils.arrayFilter(result.results, function(item) {
+            return true; //item.IsVisible;
+          })
+        );
+        FromNode.Node = ko.observableArray(
+          ko.utils.arrayFilter(result.results, function(item) {
+            return !item.IsVisible;
+          })
+        );
+        logger.log('children of ' + FromNode.Id() + ' loaded', 'data - loadNodes', { FromNode: FromNode, restuls: result.results, });
       }) //then
-    ;
+      .fail(function (ex) {
+        logger.error(ex, 'ERROR|data - loadNodes');
+      })
+    ; //mindContext.executeQuery(query)
+
+
   } //loadNodes
 
   function loadDetails(node) {
-    //call: loadDetails(data.ToId(), data.ToNode().Details);
-    /*
-    var queryPars = new queryParameters();
-    queryPars.addParameter(forest);
-    queryPars.addParameter(lang);
-    queryPars.add('NodeId', node.Id());
-    $.ajax({
-      type: "GET",
-      url: "/MindForestService.svc/GetNodeDetails" + queryPars.toString(),
-      success: function (result) {
-        var data;
-        //connections
-        data = result.d;
-        if (data === "") {
-          node.Details([]);
-          return;
-        }
-        node.Details([]);
-        for (var i = 0; i < data.length; i++) {
-          node.Details.push(data[i]);
-        }
-      },
-      error: function (errMsg) {
-        alert(errMsg.responseText);
-      }
-    }); //ajax
-    */
 
     var query = new breeze.EntityQuery()
         .from("GetNodeDetails")
         .withParameters({ Lang: lang, Forest: forest, NodeId: node.Id() });
 
-    mindContext.executeQuery(query).then(function (result) {
-
-      //node.Details([]);
-      result.results.forEach(function (item) {
-        //-console.log("Ditails: " + mindContext.getEntityByKey("Node", item.UniqueId));
-        if (mindContext.getEntityByKey("Node", item.UniqueId) === null) {
-          //store and delete extended node data
-          var maxChildPosition = item.MaxChildPosition; delete item.MaxChildPosition;
-
-          var nodeEntity = mindContext.createEntity('Node', item, breeze.EntityState.Unchanged);
-          addExtendedNodePoroperties(nodeEntity, maxChildPosition);
-
-          node.Details.push(nodeEntity);
-        }
-      });
-    }).fail(function (e) {
-      alert("loadDetails" + e); //ToDo: display or handdle error
-    });
+    mindContext.executeQuery(query)
+      .then(function (result) {
+        result.results.forEach(function (item) {
+          if (mindContext.getEntityByKey("Node", item.UniqueId) === null) {
+            node.Details.push(item);
+          }
+        });
+      }).fail(function (e) {
+        logger.error(ex, 'ERROR|data - loadDetails');
+      })
+    ;//mindContext.executeQuery(query)
 
   } //loadDetails
 
@@ -434,8 +325,7 @@
     }
     else {
       newConnection.IsVisible(true);
-      fromNode.ChildConnections().push(newConnection);
-      fromNode.ChildConnections.valueHasMutated();
+      fromNode.ChildConnections.push(newConnection);
     }
 
     fromNode.MaxChildPosition(fromNode.MaxChildPosition() + 1);
@@ -455,7 +345,6 @@
       UniqueId: guid()
     }, breeze.EntityState.ADDED);
     addExtendedNodePoroperties(toNode, 0);
-
 
     //addParameter(toNode, newConnection, 0, 1, false, false)
     //newConnection.ToNode = ko.observable(toNode);
@@ -509,7 +398,7 @@
       .then(function (saveResult) {
         var savedEntities = saveResult.entities;
         var keyMappings = saveResult.keyMappings;
-        alert("Save succeeded");
+        logger.success("Saved", 'SUCCESS|data - saveChanges')
       })
       .fail(function (e) {
         try {
@@ -518,14 +407,12 @@
             var errors = item.entityAspect.getValidationErrors();
             errors.forEach(function (error) {
               e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
-            });
-            alert("Error: " + e);
+            });            
           });
         } catch (ex) {
-          alert("Error: " + e);
+          logger.error("Saving failed! " + e, 'ERROR|data - saveChanges');
         }
       });
-
   } //saveChanges
 
   function undoChanges() {
@@ -592,12 +479,6 @@
         }
       }
     }
-    //for (var j = 0; j < data.trees.length; j++) {
-    //  if (id === data.trees()[i].Id()) {
-    //    return data.trees()[i];
-    //  }
-    //}
-
     return null;
   } //findNodeById
 

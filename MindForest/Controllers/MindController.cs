@@ -80,7 +80,7 @@ namespace MindForest.Controllers {
       }
 
       foreach (var conn in result) {
-        conn.Node = nodes.Where(n => n.Id == conn.ToId).FirstOrDefault();
+        conn.ToNode = nodes.Where(n => n.Id == conn.ToId).FirstOrDefault();
       }
 
       return result.AsQueryable();

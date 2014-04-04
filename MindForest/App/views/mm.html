@@ -1,39 +1,38 @@
 ﻿  <link rel="stylesheet" type="text/css" href="App/views/mm.css" />
 
   <script type="text/html" id="NodeTemplate">
-    <li>
-      <div class="mm-item-container" data-bind="attr: { id: 'container-' + ToNode().Id() }">
-        <div class="mm-cloud" data-bind="attr: { id: 'cloud-' + ToNode().Id() }
-                                       , style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px '+ToNode().CloudColor() }
-                                       , visible: ToNode().CloudColor
+    <li data-bind="with: ToNode()">
+      <div class="mm-item-container" data-bind="attr: { id: 'container-' + Id() }">
+        <div class="mm-cloud" data-bind="attr: { id: 'cloud-' + Id() }
+                                       , style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + CloudColor() }
+                                       , visible: CloudColor
                                        "></div>
         <div class="mm-node-container">
 
-          <div class="item" data-bind="class: ToNode().Class
+          <div class="item" data-bind="class: Class
                                      , css: { 'current': isCurrent }
-                                     , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
+                                     , style: { backgroundColor: BackColor, color: Color }
                                      , click: $root.nodeClick, clickBubble: false, dblClickBubble: false
-                                     , attr: { id : 'node-' + ToNode().Id() }
+                                     , attr: { id : 'node-' + Id() }
                                      ">
             <!--
-            <img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()
-            <button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false, visible: !HasChildren() "></button>
-                        <button class="expand-button" data-bind="click: $root.expandNode
-                                                          , clickBubble: false
-                                                          , css: { 'icon-arrow-down': !cIsExpanded(), 'icon-arrow-up': cIsExpanded() }
-                                                          , visible: HasChildren()
-                                                          ">
-            </button>
-            -->
+          <img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()
+          <button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false, visible: !HasChildren() "></button>
+                      <button class="expand-button" data-bind="click: $root.expandNode
+                                                        , clickBubble: false
+                                                        , css: { 'icon-arrow-down': !cIsExpanded(), 'icon-arrow-up': cIsExpanded() }
+                                                        , visible: HasChildren()
+                                                        ">
+          </button>
+          -->
             <span class="item-title" data-bind="html: ToNode().Title"></span>
           </div>
 
         </div>
         <div class="mm-children-container">
-          <ul class="" data-bind="attr: { id : 'childrenOf-' + ToNode().Id() },
-                                  visible: cIsExpanded(),
+          <ul class="" data-bind="attr: { id : 'childrenOf-' + Id() },
                                   sortable: {
-                                    data:         ToNode().ChildConnections,
+                                    data:         ChildConnections,
                                     template:     'NodeTemplate',
                                     afterRender:  $root.afterBindingRenderedTemplate,
                                     afterAdd:     $root.afterBindingAddedElement,
@@ -104,7 +103,9 @@
                                         afterAdd:     $root.afterBindingAddedElement,
                                         beforeRemove: $root.beforeBindingRemovedElement,
                                         afterMove:    $root.afterMoveNode
-                                      } "></ul>
+                                      } ">
+
+            </ul>
           </div>
         </div>
 

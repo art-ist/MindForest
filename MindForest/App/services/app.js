@@ -335,7 +335,6 @@
       router.navigate('#/' + mapName);
     } //openTree
 
-
     var detailsLoaded = false;
     function toggleDetails(show) {
       if (show === 'show') app.detailsVisible = false;

@@ -17,7 +17,7 @@ namespace MindForest.Models {
 
   public partial class ConnectionInfo {
 
-    public Node Node { get; set; }
+    public Node ToNode { get; set; }
 
   } 
 

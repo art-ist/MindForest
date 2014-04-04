@@ -1,7 +1,7 @@
 ﻿define([
   'services/logger',
   'services/app'
-], function (logger, app) {
+], function (logger, app, data) {
 
   var forestModel = {
     title: 'Forest',
@@ -10,7 +10,12 @@
     activate: function () {
       logger.log('View activated', forestModel.title);
 
-      app.data.loadTrees();
+      if (app.data.trees().length === 0) {
+        app.data
+          .loadTrees()
+          //.then(function () { logger.log('Treees received', 'Forest - activate', app.data.trees()); })
+          ;
+      }
 
       return true;
     },

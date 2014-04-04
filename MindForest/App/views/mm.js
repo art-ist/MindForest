@@ -2,7 +2,6 @@
   'services/logger',
   'services/app'
 ], function (logger, app) {
-/* region ViewModels */
 
   var mm = {
 
@@ -14,7 +13,7 @@
     zoom: app.settings.mm.zoom,
 
     //Lifecycle Events
-    activate: initialize,
+    activate: activate,
     attached: attached,
 
     //Methods
@@ -34,8 +33,6 @@
   };
   return mm;
 
-
-
   //#region Private Fields
   var self = this;
 
@@ -43,6 +40,7 @@
   var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
   var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
 
+  //handle doubleclick
   var clickDelay = 200,
       clickCount = 0,
       clickTimer = null;
@@ -51,22 +49,31 @@
 
   //#endregion Private Fields
 
-  function initialize() {
+  function activate() {
 
-    plumb = jsPlumb.getInstance({
-      //Container: 'mm-container',
-      Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
-      //Connector: ["StateMachine", { curviness: 10, margin: 5, proximityLimit: 15, cssClass: 'mm-connector' }],
-      Anchors: [ "Right", "Left" ],
-      Endpoint: ["Blank", {}],
-      //Endpoints: [["Dot", { radius: 3 }], ["Dot", { radius: 3 }]],
-      PaintStyle: {
-        lineWidth: 2,
-        strokeStyle: "#999"
-      }
-    });
+    var rootNode = app.data.currentTree();
+    logger.log('mirisfad', 'mm - activate', rootNode);
+    app.data
+      .loadNodes(rootNode, true)
+      .then(function () {
 
-  } //initialize
+        plumb = jsPlumb.getInstance({
+          //Container: 'mm-container',
+          Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
+          //Connector: ["StateMachine", { curviness: 10, margin: 5, proximityLimit: 15, cssClass: 'mm-connector' }],
+          Anchors: [ "Right", "Left" ],
+          Endpoint: ["Blank", {}],
+          //Endpoints: [["Dot", { radius: 3 }], ["Dot", { radius: 3 }]],
+          PaintStyle: {
+            lineWidth: 2,
+            strokeStyle: "#999"
+          }
+        });
+
+      });
+
+
+  } //activate
 
   function attached() {
     var container = document.getElementById('mm');
@@ -125,7 +132,7 @@
     //});
     //slider
 
-  }; //init
+  }; //attached
 
 
   //#region Private Functions
@@ -204,6 +211,7 @@
 
     //app.data.currentConnection(item);
 
+    ////handle doubleklick
     //clickCount++;  //count clicks
     //if (clickCount === 1) {
     //  clickTimer = setTimeout(function () {
@@ -326,10 +334,6 @@
     plumb.setZoom(factor);
     app.settings.mm.zoom(factor);
   } //setZoom
-
-  //repaintConnectors = function (data, event) {
-  //  logger.log('repaintConnectors | ' + JSON.stringify(data));
-  //}
 
   function afterBindingRenderedTemplate(elements, data) {
     //logger.log('afterBindingRenderedTemplate | ' + data.ToId());
