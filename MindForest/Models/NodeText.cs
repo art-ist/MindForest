@@ -12,18 +12,18 @@ namespace MindForest.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class NodeText
     {
-        public Role()
-        {
-            this.UserProfiles = new HashSet<UserProfile>();
-            this.Permissions = new HashSet<Permission>();
-        }
+        public long Id { get; set; }
+        public long NodeId { get; set; }
+        public string Lang { get; set; }
+        public int Position { get; set; }
+        public string Title { get; set; }
+        public string RichTitle { get; set; }
+        public string Synopsis { get; set; }
+        public string Description { get; set; }
+        public string Comment { get; set; }
     
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
-    
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
-        public virtual ICollection<Permission> Permissions { get; set; }
+        public virtual Node Node { get; set; }
     }
 }

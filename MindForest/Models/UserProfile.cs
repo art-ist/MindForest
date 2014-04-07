@@ -17,6 +17,7 @@ namespace MindForest.Models
         public UserProfile()
         {
             this.Roles = new HashSet<Role>();
+            this.OAuthMemberships = new HashSet<OAuthMembership>();
         }
     
         public int UserId { get; set; }
@@ -26,5 +27,7 @@ namespace MindForest.Models
         public string Settings { get; set; }
     
         public virtual ICollection<Role> Roles { get; set; }
+        public virtual Membership Membership { get; set; }
+        public virtual ICollection<OAuthMembership> OAuthMemberships { get; set; }
     }
 }

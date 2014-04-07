@@ -480,13 +480,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SecurityConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MindController.cs" />
     <Compile Include="Models\Connection.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConnectionInfo.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\MindController.cs" />
     <Compile Include="Models\ConnectionExtensions.cs" />
     <Compile Include="Models\Forest.Context.cs">
       <AutoGen>True</AutoGen>
@@ -498,6 +495,9 @@
     </Compile>
     <Compile Include="Models\MindContext.cs" />
     <Compile Include="Models\MindContextProvider.cs" />
+    <Compile Include="Models\Node.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NodeExtensions.cs" />
     <Compile Include="Models\Forest.cs">
       <AutoGen>True</AutoGen>
@@ -509,22 +509,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Forest.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NodeText.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\OAuthMembership.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ParentsLookup.cs">
+    <Compile Include="Models\Permission.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserProfile.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Node.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -542,6 +542,7 @@
     <Folder Include="App\styles\unused\" />
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

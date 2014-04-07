@@ -17,5 +17,7 @@ namespace MindForest.Models
         public string Provider { get; set; }
         public string ProviderUserId { get; set; }
         public int UserId { get; set; }
+    
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

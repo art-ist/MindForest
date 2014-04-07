@@ -8,7 +8,7 @@ namespace MindForest.Models {
 
     //public Array Details { get; set; }
     //public Array ChildConnections { get; set; }
-    public int MaxChildPosition { get; set; }
+    //public int MaxChildPosition { get; set; }
 
   }
 }

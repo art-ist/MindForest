@@ -9,12 +9,13 @@
 
 namespace MindForest.Models
 {
-  using System;
-  using System.Data.Entity;
-  using System.Data.Entity.Core.Objects;
-  using System.Data.Entity.Core.Objects.DataClasses;
-  using System.Data.Entity.Infrastructure;
-  using System.Linq;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity.Core.Objects.DataClasses;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
     
     public partial class ForestEntities : DbContext
     {
@@ -40,126 +41,85 @@ namespace MindForest.Models
         public DbSet<OAuthMembership> OAuthMemberships { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<NodeText> NodeTexts { get; set; }
     
-        public virtual ObjectResult<Node> GetTreeInfo(string user, string lang)
+        [EdmFunction("ForestEntities", "GetNeighbourConnections")]
+        public virtual IQueryable<Connection> GetNeighbourConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
+            var nodeIdParameter = nodeId.HasValue ?
+                new ObjectParameter("NodeId", nodeId) :
+                new ObjectParameter("NodeId", typeof(int));
+    
             var userParameter = user != null ?
                 new ObjectParameter("User", user) :
                 new ObjectParameter("User", typeof(string));
+    
+            var levelsParameter = levels.HasValue ?
+                new ObjectParameter("Levels", levels) :
+                new ObjectParameter("Levels", typeof(int));
+    
+            var skipLevelsParameter = skipLevels.HasValue ?
+                new ObjectParameter("SkipLevels", skipLevels) :
+                new ObjectParameter("SkipLevels", typeof(int));
     
             var langParameter = lang != null ?
                 new ObjectParameter("Lang", lang) :
                 new ObjectParameter("Lang", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Node>("GetTreeInfo", userParameter, langParameter);
-        }
-    
-        public virtual ObjectResult<Node> GetTreeInfo(string user, string lang, MergeOption mergeOption)
-        {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
-    
-            var langParameter = lang != null ?
-                new ObjectParameter("Lang", lang) :
-                new ObjectParameter("Lang", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Node>("GetTreeInfo", mergeOption, userParameter, langParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetNeighbourConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
     
         [EdmFunction("ForestEntities", "GetChildConnections")]
-        public virtual IQueryable<ConnectionInfo> GetChildConnections(string user, string lang, Nullable<int> nodeId, Nullable<int> levels)
+        public virtual IQueryable<Connection> GetChildConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
-    
-            var langParameter = lang != null ?
-                new ObjectParameter("Lang", lang) :
-                new ObjectParameter("Lang", typeof(string));
-    
             var nodeIdParameter = nodeId.HasValue ?
                 new ObjectParameter("NodeId", nodeId) :
                 new ObjectParameter("NodeId", typeof(int));
+    
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
     
             var levelsParameter = levels.HasValue ?
                 new ObjectParameter("Levels", levels) :
                 new ObjectParameter("Levels", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<ConnectionInfo>("[ForestEntities].[GetChildConnections](@User, @Lang, @NodeId, @Levels)", userParameter, langParameter, nodeIdParameter, levelsParameter);
-        }
-    
-        public virtual ObjectResult<Node> GetNodeDetails(string user, string lang, Nullable<int> nodeId)
-        {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
+            var skipLevelsParameter = skipLevels.HasValue ?
+                new ObjectParameter("SkipLevels", skipLevels) :
+                new ObjectParameter("SkipLevels", typeof(int));
     
             var langParameter = lang != null ?
                 new ObjectParameter("Lang", lang) :
                 new ObjectParameter("Lang", typeof(string));
     
-            var nodeIdParameter = nodeId.HasValue ?
-                new ObjectParameter("NodeId", nodeId) :
-                new ObjectParameter("NodeId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Node>("GetNodeDetails", userParameter, langParameter, nodeIdParameter);
-        }
-    
-        public virtual ObjectResult<Node> GetNodeDetails(string user, string lang, Nullable<int> nodeId, MergeOption mergeOption)
-        {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
-    
-            var langParameter = lang != null ?
-                new ObjectParameter("Lang", lang) :
-                new ObjectParameter("Lang", typeof(string));
-    
-            var nodeIdParameter = nodeId.HasValue ?
-                new ObjectParameter("NodeId", nodeId) :
-                new ObjectParameter("NodeId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Node>("GetNodeDetails", mergeOption, userParameter, langParameter, nodeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetChildConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
     
         [EdmFunction("ForestEntities", "GetParentConnections")]
-        public virtual IQueryable<ConnectionInfo> GetParentConnections(string user, string lang, Nullable<int> nodeId, Nullable<int> levels)
+        public virtual IQueryable<Connection> GetParentConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
-    
-            var langParameter = lang != null ?
-                new ObjectParameter("Lang", lang) :
-                new ObjectParameter("Lang", typeof(string));
-    
             var nodeIdParameter = nodeId.HasValue ?
                 new ObjectParameter("NodeId", nodeId) :
                 new ObjectParameter("NodeId", typeof(int));
+    
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
     
             var levelsParameter = levels.HasValue ?
                 new ObjectParameter("Levels", levels) :
                 new ObjectParameter("Levels", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<ConnectionInfo>("[ForestEntities].[GetParentConnections](@User, @Lang, @NodeId, @Levels)", userParameter, langParameter, nodeIdParameter, levelsParameter);
-        }
-    
-        public virtual ObjectResult<ParentsLookup> GetParentsLookup(Nullable<long> treeId, string user, string lang)
-        {
-            var treeIdParameter = treeId.HasValue ?
-                new ObjectParameter("TreeId", treeId) :
-                new ObjectParameter("TreeId", typeof(long));
-    
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
+            var skipLevelsParameter = skipLevels.HasValue ?
+                new ObjectParameter("SkipLevels", skipLevels) :
+                new ObjectParameter("SkipLevels", typeof(int));
     
             var langParameter = lang != null ?
                 new ObjectParameter("Lang", lang) :
                 new ObjectParameter("Lang", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ParentsLookup>("GetParentsLookup", treeIdParameter, userParameter, langParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
     }
 }

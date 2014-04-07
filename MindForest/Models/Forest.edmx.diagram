@@ -5,13 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ebe13d0ee5bb432397ebb86e07f77a75" Name="MindForestDiagram" ZoomLevel="111">
-        <EntityTypeShape EntityType="MindForest.Models.Node" Width="1.5" PointX="4.75" PointY="0.5" />
-        <EntityTypeShape EntityType="MindForest.Models.Connection" Width="1.5" PointX="1.375" PointY="0.75" />
-        <EntityTypeShape EntityType="MindForest.Models.Membership" Width="1.5" PointX="10" PointY="3.625" />
-        <EntityTypeShape EntityType="MindForest.Models.OAuthMembership" Width="1.5" PointX="7.75" PointY="4.75" />
-        <EntityTypeShape EntityType="MindForest.Models.Role" Width="1.5" PointX="7.75" PointY="1.25" />
-        <EntityTypeShape EntityType="MindForest.Models.UserProfile" Width="1.5" PointX="10" PointY="0.875" />
+        <EntityTypeShape EntityType="MindForest.Models.Node" Width="1.5" PointX="1.5" PointY="0.625" />
+        <EntityTypeShape EntityType="MindForest.Models.Connection" Width="1.5" PointX="4.375" PointY="3.875" />
+        <EntityTypeShape EntityType="MindForest.Models.Membership" Width="1.5" PointX="13.625" PointY="0.625" />
+        <EntityTypeShape EntityType="MindForest.Models.OAuthMembership" Width="1.5" PointX="13.625" PointY="4.25" />
+        <EntityTypeShape EntityType="MindForest.Models.Role" Width="1.5" PointX="9" PointY="0.625" />
+        <EntityTypeShape EntityType="MindForest.Models.UserProfile" Width="1.5" PointX="11.25" PointY="0.625" />
         <AssociationConnector Association="MindForest.Models.UsersInRoles" />
+        <EntityTypeShape EntityType="MindForest.Models.Permission" Width="1.5" PointX="7.125" PointY="7.25" />
+        <AssociationConnector Association="MindForest.Models.FK_Mind__Connection_ToNode" />
+        <AssociationConnector Association="MindForest.Models.FK_Mind_Connection_FromNode" />
+        <AssociationConnector Association="MindForest.Models.FK_Mind_Permission_Node" />
+        <AssociationConnector Association="MindForest.Models.FK_Mind__Permission_Role" />
+        <AssociationConnector Association="MindForest.Models.FK_Web_Membership_UserProfile" />
+        <AssociationConnector Association="MindForest.Models.FK_Web_OAuthMembership_UserProfile" />
+        <EntityTypeShape EntityType="MindForest.Models.NodeText" Width="1.5" PointX="4.375" PointY="0.625" />
+        <AssociationConnector Association="MindForest.Models.FK_Mind_NodeTexts_Nodes" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

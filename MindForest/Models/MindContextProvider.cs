@@ -11,6 +11,10 @@ namespace MindForest.Models {
 
     static TraceSwitch trace = new TraceSwitch("Data", "Data API");
 
+    /// <summary>
+    /// Custom constructor for EFContextProvider
+    /// </summary>
+    /// <param name="Forest">Forest (Database) to use</param>
     public MindContextProvider(string Forest)
       : base() {
       if (string.IsNullOrEmpty(Forest)) {
@@ -20,28 +24,33 @@ namespace MindForest.Models {
       this.Context.Configuration.LazyLoadingEnabled = false;
     }
 
+    /// <summary>
+    /// Intercept save requests
+    /// </summary>
+    /// <param name="saveMap">Breeze's SaveMap</param>
+    /// <returns></returns>
     protected override Dictionary<Type, List<EntityInfo>> BeforeSaveEntities(Dictionary<Type, List<EntityInfo>> saveMap) {
       var db = this.Context;
 
       if (saveMap.ContainsKey(typeof(Node))) {
-        //create IDs for new Nodes
-        long maxId = db.Nodes.Max(n => n.Id);
-        foreach (Node nd in saveMap[typeof(Node)]
-                            .Where(info => info.EntityState == EntityState.Added && ((Node)info.Entity).Id < 0)
-                            .Select(info => (Node)info.Entity)
-                            ) {
-          nd.Id = maxId + (Math.Abs(nd.Id));
-        }
+        ////create IDs for new Nodes
+        //long maxId = db.Nodes.Max(n => n.Id);
+        //foreach (Node nd in saveMap[typeof(Node)]
+        //                    .Where(info => info.EntityState == EntityState.Added && ((Node)info.Entity).Id < 0)
+        //                    .Select(info => (Node)info.Entity)
+        //                    ) {
+        //  nd.Id = maxId + (Math.Abs(nd.Id));
+        //}
 
-        if (saveMap.ContainsKey(typeof(Connection))) {
-          foreach (Connection c in saveMap[typeof(Connection)]
-                                   .Where(info => ((Connection)info.Entity).ToId < 0 || ((Connection)info.Entity).FromId < 0)
-                                   .Select(info => (Connection)info.Entity)
-                                   ) {
-            if (c.FromId < 0) c.FromId = maxId + Math.Abs(c.FromId);
-            if (c.ToId < 0) c.ToId = maxId + Math.Abs(c.ToId);
-          }
-        }
+        //if (saveMap.ContainsKey(typeof(Connection))) {
+        //  foreach (Connection c in saveMap[typeof(Connection)]
+        //                           .Where(info => ((Connection)info.Entity).ToId < 0 || ((Connection)info.Entity).FromId < 0)
+        //                           .Select(info => (Connection)info.Entity)
+        //                           ) {
+        //    if (c.FromId < 0) c.FromId = maxId + Math.Abs(c.FromId);
+        //    if (c.ToId < 0) c.ToId = maxId + Math.Abs(c.ToId);
+        //  }
+        //}
 
         ////do not actually delete Nodes, that have Connections which are not deleted as well
         //IEnumerable<Connection> connectionsToBeDeleted = new List<Connection>();
@@ -83,6 +92,10 @@ namespace MindForest.Models {
       return base.BeforeSaveEntities(saveMap);
     } //if Nodes are in the saveMap
 
+    /// <summary>
+    /// Send canges on main entities to Trace
+    /// </summary>
+    /// <param name="saveMap">Breeze's SaveMap</param>
     private static void traceSaveMap(Dictionary<Type, List<EntityInfo>> saveMap) {
       foreach (var type in saveMap) {
         foreach (var item in type.Value) {
@@ -90,7 +103,11 @@ namespace MindForest.Models {
           switch (type.Key.Name) {
             case "Node":
               var n = (Node)item.Entity;
-              desc = string.Format("[ Id = {0}, Title={1} ]", n.Id, n.Title);
+              desc = string.Format("[ Id = {0} ]", n.Id );
+              break;
+            case "NodeText":
+              var t = (NodeText)item.Entity;
+              desc = string.Format("[ Id = {0}, NodeId = {1}, Title={2} ]", t.Id, t.NodeId, t.Title);
               break;
             case "Connection":
               var c = (Connection)item.Entity;

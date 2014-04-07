@@ -15,108 +15,169 @@ namespace MindForest.Controllers {
   [BreezeController]
   public class MindController : ApiController {
 
-    //readonly EFContextProvider<ForestEntities> _contextProvider =
-    //new EFContextProvider<ForestEntities>();
-
     // ~/api/Mind/Metadata
+    /// <summary>
+    /// Get schema information for breeze client.
+    /// </summary>
+    /// <param name="Forest">Name of the Forest (database) to use. If omitted DefaultForest is used. (The parameter will usually be passed through routing.)</param>
+    /// <returns></returns>
+    /// <example>
+    /// ~/api/Mind/Metadata
+    /// ~/api/Mutmacherei/Mind/Metadata
+    /// </example>
     [HttpGet]
-    public string Metadata() {
-      var db = new MindContextProvider(null);
+    public string Metadata(string Forest = null) {
+      var db = new MindContextProvider(Forest);
       return db.Metadata();
     }
 
-    // ~/api/Mind/Trees
-    // ~/api/Mind/Trees?$filter=IsArchived eq false&$orderby=CreatedAt
+    /// <summary>
+    /// All Nodes, that (including their first level childrn and details) represent a Tree. 
+    /// </summary>
+    /// <param name="Forest">Name of the Forest (database) to use. If omitted DefaultForest is used.</param>
+    /// <param name="Lang">Two letter language code. If omitted all languages.</param>
+    /// <returns>Nodes</returns>
+    /// <example>
+    /// ~/api/Mind/GetTrees
+    /// ~/api/Mutmacherei/Mind/GetTrees?Lang=de
+    /// ~/api/Mind/GetTrees?Forest=Mutmacherei&Lang=de
+    /// ~/api/Mind/GetTrees?$filter=IsArchived eq false&$orderby=CreatedAt
+    /// </example>
     [HttpGet]
-    public IQueryable<Node> Trees(string Forest = null, string Lang = null) {
+    public dynamic GetTrees(string Forest = null, string Lang = null) {
       var db = new MindContextProvider(Forest);
       //prepare parameters
       string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
       string lang = Lang ?? "%";
       //get tree nodes
-      return db.Context.GetTreeInfo(user, lang).AsQueryable();
-      //Node[] result = db.Context.GetTreeInfo(user, lang).ToArray();
-      ////calculate and attach MaxChildPosition
-      //long[] ids = result.Select(n => n.Id).ToArray();
-      //var maxChildPositions = db.Context.Connections
-      //                          .Where(c => ids.Contains(c.FromId))
-      //                          .GroupBy(c => c.FromId)
-      //                          .Select(group => new { Id = group.Key, MaxPos = group.Max(c => c.Position) })
-      //                          .ToDictionary(it => it.Id, it => it.MaxPos)
-      //                          ;
-      //foreach (var nd in result) {
-      //  nd.MaxChildPosition = maxChildPositions.ContainsKey(nd.Id) ? maxChildPositions[nd.Id] : 0;
-      //}   
-      ////return result
-      //return result.AsQueryable();
-    }
 
-    // ~/api/Mind/GetChildNodes
-    [HttpGet]
-    public IQueryable<ConnectionInfo> GetChildNodes(string Forest, int NodeId, string Lang, int? Levels) {
-      var db = new MindContextProvider(Forest);
-      ConnectionInfo[] result;
-
-      string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
-      string lang = Lang ?? "%";
-      result = db.Context.GetChildConnections(user, lang, NodeId, Levels)
-                             .OrderBy(c => c.Position)
-                             .ToArray()
-                             ;
-      long[] ids = result.Select(c => c.ToId.Value).ToArray();
-
-      var nodes = db.Context.Nodes.Where(n => ids.Contains(n.Id)).ToArray();
-      if (lang != "%") nodes = nodes.Where(n => n.Lang == lang || n.Lang == null).ToArray();
-
-      //calculate and attach MaxChildPosition
-      var maxChildPositions = db.Context.Connections
-                                  .Where(c => ids.Contains(c.FromId))
-                                  .GroupBy(c => c.FromId)
-                                  .Select(group => new { Id = group.Key, MaxPos = group.Max(c => c.Position) })
-                                  .ToDictionary(it => it.Id, it => it.MaxPos)
-                                  ;
-      foreach (var nd in nodes) {
-        nd.MaxChildPosition = maxChildPositions.ContainsKey(nd.Id) ? maxChildPositions[nd.Id] : 0;
-      }
-
-      foreach (var conn in result) {
-        conn.ToNode = nodes.Where(n => n.Id == conn.ToId).FirstOrDefault();
-      }
-
-      return result.AsQueryable();
-    }
-
-    // ~/api/Mind/GetNodeDetails
-    [HttpGet]
-    public IEnumerable<Node> GetNodeDetails(string Forest, string Lang, int NodeId) {
-      var db = new MindContextProvider(Forest);
-      //ToDo: Add SecurityClipping
-      string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
-      string lang = Lang ?? "%";
       return db.Context
-               .GetNodeDetails(user, lang, NodeId)
-               .AsQueryable();
+        .GetChildConnections(null, user, 2, 0, lang);
     }
 
+    /// <summary>
+    /// All child Connections and Nodes. 
+    /// </summary>
+    /// <param name="Forest">Name of the Forest (database) to use (If omitted the Forest is determined by the Url or DefaultForest is used)</param>
+    /// <param name="NodeId">Id of the Node from which to start the tree search (if omitted start at the root)</param>
+    /// <param name="Levels">Distance from the starting Node. (e.g. 1...children only, 2...include grandchildren)</param>
+    /// <param name="SkipLevels">How many levels to skip from result (e.g. 1 start with grandchildren)</param>
+    /// <param name="Lang">Two letter language code (if omitted all languages)</param>
+    /// <returns>Connections</returns>
+    [HttpGet]
+    public dynamic GetChildren(string Forest, int? NodeId = null, int Levels = 1, int SkipLevels = 0, string Lang = null) {
+      var db = new MindContextProvider(Forest);
+      //prepare parameters
+      string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+      string lang = Lang ?? "%";
+      //get the connections
+      var connections = db.Context
+        .GetChildConnections(NodeId, user, Levels, SkipLevels, lang)
+        .ToArray();
+      //get nodes
+      var ids = connections.Select(c => c.ToId).ToArray();
+      return new { 
+        Connections = connections,
+        Nodes = db.Context.Nodes
+          .Include("Permissions")
+          .Include("Texts")
+          .Where(n => ids.Contains(n.Id))
+          .ToArray()
+      };
+    }
+
+    /// <summary>
+    /// All parent Connections and Nodes. 
+    /// </summary>
+    /// <param name="Forest">Name of the Forest (database) to use (If omitted the Forest is determined by the Url or DefaultForest is used)</param>
+    /// <param name="NodeId">Id of the Node from which to start the tree search.</param>
+    /// <param name="Levels">Distance from the starting Node. (e.g. 1...parents only, 2...include grandparents)</param>
+    /// <param name="SkipLevels">How many levels to skip from result (e.g. 1 start with grandparents)</param>
+    /// <param name="Lang">Two letter language code (if omitted all languages)</param>
+    /// <returns>Connections</returns>
+    [HttpGet]
+    public dynamic GetParents(string Forest, int NodeId, int Levels = 1, int SkipLevels = 0, string Lang = null) {
+      var db = new MindContextProvider(Forest);
+      //prepare parameters
+      string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+      string lang = Lang ?? "%";
+      //get the connections
+      var connections = db.Context
+        .GetParentConnections(NodeId, user, Levels, SkipLevels, lang)
+        .ToArray();
+      //get nodes
+      var ids = connections.Select(c => c.FromId).ToArray();
+      return new {
+        Connections = connections,
+        Nodes = db.Context.Nodes
+          .Include("Permissions")
+          .Include("Texts")
+          .Where(n => ids.Contains(n.Id))
+          .ToArray()
+      };
+    }
+
+    /// <summary>
+    /// All neighbouring Connections (children and parents) and Nodes. 
+    /// </summary>
+    /// <param name="Forest">Name of the Forest (database) to use (If omitted the Forest is determined by the Url or DefaultForest is used)</param>
+    /// <param name="NodeId">Id of the Node from which to start the network traversal (if omitted start at the root)</param>
+    /// <param name="Levels">Distance from the starting Node. (e.g. 1...directly connected, 2...one intermediate Node)</param>
+    /// <param name="SkipLevels">How many levels to skip from result (e.g. 1 will omit directly related items)</param>
+    /// <param name="Lang">Two letter language code. If omitted all languages</param>
+    /// <returns>Connections</returns>
+    [HttpGet]
+    public dynamic GetNeighbours(string Forest, int? NodeId = null, int Levels = 1, int SkipLevels = 0, string Lang = null) {
+      var db = new MindContextProvider(Forest);
+      //prepare parameters
+      string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+      string lang = Lang ?? "%";
+      //get the connections
+      var connections = db.Context
+        .GetChildConnections(NodeId, user, Levels, SkipLevels, lang)
+        .ToList();
+      var ids = connections.Select(c => c.ToId).ToList();
+      var parents = db.Context
+        .GetParentConnections(NodeId, user, Levels, SkipLevels, lang)
+        .ToArray();
+      ids.AddRange(parents.Select(c => c.FromId).ToList());
+      connections.AddRange(parents);
+      //get nodes
+      return new {
+        Connections = connections,
+        Nodes = db.Context.Nodes
+          .Include("Permissions")
+          .Include("Texts")
+          .Where(n => ids.Contains(n.Id))
+          .ToArray()
+      };
+    }
+
+    //[MembershipHttpAuthorize(Roles="Owners, Authors")]
+    /// <summary>
+    /// Lookup security roles to set permissons 
+    /// </summary>
+    /// <returns>Roles</returns>
     [Authorize(Roles = "Admins, Owners, Authors")]
     [HttpGet]
-    public IEnumerable<ParentsLookup> GetParentsLookup(string Forest, int TreeId, string Lang = "%") {
-      string user = User.Identity.Name;
+    public dynamic Roles(string Forest) {
       var db = new MindContextProvider(Forest);
-
-      return db.Context.GetParentsLookup(TreeId, user, Lang);
+      return db.Context.Roles;
     }
 
-    // ~/api/Mind/SaveChanges
+
     //[MembershipHttpAuthorize(Roles="Owners, Authors")]
+    /// <summary>
+    /// Save Chenges to Forest (Database)
+    /// </summary>
+    /// <param name="saveBundle"></param>
+    /// <returns>SaveBundle with updated entities</returns>    
     [Authorize(Roles = "Admins, Owners, Authors")]
     [HttpPost]
-    public SaveResult SaveChanges(JObject saveBundle/*, string Forest*/) {
-      var Forest = "Mutmacherei"; //ToDo: pass Forest from Client
-
+    public SaveResult SaveChanges(string Forest, JObject saveBundle) {
       var db = new MindContextProvider(Forest);
 
-      //ToDo: intercept updates: check permissions, if node deleted, which has other connctions, ignore delete of node (delete connection only)
+      //TODO: intercept updates: check permissions, if node deleted, which has other connctions, ignore delete of node (delete connection only)
 
       return db.SaveChanges(saveBundle);
     }

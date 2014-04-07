@@ -26,17 +26,17 @@ namespace MindForest {
         name: "BreezeApi",
         routeTemplate: "api/{controller}/{action}",
         defaults: new { 
-            controller = "Mind", 
-            action = "Trees",
+            controller = "Mind",
+            action = "GetTrees",
             forest = ConfigurationManager.AppSettings["DefaultForest"]
           }
       );
       config.Routes.MapHttpRoute(
         name: "BreezeApiWithRegion",
-        routeTemplate: "api/{region}/{controller}/{action}",
+        routeTemplate: "api/{forest}/{controller}/{action}",
         defaults: new {
             controller = "Mind", 
-            action = "Trees",
+            action = "GetTrees",
             forest = ConfigurationManager.AppSettings["DefaultForest"]
           }
       );

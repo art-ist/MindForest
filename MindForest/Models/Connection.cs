@@ -29,6 +29,10 @@ namespace MindForest.Models
         public string CreatedBy { get; set; }
         public System.DateTime ModifiedAt { get; set; }
         public string ModifiedBy { get; set; }
-        public System.Guid UniqueId { get; set; }
+        public long Id { get; set; }
+        public string Class { get; set; }
+    
+        public virtual Node ToNode { get; set; }
+        public virtual Node FromNode { get; set; }
     }
 }
