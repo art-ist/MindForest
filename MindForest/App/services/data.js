@@ -6,20 +6,24 @@
 
   //#region Private Fields
 
-  var mindServiceUri = '/api/Mind';
+
+  //var newNodesId = -1;
+
+  var pars = $.requestParameters();
+  var forest = window.location.pathname
+  forest = pars['forest']
+         ? pars['forest']
+
+         : "";
+  var lang = pars['lang'] ? pars['lang'] : '%';
+
+  var mindServiceUri = forest
+                     ? config.host + '/api/' + forest + '/Mind'
+                     : config.host + '/api/Mind';
   var mindContext = new breeze.EntityManager(mindServiceUri);
   //var mindMetadata = new breeze.MetadataStore(); //see: http://www.breezejs.com/documentation/naming-convention
   var mindMetadata = mindContext.metadataStore;
   var mindMetadataFetched = false;
-
-  var newNodesId = -1;
-
-  var pars = $.requestParameters();
-  //var forest = pars['forest'] ? {name: 'Forest', value: pars['forest']} : undefined;
-  //var lang = { name: 'Lang', value: pars['lang'] ? pars['lang'] : '%' };
-  var forest = pars['forest']? pars['forest']: "";
-  var lang = pars['lang']? pars['lang']: '%';
-
   var authentication = {
     scheme: 'Basic',
     token: null,
@@ -100,7 +104,7 @@
     var Node = function () {
       var eventRate = { rateLimit: 50, method: "notifyWhenChangesStop" }; //rateLimit: notify of changes max every XX ms, delay until no change for XX ms 
       //server extensions
-      this.MaxChildPosition = ko.observable(null);
+        //this.MaxChildPosition = ko.observable(null);
       //client extensions
       this.Details = ko.observableArray();            this.Details.extend(eventRate); 
       this.ChildConnections = ko.observableArray();   this.ChildConnections.extend(eventRate); 
@@ -112,7 +116,7 @@
     //Connection
     var Connection = function () {
       //server extensions
-      this.ToNode = ko.observable(null);
+        //this.ToNode = ko.observable(null);
       //client extensions
       this.Level = ko.observable(null);
       this.HasChildren = ko.observable(false);
@@ -189,7 +193,7 @@
         success(result);
       },
       error: function (err) {
-        logger.error('Login failed. ' + err.login, 'ERROR|data - loadTrees');
+        logger.error('Login failed. ' + err.login, 'data - loadTrees');
       }
     }); //ajax
   } //login
@@ -203,20 +207,19 @@
   /// </signature>
   function loadTrees() {
     var query = new breeze.EntityQuery()
-        .from("Trees")
+        .from("GetTrees")
         .withParameters({ Lang: lang, Forest: forest });
 
     return mindContext.executeQuery(query)
       .then(function (result) {
-        result.results.forEach(function (item) {
-            //store and delete extended node data
-            //var maxChildPosition = item.MaxChildPosition; delete item.MaxChildPosition;
-            //addExtendedNodePoroperties(item, maxChildPosition);
-            data.trees.push(item);
-        }); //result.results.forEach
+        //result.results.forEach(function (item) {
+        //    data.trees.push(item);
+        //}); //result.results.forEach
+        logger.log('Trees loaded', 'data - loadTrees', result.results);
+        data.trees(result.results);
       })
       .fail(function (ex) {
-        logger.error('Could not load trees. ' + ex , 'ERROR|data - loadTrees');
+        logger.error('Could not load trees. ' + ex , 'data - loadTrees');
       })
     ; //mindContext.executeQuery(query)
 
@@ -262,7 +265,7 @@
         logger.log('children of ' + FromNode.Id() + ' loaded', 'data - loadNodes', { FromNode: FromNode, restuls: result.results, });
       }) //then
       .fail(function (ex) {
-        logger.error(ex, 'ERROR|data - loadNodes');
+        logger.error(ex, 'data - loadNodes');
       })
     ; //mindContext.executeQuery(query)
 
@@ -283,7 +286,7 @@
           }
         });
       }).fail(function (e) {
-        logger.error(ex, 'ERROR|data - loadDetails');
+        logger.error(ex, 'data - loadDetails');
       })
     ;//mindContext.executeQuery(query)
 
@@ -410,7 +413,7 @@
             });            
           });
         } catch (ex) {
-          logger.error("Saving failed! " + e, 'ERROR|data - saveChanges');
+          logger.error("Saving failed! " + e, 'data - saveChanges');
         }
       });
   } //saveChanges

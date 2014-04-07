@@ -26,12 +26,12 @@ define(['durandal/system'],
       return logger;
 
       function log(message, source, data) { _logIt(message, 'log', data, source, false, null); }
-      function logWarning(message, source, data) { _logIt(message, 'warning', data, source, false, sessionLog); }
-      function logError(message, source, data) { _logIt(message, 'error', data, source, false, sessionLog); }
-      function warn(message, source, data) { _logIt(message, 'warning', data, source, true, sessionLog); }
+      function logWarning(message, source, data) { _logIt(message, 'warning', data, source + '!', false, sessionLog); }
+      function logError(message, source, data) { _logIt(message, 'error', data, source + ' | ERROR', false, sessionLog); }
+      function warn(message, source, data) { _logIt(message, 'warning', data, source + '!', true, sessionLog); }
       function info(message, source, data) { _logIt(message, 'info', data, source, true, sessionLog); }
       function success(message, source, data) { _logIt(message, 'success', data, source, true, sessionLog); }
-      function error(message, source, data) { _logIt(message, 'error', data, source, true, sessionLog); }
+      function error(message, source, data) { _logIt(message, 'error', data, source + ' | ERROR', true, sessionLog); }
 
       function _logIt(message, type, data, source, showToast, sessionLog) {
         type = type || "info";

@@ -49,10 +49,20 @@ namespace MindForest.Controllers {
       //prepare parameters
       string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
       string lang = Lang ?? "%";
-      //get tree nodes
-
-      return db.Context
-        .GetChildConnections(null, user, 2, 0, lang);
+      //get the connections
+      var connections = db.Context
+        .GetChildConnections(null, user, 2, 0, lang)
+        .ToArray();
+      //get nodes
+      var ids = connections.Select(c => c.ToId).ToArray();
+      return new MindResult() {
+        Connections = connections,
+        Nodes = db.Context.Nodes
+          .Include("Permissions")
+          .Include("Texts")
+          .Where(n => ids.Contains(n.Id))
+          .ToArray()
+      };
     }
 
     /// <summary>
@@ -76,7 +86,7 @@ namespace MindForest.Controllers {
         .ToArray();
       //get nodes
       var ids = connections.Select(c => c.ToId).ToArray();
-      return new { 
+      return new MindResult() { 
         Connections = connections,
         Nodes = db.Context.Nodes
           .Include("Permissions")
@@ -107,7 +117,7 @@ namespace MindForest.Controllers {
         .ToArray();
       //get nodes
       var ids = connections.Select(c => c.FromId).ToArray();
-      return new {
+      return new MindResult() {
         Connections = connections,
         Nodes = db.Context.Nodes
           .Include("Permissions")
@@ -143,7 +153,7 @@ namespace MindForest.Controllers {
       ids.AddRange(parents.Select(c => c.FromId).ToList());
       connections.AddRange(parents);
       //get nodes
-      return new {
+      return new MindResult() {
         Connections = connections,
         Nodes = db.Context.Nodes
           .Include("Permissions")
