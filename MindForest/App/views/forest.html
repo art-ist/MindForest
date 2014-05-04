@@ -49,7 +49,7 @@
       <ul id="forest" class="list_view grid-layout" data-bind="template: { foreach: trees }">
         <li class="tile app bg-color-gray" data-bind="click: $parent.openTree, clickBubble: false">
           <div class="app-label">
-            <div class="name" data-bind="text: $data.Texts()[0].Title"></div>
+            <div class="name" data-bind="text: Texts()[0].Title"></div>
           </div>
         </li>
       </ul>

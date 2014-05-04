@@ -44,25 +44,30 @@ namespace MindForest.Controllers {
     /// ~/api/Mind/GetTrees?$filter=IsArchived eq false&$orderby=CreatedAt
     /// </example>
     [HttpGet]
-    public dynamic GetTrees(string Forest = null, string Lang = null) {
+    public MindResult GetTrees(string Forest = null, string Lang = null) {
       var db = new MindContextProvider(Forest);
+      var result = new MindResult();
+
       //prepare parameters
       string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
       string lang = Lang ?? "%";
+
       //get the connections
-      var connections = db.Context
+      result.Connections = db.Context
         .GetChildConnections(null, user, 2, 0, lang)
         .ToArray();
+
       //get nodes
-      var ids = connections.Select(c => c.ToId).ToArray();
-      return new MindResult() {
-        Connections = connections,
-        Nodes = db.Context.Nodes
+      List<long> ids = result.Connections.Select(c => c.FromId)
+                             .Distinct().ToList();
+      ids.AddRange(result.Connections.Select(c => c.ToId));
+      result.Nodes = db.Context.Nodes
           .Include("Permissions")
           .Include("Texts")
           .Where(n => ids.Contains(n.Id))
-          .ToArray()
-      };
+          .ToArray();
+
+      return result;
     }
 
     /// <summary>

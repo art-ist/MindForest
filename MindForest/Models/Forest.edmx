@@ -315,6 +315,50 @@
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="GetNodes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="bigint" Nullable="false" />
+                <Property Name="Lang" Type="varchar" MaxLength="2" />
+                <Property Name="UserId" Type="int" />
+                <Property Name="NodeType" Type="varchar" MaxLength="10" />
+                <Property Name="IsTreeRoot" Type="bit" Nullable="false" />
+                <Property Name="Icon" Type="nvarchar" MaxLength="1000" />
+                <Property Name="Class" Type="nvarchar" MaxLength="200" />
+                <Property Name="Style" Type="nvarchar" MaxLength="1000" />
+                <Property Name="Color" Type="varchar" MaxLength="10" />
+                <Property Name="BackColor" Type="varchar" MaxLength="10" />
+                <Property Name="CloudColor" Type="varchar" MaxLength="10" />
+                <Property Name="FontName" Type="nvarchar" MaxLength="100" />
+                <Property Name="FontSize" Type="varchar" MaxLength="10" />
+                <Property Name="FontWeight" Type="varchar" MaxLength="10" />
+                <Property Name="FontStyle" Type="varchar" MaxLength="10" />
+                <Property Name="ReminderAt" Type="datetime2" Precision="2" />
+                <Property Name="Progress" Type="tinyint" />
+                <Property Name="Link" Type="nvarchar" MaxLength="1000" />
+                <Property Name="MediaStreamId" Type="varchar" MaxLength="50" />
+                <Property Name="MediaType" Type="varchar" MaxLength="50" />
+                <Property Name="MediaOffest" Type="decimal" Precision="7" Scale="2" />
+                <Property Name="MediaLength" Type="decimal" Precision="7" Scale="2" />
+                <Property Name="MediaCycle" Type="bit" />
+                <Property Name="Hook" Type="nvarchar(max)" />
+                <Property Name="ForeignId" Type="varchar" MaxLength="40" />
+                <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
+                <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+                <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="ModifiedAt" Type="datetime2" Precision="3" Nullable="false" />
+                <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+                <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
+                <Property Name="LinkStatus" Type="smallint" />
+                <Property Name="TreeSettings" Type="xml" />
+                <Property Name="RestrictAccess" Type="bit" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="GetParentConnections" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
           <Parameter Name="NodeId" Type="int" Mode="In" />
           <Parameter Name="User" Type="nvarchar" Mode="In" />
@@ -457,6 +501,14 @@
             <Parameter Name="User" Mode="In" Type="String" />
             <Parameter Name="Levels" Mode="In" Type="Int32" />
             <Parameter Name="SkipLevels" Mode="In" Type="Int32" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetRootNodes" IsComposable="true" EntitySet="Nodes" ReturnType="Collection(MindForest.Models.Node)">
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetNodes" IsComposable="true" EntitySet="Nodes" ReturnType="Collection(MindForest.Models.Node)">
+            <Parameter Name="User" Mode="In" Type="String" />
             <Parameter Name="Lang" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -849,6 +901,8 @@
           <FunctionImportMapping FunctionImportName="GetChildConnections" FunctionName="MindForestModel.Store.GetChildConnections" >
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetParentConnections" FunctionName="MindForestModel.Store.GetParentConnections" />
+          <FunctionImportMapping FunctionImportName="GetNodes" FunctionName="MindForestModel.Store.GetNodes">
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

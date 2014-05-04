@@ -36,8 +36,6 @@ define([
   'services/logger'
 ], function (system, durandal, viewLocator, router, app, platform, logger) {
 
-    //durandal.title = 'MindForest';
-
     //specify which plugins to install and their configuration
     durandal.configurePlugins({
       router: true

@@ -1,13 +1,14 @@
 ﻿define([
   'services/logger',
-  'services/app'
-], function (logger, app) {
+  'services/app',
+  'services/mind'
+], function (logger, app, mind) {
 
   var outlineModel = {
     //Properties
-    title: app.data.currentTree().Title,
+    title: mind.currentTree().Title,
     app: app,
-    data: app.data,
+    data: mind,
 
     //Lifecycle Events
 
@@ -36,10 +37,10 @@
   //#region Methods
 
   function nodeClick(item, event) {
-    var isNotSameNode = (item.ToNode().Id() != app.data.currentConnection().ToNode().Id());
+    var isNotSameNode = (item.ToNode().Id() != mind.currentConnection().ToNode().Id());
     if (isNotSameNode) {
-      app.data.currentConnection(item);
-      app.data.loadNodes(item.ToNode(), true);
+      mind.currentConnection(item);
+      mind.loadChildren(item.ToNode(), true);
     }
     if (item.HasChildren()) {
       expandNode(item, event);
@@ -55,7 +56,7 @@
   } //nodeClick
 
   function expandNode(item, event) {
-    app.data.currentConnection(item);
+    mind.currentConnection(item);
     //alert(ko.toJSON(Node));
     //-console.log("Expanded: " + item.cIsExpanded());
     if (item.cIsExpanded()) {
@@ -64,16 +65,16 @@
     else {
       //if (Node.Children.length = 0) {
 
-      app.data.loadNodes(item.ToNode());
+      mind.loadChildren(item.ToNode());
       //}
       item.cIsExpanded(true);
     }
   } //expandNode
 
   function showDetails(item, event) {
-    if (item.ToNode() !== app.data.currentConnection().ToNode() || !app.detailsVisible) {
+    if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
 
-      app.data.loadNodes(item.ToNode(), true);
+      mind.loadChildren(item.ToNode(), true);
       app.toggleDetails('show');
     }
     else {

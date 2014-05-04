@@ -1,14 +1,15 @@
 ﻿define([
   'services/logger',
-  'services/app'
-], function (logger, app) {
+  'services/app',
+  'services/mind'
+], function (logger, app, mind) {
 
   var mm = {
 
     //Properties
     title: ko.observable(),
     app: app,
-    data: app.data,
+    data: mind,
     
     zoom: app.settings.mm.zoom,
 
@@ -51,10 +52,10 @@
 
   function activate() {
 
-    var rootNode = app.data.currentTree();
+    var rootNode = mind.currentTree();
     logger.log('mirisfad', 'mm - activate', rootNode);
-    app.data
-      .loadNodes(rootNode, true)
+    mind
+      .loadChildren(rootNode, true)
       .then(function () {
 
         plumb = jsPlumb.getInstance({
@@ -208,46 +209,24 @@
   //#region Methods
 
   function nodeClick(item, event) {
-
-    //app.data.currentConnection(item);
-
-    ////handle doubleklick
-    //clickCount++;  //count clicks
-    //if (clickCount === 1) {
-    //  clickTimer = setTimeout(function () {
-    //   //-logger.log("mm NodeClick click");
-
-        //click
-        if (item.HasChildren()) {
-          //logger.log("mm NodeClick before expandNode", item);
-          self.expandNode(item, event);
-        }
-        else {
-          //logger.log("mm NodeClick before showDetailsNode", item);
-          app.data.currentConnection(item);
-          self.showDetails(item, event);
-        }
-        //click
-
-    //    clickCount = 0;  //after action performed, reset counter
-    //  }, clickDelay);
-    //}
-    //else {
-    //  clearTimeout(clickTimer);  //prevent single-click action
-    // //-logger.log("mm NodeClick dblClick");
-
-    //  //dblClick
-    //  self.showDetails(item, event);
-    //  //dblClick
-
-    //  clickCount = 0;  //after action performed, reset counter
-    //}
-
+    if (item.HasChildren()) {
+      //logger.log("mm NodeClick before expandNode", item);
+      self.expandNode(item, event);
+    }
+    else {
+      //logger.log("mm NodeClick before showDetailsNode", item);
+      mind.currentConnection(item);
+      self.showDetails(item, event);
+    }
   } //nodeClick
+
+  function nodeDblClick(item, event) {
+    self.showDetails(item, event);
+  } //nodeDblClick
 
   function expandNode(item, event, selectChild) {
     if (!(selectChild >= 0)) {
-      app.data.currentConnection(item);
+      mind.currentConnection(item);
     }
     if (!item.cIsExpanded() || selectChild >= 0) { //expand
       //logger.log("mm expandNode expand before: " + item.cIsExpanded(), item);
@@ -255,27 +234,27 @@
       if (item.ToNode().ChildConnections().length === 0) {
 
         //var defered = Q.defer();
-        app.data
-          .loadNodes(item.ToNode(), selectChild)
+        mind
+          .loadChildren(item.ToNode(), selectChild)
           .then(function (result) {
-           //-logger.log('mm expandNode after data.loadNodes', { item: item, selectChild: selectChild });
+           //-logger.log('mm expandNode after data.loadChildren', { item: item, selectChild: selectChild });
             repaintLines(result.FromNode.Id());
             //createLines(result.FromNode);   //creating the line on afterBindingAddedElement
             if (result.selectChild >= 0) {
-              app.data.currentConnection(item.ToNode().ChildConnections()[result.selectChild]);
+              mind.currentConnection(item.ToNode().ChildConnections()[result.selectChild]);
             }
           })
         ;
         //return defered.promise;
       }
       else {
-        logger.log('mm expandNode without data.loadNodes', { item: item, selectChild: selectChild });
+        logger.log('mm expandNode without data.loadChildren', { item: item, selectChild: selectChild });
         setTimeout(function () {
           createLines(item.ToNode());
           repaintLines(item.FromId());
         }, 500);
         if (selectChild >= 0) {
-          app.data.currentConnection(item.ToNode().ChildConnections()[selectChild]);
+          mind.currentConnection(item.ToNode().ChildConnections()[selectChild]);
         }
       }
     }
@@ -290,8 +269,8 @@
   } //expandNode
 
   function showDetails(item, event) {
-    if (item.ToNode() !== app.data.currentConnection().ToNode() || !app.detailsVisible) {
-      app.data.loadNodes(item.ToNode(), true);
+    if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
+      mind.loadChildren(item.ToNode(), true);
       app.toggleDetails('show');
     }
     else {

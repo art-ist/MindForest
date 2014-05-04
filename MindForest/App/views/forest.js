@@ -1,7 +1,8 @@
 ﻿define([
   'services/logger',
-  'services/app'
-], function (logger, app, data) {
+  'services/app',
+  'services/mind'
+], function (logger, app, mind) {
 
   var forestModel = {
     title: 'Forest',
@@ -10,19 +11,17 @@
     activate: function () {
       logger.log('View activated', forestModel.title);
 
-      if (app.data.trees().length === 0) {
-        app.data
+      if (mind.trees().length === 0) {
+        mind
           .loadTrees()
-          //.then(function () { logger.log('Treees received', 'Forest - activate', app.data.trees()); })
+          .then(function () { logger.log('Treees received', 'Forest - activate', mind.trees()); })
           ;
       }
 
       return true;
     },
 
-    trees: app.data.trees,
-    //currentTree: app.data.trees,
-    //mapModel: new ko.observable({ currentNode: null }),
+    trees: mind.trees,
 
     openTree: app.openTree,
     logout: app.logout,

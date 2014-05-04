@@ -1,57 +1,32 @@
 ﻿define([
   'durandal/system',
-  'services/app',
   'services/logger'
-], function (system, app, logger) {
+], function (system, logger) {
 
   //#region Private Fields
 
-
-  //var newNodesId = -1;
-
-  var pars = $.requestParameters();
-  var forest = window.location.pathname
-  forest = pars['forest']
-         ? pars['forest']
-
-         : "";
-  var lang = pars['lang'] ? pars['lang'] : '%';
-
-  var mindServiceUri = forest
-                     ? config.host + '/api/' + forest + '/Mind'
-                     : config.host + '/api/Mind';
-  var mindContext = new breeze.EntityManager(mindServiceUri);
-  //var mindMetadata = new breeze.MetadataStore(); //see: http://www.breezejs.com/documentation/naming-convention
-  var mindMetadata = mindContext.metadataStore;
-  var mindMetadataFetched = false;
-  var authentication = {
-    scheme: 'Basic',
-    token: null,
-    setToken: function (uid, pwd) {
-      authentication.token = Base64.encode(uid + ":" +pwd);
-    }
-  };
+  var app = null;
+  var mindServiceUri = config.host + '/api{forest}Mind';
+  var mindContext = null;
+  var mindMetadata = null;
 
   //#endregion Private Fields
 
-  var data = {
+  var mind = {
     initialize: initialize,
 
     //Properties
+    nodes: ko.observableArray([]),
+    connections: ko.observableArray([]),
     trees: ko.observableArray([]),
-    //title: ko.observable(),
     //currentNode: ko.observable(),
     currentConnection: ko.observable(true),
-    //connections: ko.observableArray([]),
     currentTree: ko.observable(),
     mapModel: ko.observable({ /*currentNode*/currentConnection: null }),
 
     //Methods
-    login: login,
-    logout: logout,
-
     loadTrees: loadTrees,
-    loadNodes: loadNodes,
+    loadChildren: loadChildren,
     loadDetails: loadDetails,
 
     getParentConnection: getParentConnection,
@@ -70,32 +45,32 @@
 
   //#region Constructor
 
+  ////set computed properties that require context 
+
   //// add basic auth header to breeze calls
-  //var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
-  //ajaxAdapter.defaultSettings = {
-  //  beforeSend: function (xhr, settings) {
-  //    addAuthorizationToken(xhr, settings);
-  //  }
-  //};
 
   //#endregion Constructor
-  return data;
+  return mind;
 
+  function initialize(a) {
+    app = a;
+    mindServiceUri = mindServiceUri.replace(/{forest}/g, app.forest ? '/' + app.forest + '/' : '/');
+
+    mindContext = new breeze.EntityManager(mindServiceUri);
+    mindMetadata = mindContext.metadataStore;//see: http://www.breezejs.com/documentation/naming-convention
+    mindContext.fetchMetadata()
+       .then(function () {
+         logger.log('matadata requested', 'mind');
+         _extendEntities(mindContext);
+       })
+       .fail(function (err) {
+         logger.log('matadata could not be requested:' + err.message, 'mind');
+       })
+  }
 
   //#region Private Functions
 
-  function initialize() {
-    mindContext.fetchMetadata()
-      .then(function () {
-        logger.log('matadata requested', 'data');
-        extendEntities(mindContext);
-      })
-      .fail(function (err) {
-        logger.log('matadata could not be requested:' + err.message, 'data');
-      })
-  }
-
-  function extendEntities() {
+  function _extendEntities() {
     //Extensions for computed Properties (
     // see: http://stackoverflow.com/questions/17323290/accessing-notmapped-computed-properties-using-breezejs-and-angularjs)
     // and: http://www.breezejs.com/documentation/extending-entities
@@ -104,10 +79,10 @@
     var Node = function () {
       var eventRate = { rateLimit: 50, method: "notifyWhenChangesStop" }; //rateLimit: notify of changes max every XX ms, delay until no change for XX ms 
       //server extensions
-        //this.MaxChildPosition = ko.observable(null);
+      //this.MaxChildPosition = ko.observable(null);
       //client extensions
-      this.Details = ko.observableArray();            this.Details.extend(eventRate); 
-      this.ChildConnections = ko.observableArray();   this.ChildConnections.extend(eventRate); 
+      this.Details = ko.observableArray(); this.Details.extend(eventRate);
+      this.ChildConnections = ko.observableArray(); this.ChildConnections.extend(eventRate);
       //TODO//this.ChildConnections.Id = nodeEntity.Id(); //add Id of current node to Children Collection (needed for app.moveNode)
       this.isDeleted = ko.observable(false);
     }
@@ -116,33 +91,32 @@
     //Connection
     var Connection = function () {
       //server extensions
-        //this.ToNode = ko.observable(null);
+      //this.ToNode = ko.observable(null);
       //client extensions
       this.Level = ko.observable(null);
       this.HasChildren = ko.observable(false);
       this.cIsExpanded = ko.observable(false);
       this.isCurrent = new ko.computed(function () {
-        return this === data.currentConnection();
+        return this === mind.currentConnection();
       }, this);
     }
     mindMetadata.registerEntityTypeCtor("Connection:#MindForest.Models", Connection);
 
-  } //extendEntities
+  } //_extendEntities
 
-  function getCachedConnections(fromId, toId) {
-    var custType = mindContext.metadataStore.getEntityType("Connection");
-    var connectionEntitys = mindContext.getEntities(custType);
-    for (var i = 0; i < connectionEntitys.length; i++) {
-      var item = connectionEntitys[i];
-      if (item.ToId() === toId && item.FromId() === fromId) {
-        return item;
-      }
-    }
+  //function _getCachedConnections(fromId, toId) {
+  //  var custType = mindContext.metadataStore.getEntityType("Connection");
+  //  var connectionEntitys = mindContext.getEntities(custType);
+  //  for (var i = 0; i < connectionEntitys.length; i++) {
+  //    var item = connectionEntitys[i];
+  //    if (item.ToId() === toId && item.FromId() === fromId) {
+  //      return item;
+  //    }
+  //  }
+  //  return null;
+  //}
 
-    return null;
-  }
-
-  //function queryParameters() {
+  //function _queryParameters() {
   //  var self = this;
   //  var paramArray = [];
 
@@ -168,10 +142,20 @@
   //  };
   //}
 
-  function addAuthorizationToken(xhr, settings) {
-    if (authentication.token) {
-      xhr.setRequestHeader("Authorization", 'Basic ' + authentication.token);
+  function _loadMindResult(result) {
+    mind.nodes(result.Nodes);
+    mind.connections(result.Connections);
+    //var trees = ko.utils.arrayFilter(result.Nodes, function (item) {
+    //              return (item.IsTreeRoot && item.IsTreeRoot());              ;
+    //            });
+    var trees = [];
+    for (var i = 0; i < result.Nodes.length; i++) {
+      var item = result.Nodes[i];
+      if (item.IsTreeRoot && item.IsTreeRoot()) {
+        trees.push(item);
+      }
     }
+    mind.trees(trees);
   }
 
   //#endregion Private Functions
@@ -179,104 +163,70 @@
 
   //#region Methods
 
-  function login(username, password, success, error) {
-    //console.log("[data - login] logging in '" + username + "' with password '" + password + "', token: " + Base64.encode(username + ":" + password));
-    authentication.setToken(username, password);
-    $.ajax({
-      type: "GET",
-      url: "/api/Identity/Get",
-      beforeSend: function (xhr, settings) {
-        addAuthorizationToken(xhr, settings);
-      },
-      success: function (result) {
-        console.log('[data.js - login] result', result);
-        success(result);
-      },
-      error: function (err) {
-        logger.error('Login failed. ' + err.login, 'data - loadTrees');
-      }
-    }); //ajax
-  } //login
-
-  function logout() {
-    authentication.token = null;
-  } //logout
-
   /// <signature>
   ///   <summary>Load all trees of the selected forest. The forest is taken from the URL parameter 'forest' if none is given the servers default forest will be used.</summary>
   /// </signature>
   function loadTrees() {
     var query = new breeze.EntityQuery()
         .from("GetTrees")
-        .withParameters({ Lang: lang, Forest: forest });
+        .withParameters({ Lang: app.lang, Forest: app.forest });
 
     return mindContext.executeQuery(query)
-      .then(function (result) {
-        //result.results.forEach(function (item) {
-        //    data.trees.push(item);
-        //}); //result.results.forEach
-        logger.log('Trees loaded', 'data - loadTrees', result.results);
-        data.trees(result.results);
+      .then(function (response) {
+        var result = response.results[0];
+        //logger.log('Trees fetched', 'mind - loadTrees', result);
+
+        _loadMindResult(result);
+
+        logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees(), Nodes: mind.nodes(), Connectinos: mind.connections() });
       })
       .fail(function (ex) {
-        logger.error('Could not load trees. ' + ex , 'data - loadTrees');
+        logger.error('Could not load trees. ' + ex, 'mind - loadTrees');
       })
     ; //mindContext.executeQuery(query)
 
   } //loadTrees
 
-  function loadNodes(FromNode, selectChild) {
+  function loadChildren(FromNode, selectChild) {
 
     var query = new breeze.EntityQuery()
-        .from("GetChildNodes")
+        .from("GetChildren")
         .withParameters({
-          Lang: lang,
-          Forest: forest,
+          Lang: app.lang,
+          Forest: app.forest,
           NodeId: FromNode.Id(),
           Levels: "1"
         });
     query.tag = { FromNode: FromNode, selectChild: selectChild };
 
+    //expecting always one level loaded in advance ( if this is not shure move to executeQuery(query).then )
+    if (selectChild && FromNode.Children && FromNode.Children().length > 0) {
+    //select first child
+      try {
+        mind.currentConnection(FromNode.Children()[0]);
+      } catch (e) { }
+    }
+
     return mindContext.executeQuery(query)
       .then(function (result) {
-        //result.results
-        //  .forEach(function (item) {
-        //    if (getCachedConnections(item.FromId, item.ToId) === null) {
-        //      if (item.IsVisible) {
-        //        FromNode.ChildConnections.push(item);
-        //      }
-        //      else {
-        //        FromNode.Details.push(item.Node);
-        //      }
-        //    }
-        //    //else { console.log("item alredy attached"); }
-        //  }); //result.results.forEach
-        ////return result.query.tag;
-        FromNode.ChildConnections = ko.observableArray(
-          ko.utils.arrayFilter(result.results, function(item) {
-            return true; //item.IsVisible;
-          })
-        );
-        FromNode.Node = ko.observableArray(
-          ko.utils.arrayFilter(result.results, function(item) {
-            return !item.IsVisible;
-          })
-        );
-        logger.log('children of ' + FromNode.Id() + ' loaded', 'data - loadNodes', { FromNode: FromNode, restuls: result.results, });
+
+        _loadMindResult(result);
+
+        logger.log('children of ' + FromNode.Id() + ' loaded', 'mind - loadChildren', { FromNode: FromNode, result: result, });
       }) //then
       .fail(function (ex) {
-        logger.error(ex, 'data - loadNodes');
+        logger.error(ex, 'mind - loadChildren');
       })
     ; //mindContext.executeQuery(query)
 
 
-  } //loadNodes
+  } //loadChildren
 
   function loadDetails(node) {
 
     var query = new breeze.EntityQuery()
         .from("GetNodeDetails")
-        .withParameters({ Lang: lang, Forest: forest, NodeId: node.Id() });
+        .withParameters({ Lang: app.lang, Forest: app.forest, NodeId: node.Id() });
 
     mindContext.executeQuery(query)
       .then(function (result) {
@@ -286,7 +236,7 @@
           }
         });
       }).fail(function (e) {
-        logger.error(ex, 'data - loadDetails');
+        logger.error(ex, 'mind - loadDetails');
       })
     ;//mindContext.executeQuery(query)
 
@@ -371,17 +321,17 @@
   } //addNode
 
   function setDeleted() {
-    data.currentConnection().entityAspect.setDeleted();
-    data.currentConnection().ToNode().entityAspect.setDeleted();
-    if (data.currentConnection().HasChildren()) {
+    mind.currentConnection().entityAspect.setDeleted();
+    mind.currentConnection().ToNode().entityAspect.setDeleted();
+    if (mind.currentConnection().HasChildren()) {
       if (confirm('Do you want to delet also the Child Nodes (Recursive)')) {
-        deletChildNodes(data.currentConnection().ToNode().ChildConnections);
+        deletChildNodes(mind.currentConnection().ToNode().ChildConnections);
       } else {
         // Do nothing!
       }
     }
-    var parent = findNodeById(data.currentConnection().FromId());
-    parent.ChildConnections.remove(data.currentConnection);
+    var parent = findNodeById(mind.currentConnection().FromId());
+    parent.ChildConnections.remove(mind.currentConnection);
     if (parent.ChildConnections().length === 0) {
       var parentCon = getParentConnection(parent.Id(), parent.UniqueId());
       parentCon.HasChildren(false);
@@ -401,7 +351,7 @@
       .then(function (saveResult) {
         var savedEntities = saveResult.entities;
         var keyMappings = saveResult.keyMappings;
-        logger.success("Saved", 'SUCCESS|data - saveChanges')
+        logger.success("Saved", 'SUCCESS|mind - saveChanges')
       })
       .fail(function (e) {
         try {
@@ -410,10 +360,10 @@
             var errors = item.entityAspect.getValidationErrors();
             errors.forEach(function (error) {
               e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
-            });            
+            });
           });
         } catch (ex) {
-          logger.error("Saving failed! " + e, 'data - saveChanges');
+          logger.error("Saving failed! " + e, 'mind - saveChanges');
         }
       });
   } //saveChanges
@@ -474,8 +424,8 @@
     for (var i = 0; i < nodeEntitys.length; i++) {
       var item = nodeEntitys[i];
       if (item.Id() === id) {
-        if (id === data.currentTree().Id()) {
-          return data.currentTree();
+        if (id === mind.currentTree().Id()) {
+          return mind.currentTree();
         }
         else {
           return item;

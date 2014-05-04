@@ -121,5 +121,33 @@ namespace MindForest.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
+    
+        [EdmFunction("ForestEntities", "GetRootNodes")]
+        public virtual IQueryable<Node> GetRootNodes(string user, string lang)
+        {
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
+    
+            var langParameter = lang != null ?
+                new ObjectParameter("Lang", lang) :
+                new ObjectParameter("Lang", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Node>("[ForestEntities].[GetRootNodes](@User, @Lang)", userParameter, langParameter);
+        }
+    
+        [EdmFunction("ForestEntities", "GetNodes")]
+        public virtual IQueryable<Node> GetNodes(string user, string lang)
+        {
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
+    
+            var langParameter = lang != null ?
+                new ObjectParameter("Lang", lang) :
+                new ObjectParameter("Lang", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Node>("[ForestEntities].[GetNodes](@User, @Lang)", userParameter, langParameter);
+        }
     }
 }

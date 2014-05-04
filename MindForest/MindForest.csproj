@@ -203,8 +203,8 @@
     <Content Include="App\app.Debug.config.js" />
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
-    <Content Include="App\main - OLD.js" />
-    <Content Include="App\services\data.js" />
+    <Content Include="App\services\auth.js" />
+    <Content Include="App\services\mind.js" />
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\_globals.js" />
@@ -398,6 +398,7 @@
     <Content Include="App\libraries\breeze.min.js" />
     <Content Include="App\libraries\q.js" />
     <Content Include="App\libraries\q.min.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -450,10 +451,7 @@
     <Content Include="App\libraries\jquery.scrollTo-1.4.3.1.js" />
     <Content Include="App\libraries\knockout-2.2.1.debug.js" />
     <Content Include="App\libraries\knockout-2.2.1.js" />
-    <Content Include="App\libraries\models\dataModel.bug.js" />
-    <Content Include="App\libraries\models\forestModel.bug.js" />
     <Content Include="App\services\app.js" />
-    <Content Include="App\libraries\models\treeModel.bug.js" />
     <Content Include="App\styles\app.css" />
     <Content Include="App\views\details-dock.css" />
     <Content Include="App\views\forest.css" />
@@ -547,7 +545,6 @@
     <Folder Include="App\styles\unused\" />
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
-    <Folder Include="Scripts\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
