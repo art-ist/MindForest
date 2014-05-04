@@ -14,7 +14,7 @@
       if (mind.trees().length === 0) {
         mind
           .loadTrees()
-          .then(function () { logger.log('Treees received', 'Forest - activate', mind.trees()); })
+          .then(function () { logger.log('Trees received', 'Forest - activate', mind.trees()); })
           ;
       }
 

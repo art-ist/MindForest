@@ -54,7 +54,8 @@ namespace MindForest.Controllers {
 
       //get the connections
       result.Connections = db.Context
-        .GetChildConnections(null, user, 2, 0, lang)
+        //.GetChildConnections(null, user, 2, 0, lang)
+        .GetChildConnections(null, user, 2000, 0, lang)
         .ToArray();
 
       //get nodes
