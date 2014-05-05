@@ -104,59 +104,20 @@
 
   } //_extendEntities
 
-  //function _getCachedConnections(fromId, toId) {
-  //  var custType = mindContext.metadataStore.getEntityType("Connection");
-  //  var connectionEntitys = mindContext.getEntities(custType);
-  //  for (var i = 0; i < connectionEntitys.length; i++) {
-  //    var item = connectionEntitys[i];
-  //    if (item.ToId() === toId && item.FromId() === fromId) {
-  //      return item;
-  //    }
-  //  }
-  //  return null;
-  //}
-
-  //function _queryParameters() {
-  //  var self = this;
-  //  var paramArray = [];
-
-  //  self.add = function (name, value) {
-  //    paramArray.push({ name: name, value: value });
-  //  };
-
-  //  self.addParameter = function (par) {
-  //    if (!par) return;
-  //    paramArray.push(par);
-  //  };
-
-  //  self.toString = function () {
-  //    if (paramArray.length === 0) return '';
-  //    var result = '?';
-  //    for (var i = 0; i < paramArray.length; i++) {
-  //      if (result !== '?') {
-  //        result += '&';
-  //      }
-  //      result += paramArray[i].name + '=' + paramArray[i].value;
-  //    }
-  //    return result;
-  //  };
-  //}
-
   function _loadMindResult(result) {
     mind.nodes(result.Nodes);
     mind.connections(result.Connections);
-    //var trees = ko.utils.arrayFilter(result.Nodes, function (item) {
-    //              return (item.IsTreeRoot && item.IsTreeRoot());              ;
-    //            });
-    var trees = [];
-    for (var i = 0; i < result.Nodes.length; i++) {
-      var item = result.Nodes[i];
-      if (item.IsTreeRoot && item.IsTreeRoot()) {
-        trees.push(item);
-      }
-    }
+    var trees = ko.utils.arrayFilter(result.Nodes, function (item) {
+      var trees = [];
+      for (var i = 0; i < result.Nodes.length; i++) {
+        var item = result.Nodes[i];
+        if (item.IsTreeRoot && item.IsTreeRoot()) {
+          trees.push(item);
+        }
+      } //for
+    }); //arrayfilter
     mind.trees(trees);
-  }
+  } //_loadMindResult
 
   //#endregion Private Functions
 
@@ -167,23 +128,37 @@
   ///   <summary>Load all trees of the selected forest. The forest is taken from the URL parameter 'forest' if none is given the servers default forest will be used.</summary>
   /// </signature>
   function loadTrees() {
-    var query = new breeze.EntityQuery()
-        .from("GetTrees")
-        .withParameters({ Lang: app.lang, Forest: app.forest });
+    //var query = new breeze.EntityQuery()
+    //    .from("GetTrees")
+    //    .withParameters({ Lang: app.lang, Forest: app.forest });
 
-    return mindContext.executeQuery(query)
-      .then(function (response) {
-        var result = response.results[0];
-        //logger.log('Trees fetched', 'mind - loadTrees', result);
+    //return mindContext.executeQuery(query)
+    //  .then(function (response) {
+    //    var result = response.results[0];
+    //    //logger.log('Trees fetched', 'mind - loadTrees', result);
 
-        _loadMindResult(result);
+    //    _loadMindResult(result);
 
-        logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees(), Nodes: mind.nodes(), Connectinos: mind.connections() });
-      })
-      .fail(function (ex) {
+    //    logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees(), Nodes: mind.nodes(), Connectinos: mind.connections() });
+    //  })
+    //  .fail(function (ex) {
+    //    logger.error('Could not load trees. ' + ex, 'mind - loadTrees');
+    //  })
+    //; //mindContext.executeQuery(query)
+
+    return $.ajax({
+      dataType: "json",
+      url: mindServiceUri + 'GetTrees&Lang=' + app.lang,
+    })
+    .done(function (result) {
+      logger.log('Trees fetched', 'mind - loadTrees', result);
+      _loadMindResult(result);
+      logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees(), Nodes: mind.nodes(), Connectinos: mind.connections() });
+    })
+      .fail(function (jqXHR, ex) {
         logger.error('Could not load trees. ' + ex, 'mind - loadTrees');
       })
-    ; //mindContext.executeQuery(query)
+    ;
 
   } //loadTrees
 
@@ -201,7 +176,7 @@
 
     //expecting always one level loaded in advance ( if this is not shure move to executeQuery(query).then )
     if (selectChild && FromNode.Children && FromNode.Children().length > 0) {
-    //select first child
+      //select first child
       try {
         mind.currentConnection(FromNode.Children()[0]);
       } catch (e) { }

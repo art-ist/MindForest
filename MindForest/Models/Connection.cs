@@ -31,8 +31,5 @@ namespace MindForest.Models
         public string ModifiedBy { get; set; }
         public long Id { get; set; }
         public string Class { get; set; }
-    
-        public virtual Node ToNode { get; set; }
-        public virtual Node FromNode { get; set; }
     }
 }

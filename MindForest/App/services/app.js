@@ -85,117 +85,35 @@
 
   }
   //#region constructor
-
-  var forest = app.forest;
-  var lang = app.lang;
-
   //#endregion constructor
   return app;
+
+
+  //#region Private Functions
+
+  function _getForestFromPath() {
+    var forest = null;
+    //parse Url and get name of firstlevel directory
+    var parts = window.location.href.split('#')[0].split('?')[0].split('/');
+    if (parts.length > 3) {
+      forest = parts[3];
+    }
+    return forest;
+  }
 
   function initialize() {
     logger.log('app initializing', 'app - initialize');
 
+    //TODO: get/store settings from localstorage
+    app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+    app.lang = QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]; //'%'
+
+    //to prevent circular dependency
     auth.initialize(app);
     mind.initialize(app);
 
     //hook global up keyboard functions
-    document.onkeypress = function (event) {
-      //see http://javascript.info/tutorial/keyboard-events
-
-      if (event.isDefaultPrevented) {
-        return false;
-      }
-
-      // get the key event.type must be keypress
-      var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
-      function getChar(event) {
-        if (event.which === null) {
-          return String.fromCharCode(event.keyCode); // IE
-        }
-        else if (event.which !== 0 && event.charCode !== 0) {
-          return String.fromCharCode(event.which);   // the rest
-        }
-        else {
-          return null; // special key
-        }
-      }
-
-      // get app specific values
-      var edit = app.state.edit();
-
-      //navigation
-      switch (key) {
-        case 37: //up
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.selectFirstParent();
-          return false;
-        case 38: //left
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.selectPreviousSibling();
-          return false;
-        case 39: //right
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.selectFirstChild();
-          return false;
-        case 40: //down
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.selectNextSibling();
-          return false;
-        case 13: //enter
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.toggleDetails('show');
-          return false;
-        case 27: //esc
-          //app.hideWebPage();
-          event.preventDefault(); //prevent default scrolling behaviour
-          app.toggleDetails('hide');
-          return false;
-      } //switch
-
-      //commands
-      var char = getChar(event || window.event);
-      if (!char) return;
-      char = char.toUpperCase();
-      if (event.ctrlKey) {
-        if (char === 'E') { // ctrl+E ... toggle edit mode
-          event.preventDefault(); //prevent default behaviour
-          app.toggleEdit();
-          return false;
-        }
-        if (char === 'D') { // ctrl+D ... toggle view details
-          event.preventDefault(); //prevent default behaviour
-          app.toggleDetails();
-          return false;
-        }
-        if (char === 'N') { // ctrl+N ... new child
-          event.preventDefault(); //prevent default behaviour
-          if (edit) app.addChild();
-          return false;
-        }
-        if (char === 'M') { // ctrl+M ... new sibling
-          event.preventDefault(); //prevent default behaviour
-          if (edit) app.addSibling();
-          return false;
-        }
-        if (event.shiftKey && char === 'C') { // ctrl+shift+C ... clone current node
-          event.preventDefault(); //prevent default behaviour
-          if (edit) app.cloneNode();
-          return false;
-        }
-        if (char === 'S') { // ctrl+S ... save
-          event.preventDefault(); //prevent default behaviour
-          if (edit) app.save();
-          return false;
-        }
-        if (char === 'Z') { // ctrl+Z ... undo (unsaved) changes
-          event.preventDefault(); //prevent default behaviour
-          if (edit) app.undo();
-          return false;
-        }
-      } //if (event.ctrlKey)
-
-      return true;
-    }; //document.onkeypress
+    document.onkeypress = document.onkeypress;
 
     //TODO: fix modal dialog keyboard shortcuts
     //hook up modal dialog keyboard shortcuts
@@ -209,6 +127,121 @@
 
     logger.log('app initialized', 'app - initialize', app);
   } //initialize
+
+  function findNodeById(collection, nodeId) {
+    if (typeof (collection) === ko.observableArray)
+      collection = collection();
+    for (var i = 0; i < collection.length; i++) {
+      if (collection[i].Id === nodeId)
+        return collection[i];
+    }
+    return null;
+  }
+
+  //#endregion Private Functions
+
+
+  //#region Event Handlers
+
+  function document_onkeypress(event) {
+    //see http://javascript.info/tutorial/keyboard-events
+
+    if (event.isDefaultPrevented) {
+      return false;
+    }
+
+    // get the key event.type must be keypress
+    var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
+    function getChar(event) {
+      if (event.which === null) {
+        return String.fromCharCode(event.keyCode); // IE
+      }
+      else if (event.which !== 0 && event.charCode !== 0) {
+        return String.fromCharCode(event.which);   // the rest
+      }
+      else {
+        return null; // special key
+      }
+    }
+
+    // get app specific values
+    var edit = app.state.edit();
+
+    //navigation
+    switch (key) {
+      case 37: //up
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.selectFirstParent();
+        return false;
+      case 38: //left
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.selectPreviousSibling();
+        return false;
+      case 39: //right
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.selectFirstChild();
+        return false;
+      case 40: //down
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.selectNextSibling();
+        return false;
+      case 13: //enter
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.toggleDetails('show');
+        return false;
+      case 27: //esc
+        //app.hideWebPage();
+        event.preventDefault(); //prevent default scrolling behaviour
+        app.toggleDetails('hide');
+        return false;
+    } //switch
+
+    //commands
+    var char = getChar(event || window.event);
+    if (!char) return;
+    char = char.toUpperCase();
+    if (event.ctrlKey) {
+      if (char === 'E') { // ctrl+E ... toggle edit mode
+        event.preventDefault(); //prevent default behaviour
+        app.toggleEdit();
+        return false;
+      }
+      if (char === 'D') { // ctrl+D ... toggle view details
+        event.preventDefault(); //prevent default behaviour
+        app.toggleDetails();
+        return false;
+      }
+      if (char === 'N') { // ctrl+N ... new child
+        event.preventDefault(); //prevent default behaviour
+        if (edit) app.addChild();
+        return false;
+      }
+      if (char === 'M') { // ctrl+M ... new sibling
+        event.preventDefault(); //prevent default behaviour
+        if (edit) app.addSibling();
+        return false;
+      }
+      if (event.shiftKey && char === 'C') { // ctrl+shift+C ... clone current node
+        event.preventDefault(); //prevent default behaviour
+        if (edit) app.cloneNode();
+        return false;
+      }
+      if (char === 'S') { // ctrl+S ... save
+        event.preventDefault(); //prevent default behaviour
+        if (edit) app.save();
+        return false;
+      }
+      if (char === 'Z') { // ctrl+Z ... undo (unsaved) changes
+        event.preventDefault(); //prevent default behaviour
+        if (edit) app.undo();
+        return false;
+      }
+    } //if (event.ctrlKey)
+
+    return true;
+  }; //document_onkeypress
+
+  //#endregion Event Handlers
 
 
   //#region Methods
@@ -425,7 +458,6 @@
     return false;
   } //hideWebPage
 
-
   function toggleEdit() {
     if (!app.user.mayEdit()) return;
     if (app.state.edit()) {
@@ -572,20 +604,5 @@
   //#endregion edit
 
   //#endregion Methods
-
-  //#region Private Functions
-
-  function findNodeById(collection, nodeId) {
-    if (typeof (collection) === ko.observableArray)
-      collection = collection();
-    for (var i = 0; i < collection.length; i++) {
-      if (collection[i].Id === nodeId)
-        return collection[i];
-    }
-    return null;
-  }
-
-  //#endregion Private Functions
-
 
 });

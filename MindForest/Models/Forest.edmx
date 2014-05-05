@@ -550,8 +550,6 @@
           <Property Type="Int16" Name="LinkStatus" />
           <Property Name="TreeSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RestrictAccess" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ConnectionsTo" Relationship="MindForest.Models.FK_Mind__Connection_ToNode" FromRole="Node" ToRole="Connection" />
-          <NavigationProperty Name="ConnectionsFrom" Relationship="MindForest.Models.FK_Mind_Connection_FromNode" FromRole="Node" ToRole="Connection" />
           <NavigationProperty Name="Permissions" Relationship="MindForest.Models.FK_Mind_Permission_Node" FromRole="Node" ToRole="Permission" />
           <NavigationProperty Name="Texts" Relationship="MindForest.Models.FK_Mind_NodeTexts_Nodes" FromRole="Node" ToRole="NodeText" />
         </EntityType>
@@ -574,8 +572,6 @@
           <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="ModifiedAt" Nullable="false" Precision="3" />
           <Property Type="String" Name="ModifiedBy" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ToNode" Relationship="MindForest.Models.FK_Mind__Connection_ToNode" FromRole="Connection" ToRole="Node" />
-          <NavigationProperty Name="FromNode" Relationship="MindForest.Models.FK_Mind_Connection_FromNode" FromRole="Connection" ToRole="Node" />
           <Property Name="Id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
