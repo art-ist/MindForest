@@ -17,6 +17,8 @@ namespace MindForest.Models
         public Node()
         {
             this.IsTreeRoot = false;
+            this.ConnectionsFrom = new HashSet<Connection>();
+            this.ConnectionsTo = new HashSet<Connection>();
             this.Permissions = new HashSet<Permission>();
             this.Texts = new HashSet<NodeText>();
         }
@@ -56,6 +58,8 @@ namespace MindForest.Models
         public string TreeSettings { get; set; }
         public bool RestrictAccess { get; set; }
     
+        public virtual ICollection<Connection> ConnectionsFrom { get; set; }
+        public virtual ICollection<Connection> ConnectionsTo { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<NodeText> Texts { get; set; }
     }

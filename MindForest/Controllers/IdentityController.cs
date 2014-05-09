@@ -39,8 +39,8 @@ namespace MindForest.Controllers {
 
   //  static IdentityController()
   //  { 
-  //    users.Add("Michael", new UserInfo() { Id=1, Name = "Michael", Pwd="open", Roles= new string[] {"Admin", "Owner", "Author"} });
-  //    users.Add("Ira", new UserInfo() { Id=2, Name = "Ira", Pwd="mutmachy", Roles= new string[] {"Owner", "Author"} });
+  //    users.Add("Michael", new UserInfo() { Id=1, Name = "M", Pwd="o", Roles= new string[] {"Admin", "Owner", "Author"} });
+  //    users.Add("Ira", new UserInfo() { Id=2, Name = "I", Pwd="m", Roles= new string[] {"Owner", "Author"} });
   //  }
 
   //  public static bool ValidateUser(string userName, string password) {

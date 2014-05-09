@@ -14,11 +14,19 @@ namespace MindForest.Models
     
     public partial class Connection
     {
+        public Connection()
+        {
+            this.Texts = new HashSet<ConnectionText>();
+        }
+    
+        public long Id { get; set; }
+        public string Class { get; set; }
         public long FromId { get; set; }
         public long ToId { get; set; }
+        public byte Relation { get; set; }
         public int Position { get; set; }
         public Nullable<bool> IsVisible { get; set; }
-        public Nullable<bool> IsExpanded { get; set; }
+        public Nullable<bool> AlwaysExpand { get; set; }
         public string Style { get; set; }
         public string Color { get; set; }
         public string Width { get; set; }
@@ -29,7 +37,9 @@ namespace MindForest.Models
         public string CreatedBy { get; set; }
         public System.DateTime ModifiedAt { get; set; }
         public string ModifiedBy { get; set; }
-        public long Id { get; set; }
-        public string Class { get; set; }
+    
+        public virtual Node ToNode { get; set; }
+        public virtual Node FromNode { get; set; }
+        public virtual ICollection<ConnectionText> Texts { get; set; }
     }
 }

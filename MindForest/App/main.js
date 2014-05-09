@@ -23,7 +23,8 @@
 
 //Durandal 2: http://durandaljs.com/documentation/Conversion-Guide/
 define('jquery', function () { return jQuery; });
-define('knockout', ko);
+//define('knockout', ko);
+define('knockout', [], function () { return window.ko; }); //see: http://stackoverflow.com/questions/13937539/breezejs-and-requirejs-not-working-as-expected
 
 define([
   'durandal/system',

@@ -21,7 +21,7 @@
         <a href="#" class="win-command dropdown-toggle" data-toggle="dropdown">
           <span class="win-commandicon win-commandring  icon-cog"></span>
           <!--<span class="win-label">Settings</span>-->
-        </a>
+        </a>  
         <ul class="dropdown-menu" role="menu">
           <li data-bind="visible: !app.user.isAuthenticated()"><a tabindex="-1" href="#login" data-toggle="modal"><span data-localize="app.login">Login</span></a></li>
           <li data-bind="visible: app.user.isAuthenticated"><a tabindex="-1" href="#"><span data-bind="click: logout, text: app.user.name()"></span> - <span data-localize="app.logout">Logout</span></a></li>
@@ -49,7 +49,7 @@
       <ul id="forest" class="list_view grid-layout" data-bind="template: { foreach: trees }">
         <li class="tile app bg-color-gray" data-bind="click: $parent.openTree, clickBubble: false">
           <div class="app-label">
-            <div class="name" data-bind="text: Texts()[0].Title"></div>
+            <div class="name" data-bind="text: Text().Title"></div>
           </div>
         </li>
       </ul>

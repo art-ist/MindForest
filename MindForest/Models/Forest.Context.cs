@@ -43,6 +43,7 @@ namespace MindForest.Models
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<NodeText> NodeTexts { get; set; }
+        public DbSet<ConnectionText> ConnectionTexts { get; set; }
     
         [EdmFunction("ForestEntities", "GetNeighbourConnections")]
         public virtual IQueryable<Connection> GetNeighbourConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
@@ -120,20 +121,6 @@ namespace MindForest.Models
                 new ObjectParameter("Lang", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
-        }
-    
-        [EdmFunction("ForestEntities", "GetRootNodes")]
-        public virtual IQueryable<Node> GetRootNodes(string user, string lang)
-        {
-            var userParameter = user != null ?
-                new ObjectParameter("User", user) :
-                new ObjectParameter("User", typeof(string));
-    
-            var langParameter = lang != null ?
-                new ObjectParameter("Lang", lang) :
-                new ObjectParameter("Lang", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Node>("[ForestEntities].[GetRootNodes](@User, @Lang)", userParameter, langParameter);
         }
     
         [EdmFunction("ForestEntities", "GetNodes")]

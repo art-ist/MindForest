@@ -3,334 +3,334 @@
   'services/app',
   'services/mind'
 ], function (logger, app, mind) {
+	"use strict";
 
-  var mm = {
+	var mm = {
 
-    //Properties
-    title: ko.observable(),
-    app: app,
-    data: mind,
-    
-    zoom: app.settings.mm.zoom,
+		//Properties
+		title: ko.observable(),
+		app: app,
+		data: mind,
 
-    //Lifecycle Events
-    activate: activate,
-    attached: attached,
+		zoom: app.settings.mm.zoom,
 
-    //Methods
-    nodeClick: nodeClick,
-    expandNode: expandNode,
-    showDetails: showDetails,
-    afterNodeMove: afterNodeMove,
+		//Lifecycle Events
+		activate: activate,
+		attached: attached,
 
-    zoomIn: zoomIn,
-    zoomOut: zoomOut,
-    setZoom: setZoom,
+		//Methods
+		nodeClick: nodeClick,
+		expandNode: expandNode,
+		showDetails: showDetails,
+		afterNodeMove: afterNodeMove,
 
-    afterBindingRenderedTemplate: afterBindingRenderedTemplate,
-    afterBindingAddedElement: afterBindingAddedElement,
-    beforeBindingRemovedElement: beforeBindingRemovedElement
+		zoomIn: zoomIn,
+		zoomOut: zoomOut,
+		setZoom: setZoom,
 
-  };
-  return mm;
+		afterBindingRenderedTemplate: afterBindingRenderedTemplate,
+		afterBindingAddedElement: afterBindingAddedElement,
+		beforeBindingRemovedElement: beforeBindingRemovedElement
 
-  //#region Private Fields
-  var self = this;
+	};
+	return mm;
 
-  var pars = $.requestParameters();
-  var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
-  var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
+	//#region Private Fields
+	var self = this;
 
-  //handle doubleclick
-  var clickDelay = 200,
-      clickCount = 0,
-      clickTimer = null;
+	var pars = $.requestParameters();
+	var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
+	var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
 
-  var plumb = null;
+	//handle doubleclick
+	var clickDelay = 200,
+		clickCount = 0,
+		clickTimer = null;
 
-  //#endregion Private Fields
+	var plumb = null;
 
-  function activate() {
+	//#endregion Private Fields
 
-    var rootNode = mind.currentTree();
-    logger.log('mirisfad', 'mm - activate', rootNode);
-    mind
-      .loadChildren(rootNode, true)
-      .then(function () {
+	function activate() {
 
-        plumb = jsPlumb.getInstance({
-          //Container: 'mm-container',
-          Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
-          //Connector: ["StateMachine", { curviness: 10, margin: 5, proximityLimit: 15, cssClass: 'mm-connector' }],
-          Anchors: [ "Right", "Left" ],
-          Endpoint: ["Blank", {}],
-          //Endpoints: [["Dot", { radius: 3 }], ["Dot", { radius: 3 }]],
-          PaintStyle: {
-            lineWidth: 2,
-            strokeStyle: "#999"
-          }
-        });
+		var rootNode = mind.currentTree();
+		mind
+		  .loadChildren(rootNode, true)
+		  .then(function () {
 
-      });
+		  	plumb = jsPlumb.getInstance({
+		  		//Container: 'mm-container',
+		  		Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
+		  		//Connector: ["StateMachine", { curviness: 10, margin: 5, proximityLimit: 15, cssClass: 'mm-connector' }],
+		  		Anchors: ["Right", "Left"],
+		  		Endpoint: ["Blank", {}],
+		  		//Endpoints: [["Dot", { radius: 3 }], ["Dot", { radius: 3 }]],
+		  		PaintStyle: {
+		  			lineWidth: 2,
+		  			strokeStyle: "#999"
+		  		}
+		  	});
 
-
-  } //activate
-
-  function attached() {
-    var container = document.getElementById('mm');
-    //-logger.log('mm init', container);
-
-    //container.contentEditable=true;
-    //container.onkeypress = function (event) {
-    //  if (!event) event = window.event;
-    //  var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
-    // //-logger.log('mm keypress: key ' + key);
-    //  if (key === 37 || key === 38 || key === 39 || key === 40) {
-    //    switch (key) {
-    //      case 37:
-    //        app.selectFirstParent();
-    //        break;
-    //      case 38:
-    //        app.selectPreviousSibling();
-    //        break;
-    //      case 39:
-    //        app.selectFirstChild();
-    //        break;
-    //      case 40:
-    //        app.selectNextSibling();
-    //        break;
-    //    }
-    //    event.preventDefault();
-    //    return false;
-    //  }
-    //  return true;
-    //}
-
-    //set zoom
-    if (app.settings.mm.zoom() !== 1) {
-      self.setZoom(app.settings.mm.zoom());
-    }
-
-    //center map
-    //$(window).scrollTo('#mm-container', '50%', 500);
-
-    //create root lines
-    //createLines(self.data.currentTree());
-    //container.focus();
-
-    //init zoom-slider
-    /*var slider = */
-    //$("#mm-zoom-slider").slider({
-    //  min: 0.2,
-    //  max: 2,
-    //  value: app.settings.mm.zoom(),
-    //  slide: function (event, ui) {
-    //    self.setZoom(ui.value);
-    //  }
-    //});
-    //$("#mm-zoom-textbox").change(function () {
-    //  slider.slider("value", this.selectedIndex + 1);
-    //});
-    //slider
-
-  }; //attached
+		  });
 
 
-  //#region Private Functions
+	} //activate
 
-  ///Connects all child-nodes of the given node with a new line
-  function createLines(FromNode) {
-    jsPlumb.doWhileSuspended(function () {
-      var from = 'node-' + FromNode.Id();
-      var container = 'container-' + FromNode.Id();
-      //logger.log('mm creating ' + FromNode.ChildConnections().length + ' lines for ' + from);
-      for (var i = 0; i < FromNode.ChildConnections().length; i++) {
-        var to = 'node-' + FromNode.ChildConnections()[i].ToId();
-        //logger.log('mm creating line: ' + from + ' -> ' + to);
-        FromNode.ChildConnections()[i].line
-          = self.plumb.connect({
-          source: from,
-          target: to,
-          container: container
-        });
-      }
-    });
-  }
+	function attached() {
+		var container = document.getElementById('mm');
+		//-logger.log('mm init', container);
 
-  ///Creates a line for a given connection (connectiong two nodes)
-  function createLine(Connection) {
-    var from = 'node-' + Connection.FromId();
-    var container = 'container-' + Connection.FromId();
-    var to = 'node-' + Connection.ToId();
-    Connection.line
-          = self.plumb.connect({
-            source: from,
-            target: to,
-            container: container
-          });
-    //logger.log('creating line ' + Connection.FromId() + ' - ' + Connection.ToId());
-  }
+		//container.contentEditable=true;
+		//container.onkeypress = function (event) {
+		//  if (!event) event = window.event;
+		//  var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
+		// //-logger.log('mm keypress: key ' + key);
+		//  if (key === 37 || key === 38 || key === 39 || key === 40) {
+		//    switch (key) {
+		//      case 37:
+		//        app.selectFirstParent();
+		//        break;
+		//      case 38:
+		//        app.selectPreviousSibling();
+		//        break;
+		//      case 39:
+		//        app.selectFirstChild();
+		//        break;
+		//      case 40:
+		//        app.selectNextSibling();
+		//        break;
+		//    }
+		//    event.preventDefault();
+		//    return false;
+		//  }
+		//  return true;
+		//}
 
-  ///Removes all 'child'-lines from a given node
-  function removeLines(FromNode) {
-    jsPlumb.doWhileSuspended(function () {
-      var from = '#node-' + FromNode.Id();
-     //-logger.log('mm removing lines for ' + from);
-      for (var i = 0; i < FromNode.ChildConnections().length; i++) {
-        var line = FromNode.ChildConnections()[i].line;
-        if (line) {
-          self.plumb.detach(line);
-          line = null;
-        }
-      }
-    });
-  }
+		//set zoom
+		if (app.settings.mm.zoom() !== 1) {
+			setZoom(app.settings.mm.zoom());
+		}
 
-  ///Removes the line assigned to a single connection
-  function removeLine(Connection) {
-    //logger.log('removing line ' + Connection.FromId() + ' - ' + Connection.ToId());
-    if (Connection.line) {
-      self.plumb.detach(Connection.line);
-      Connection.line = null;
-    }
-  }
+		//center map
+		//$(window).scrollTo('#mm-container', '50%', 500);
 
-  ///Repaints all lines in the diagram
-  function repaintLines(FromId) {
-    var from = 'node-' + FromId;
-    //logger.log('mm repainting lines for ' + from);
-    //self.plumb.repaint(from);
-   //-logger.log('mm repainting all lines because of ' + from);
-    self.plumb.repaintEverything();
-  }
+		//create root lines
+		//createLines(data.currentTree());
+		//container.focus();
 
-  //#endregion Private Functions
+		//init zoom-slider
+		/*var slider = */
+		//$("#mm-zoom-slider").slider({
+		//  min: 0.2,
+		//  max: 2,
+		//  value: app.settings.mm.zoom(),
+		//  slide: function (event, ui) {
+		//    setZoom(ui.value);
+		//  }
+		//});
+		//$("#mm-zoom-textbox").change(function () {
+		//  slider.slider("value", this.selectedIndex + 1);
+		//});
+		//slider
 
-  //#region Methods
+	}; //attached
 
-  function nodeClick(item, event) {
-    if (item.HasChildren()) {
-      //logger.log("mm NodeClick before expandNode", item);
-      self.expandNode(item, event);
-    }
-    else {
-      //logger.log("mm NodeClick before showDetailsNode", item);
-      mind.currentConnection(item);
-      self.showDetails(item, event);
-    }
-  } //nodeClick
 
-  function nodeDblClick(item, event) {
-    self.showDetails(item, event);
-  } //nodeDblClick
+	//#region Private Functions
 
-  function expandNode(item, event, selectChild) {
-    if (!(selectChild >= 0)) {
-      mind.currentConnection(item);
-    }
-    if (!item.cIsExpanded() || selectChild >= 0) { //expand
-      //logger.log("mm expandNode expand before: " + item.cIsExpanded(), item);
-      item.cIsExpanded(true);
-      if (item.ToNode().ChildConnections().length === 0) {
+	///Connects all child-nodes of the given node with a new line
+	function createLines(FromNode) {
+		jsPlumb.doWhileSuspended(function () {
+			var from = 'node-c' + FromNode.Id();
+			var container = 'container-c' + FromNode.Id();
+			//logger.log('mm creating ' + FromNode.ChildConnections().length + ' lines for ' + from);
+			for (var i = 0; i < FromNode.ChildConnections().length; i++) {
+				var to = 'node-' + FromNode.ChildConnections()[i].ToId();
+				//logger.log('mm creating line: ' + from + ' -> ' + to);
+				FromNode.ChildConnections()[i].line
+				  = plumb.connect({
+				  	source: from,
+				  	target: to,
+				  	container: container
+				  });
+			}
+		});
+	}
 
-        //var defered = Q.defer();
-        mind
-          .loadChildren(item.ToNode(), selectChild)
-          .then(function (result) {
-           //-logger.log('mm expandNode after data.loadChildren', { item: item, selectChild: selectChild });
-            repaintLines(result.FromNode.Id());
-            //createLines(result.FromNode);   //creating the line on afterBindingAddedElement
-            if (result.selectChild >= 0) {
-              mind.currentConnection(item.ToNode().ChildConnections()[result.selectChild]);
-            }
-          })
-        ;
-        //return defered.promise;
-      }
-      else {
-        logger.log('mm expandNode without data.loadChildren', { item: item, selectChild: selectChild });
-        setTimeout(function () {
-          createLines(item.ToNode());
-          repaintLines(item.FromId());
-        }, 500);
-        if (selectChild >= 0) {
-          mind.currentConnection(item.ToNode().ChildConnections()[selectChild]);
-        }
-      }
-    }
-    else { //collapse
-     //-logger.log("mm expandNode collapse " + item.cIsExpanded(), item);
-      removeLines(item.ToNode());
-      item.cIsExpanded(false);
-      setTimeout(function () {
-        repaintLines(item.FromId());
-      }, 500);      
-    } //if
-  } //expandNode
+	///Creates a line for a given connection (connectiong two nodes)
+	function createLine(Connection) {
+		var from = 'node-' + Connection.FromId();
+		var container = 'container-' + Connection.FromId();
+		var to = 'node-' + Connection.ToId();
+		Connection.line
+			  = plumb.connect({
+			  	source: from,
+			  	target: to,
+			  	container: container
+			  });
+		//logger.log('creating line ' + Connection.FromId() + ' - ' + Connection.ToId());
+	}
 
-  function showDetails(item, event) {
-    if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-      mind.loadChildren(item.ToNode(), true);
-      app.toggleDetails('show');
-    }
-    else {
-      app.toggleDetails('hide');
-    }
-  } //showDetails
+	///Removes all 'child'-lines from a given node
+	function removeLines(FromNode) {
+		jsPlumb.doWhileSuspended(function () {
+			var from = '#node-' + FromNode.Id();
+			//-logger.log('mm removing lines for ' + from);
+			for (var i = 0; i < FromNode.ChildConnections().length; i++) {
+				var line = FromNode.ChildConnections()[i].line;
+				if (line) {
+					plumb.detach(line);
+					line = null;
+				}
+			}
+		});
+	}
 
-  function afterNodeMove(arg) {
-    // arg.item ... connection moved
-    // arg.sourceParent ... children Collection of source parent
-    // arg.targetParent ... children Collection of target parent
-    // arg.sourcetIndex ... position in source collection
-    // arg.targetIndex ... position in target collection
-    self.app.moveNode(arg.item, arg.targetParent); /*, arg.targetIndex + 1*/
-  } //afterNodeMove
+	///Removes the line assigned to a single connection
+	function removeLine(Connection) {
+		//logger.log('removing line ' + Connection.FromId() + ' - ' + Connection.ToId());
+		if (Connection.line) {
+			plumb.detach(Connection.line);
+			Connection.line = null;
+		}
+	}
 
-  function zoomIn() {
-    //var zoom = app.settings.mm.zoom();
-    //logger.log('mm zoom ' + zoom);
-    if (app.settings.mm.zoom() < 2) {
-      setZoom(Math.round((app.settings.mm.zoom() + 0.2) * 10) / 10);
-    }
-  } //zoomIn
+	///Repaints all lines in the diagram
+	function repaintLines(FromId) {
+		var from = 'node-' + FromId;
+		//logger.log('mm repainting lines for ' + from);
+		//plumb.repaint(from);
+		//-logger.log('mm repainting all lines because of ' + from);
+		plumb.repaintEverything();
+	}
 
-  function zoomOut() {
-    //var zoom = app.settings.mm.zoom();
-    if (app.settings.mm.zoom() > 0.2) {
-      setZoom(Math.round((app.settings.mm.zoom() - 0.2) * 10) / 10);
-    }
-  } //zoomOut
+	//#endregion Private Functions
 
-  function setZoom(factor) {
-    //logger.log('mm setting zoom to ' + factor);
-    var prefix = ["-webkit-", "-moz-", "-ms-", "-o-", ""];
-    var scale = "scale(" + factor + ")";
-    var container = $('#mm-container');
-    for (var i = 0; i < prefix.length; i++) {
-      container.css(prefix[i] + "transform", scale);
-    }
-    plumb.setZoom(factor);
-    app.settings.mm.zoom(factor);
-  } //setZoom
+	//#region Methods
 
-  function afterBindingRenderedTemplate(elements, data) {
-    //logger.log('afterBindingRenderedTemplate | ' + data.ToId());
-  } //afterBindingRenderedTemplate
+	function nodeClick(con) {
+		//if (item.HasChildren()) {
+		//logger.log("mm NodeClick before expandNode", item);
+		expandNode(con);
+		//}
+		//else {
+		//  //logger.log("mm NodeClick before showDetailsNode", item);
+		//  mind.currentConnection(item);
+		//  showDetails(item);
+		//}
+	} //nodeClick
 
-  function afterBindingAddedElement(element, index, data) {
-    if ($(element).html()) {
-      //logger.log('afterBindingAddedElement | ' + data.ToId());//+ ' | ' + $(element).html());
-      createLine(data);
-    }
-  } //afterBindingAddedElement
+	function nodeDblClick(item) {
+		showDetails(item);
+	} //nodeDblClick
 
-  function beforeBindingRemovedElement(element, index, data) {
-    //logger.log('beforeBindingRemovedElement | ' + data.ToId());
-    removeLine(data);
-  } //beforeBindingRemovedElement
+	function expandNode(con, selectChild) {
+		if (!(selectChild >= 0)) {
+			mind.currentConnection(con);
+		}
+		if (!con.isExpanded() || selectChild >= 0) { //expand
+			//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
+			con.isExpanded(true);
+			if (con.ToNode().ChildConnections().length === 0) {
 
-  //#endregion Methods
+				//var defered = Q.defer();
+				mind
+				  .loadChildren(con.ToNode(), selectChild)
+				  .then(function (result) {
+				  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
+				  	repaintLines(result.FromNode.Id());
+				  	//createLines(result.FromNode);   //creating the line on afterBindingAddedElement
+				  	if (result.selectChild >= 0) {
+				  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
+				  	}
+				  })
+				;
+				//return defered.promise;
+			}
+			else {
+				logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
+				setTimeout(function () {
+					createLines(con.ToNode());
+					repaintLines(con.FromId());
+				}, 500);
+				if (selectChild >= 0) {
+					mind.currentConnection(con.ToNode().ChildConnections()[selectChild]);
+				}
+			}
+		}
+		else { //collapse
+			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
+			removeLines(con.ToNode());
+			con.isExpanded(false);
+			setTimeout(function () {
+				repaintLines(con.FromId());
+			}, 500);
+		} //if
+	} //expandNode
+
+	function showDetails(item) {
+		if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
+			mind.loadChildren(item.ToNode(), true);
+			app.toggleDetails('show');
+		}
+		else {
+			app.toggleDetails('hide');
+		}
+	} //showDetails
+
+	function afterNodeMove(arg) {
+		// arg.item ... connection moved
+		// arg.sourceParent ... children Collection of source parent
+		// arg.targetParent ... children Collection of target parent
+		// arg.sourcetIndex ... position in source collection
+		// arg.targetIndex ... position in target collection
+		app.moveNode(arg.item, arg.targetParent); /*, arg.targetIndex + 1*/
+	} //afterNodeMove
+
+	function zoomIn() {
+		//var zoom = app.settings.mm.zoom();
+		//logger.log('mm zoom ' + zoom);
+		if (app.settings.mm.zoom() < 2) {
+			setZoom(Math.round((app.settings.mm.zoom() + 0.2) * 10) / 10);
+		}
+	} //zoomIn
+
+	function zoomOut() {
+		//var zoom = app.settings.mm.zoom();
+		if (app.settings.mm.zoom() > 0.2) {
+			setZoom(Math.round((app.settings.mm.zoom() - 0.2) * 10) / 10);
+		}
+	} //zoomOut
+
+	function setZoom(factor) {
+		//logger.log('mm setting zoom to ' + factor);
+		var prefix = ["-webkit-", "-moz-", "-ms-", "-o-", ""];
+		var scale = "scale(" + factor + ")";
+		var container = $('#mm-container');
+		for (var i = 0; i < prefix.length; i++) {
+			container.css(prefix[i] + "transform", scale);
+		}
+		plumb.setZoom(factor);
+		app.settings.mm.zoom(factor);
+	} //setZoom
+
+	function afterBindingRenderedTemplate(elements, data) {
+		//logger.log('afterBindingRenderedTemplate | ' + data.ToId());
+	} //afterBindingRenderedTemplate
+
+	function afterBindingAddedElement(element, index, data) {
+		if ($(element).html()) {
+			//logger.log('afterBindingAddedElement | ' + data.ToId());//+ ' | ' + $(element).html());
+			createLine(data);
+		}
+	} //afterBindingAddedElement
+
+	function beforeBindingRemovedElement(element, index, data) {
+		//logger.log('beforeBindingRemovedElement | ' + data.ToId());
+		removeLine(data);
+	} //beforeBindingRemovedElement
+
+	//#endregion Methods
 
 
 }); //define

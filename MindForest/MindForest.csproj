@@ -204,11 +204,12 @@
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
     <Content Include="App\services\auth.js" />
+    <Content Include="App\services\mind.metadata.js" />
     <Content Include="App\services\mind.js" />
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\_globals.js" />
-    <Content Include="App\services\_ko.bindingHandlers.js" />
+    <Content Include="App\services\_ko.bindingHandlers.unused.js" />
     <Content Include="App\styles\toastr.css" />
     <Content Include="App\views\forest.html" />
     <Content Include="App\views\mm.js" />
@@ -487,6 +488,9 @@
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConnectionExtensions.cs" />
+    <Compile Include="Models\ConnectionText.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Forest.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

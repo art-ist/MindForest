@@ -15,13 +15,13 @@
 <!--<button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false "></button>
       <button class="expand-button" data-bind="click: $root.expandNode
                                               , clickBubble: false
-                                              , css: { 'icon-arrow-down': !cIsExpanded(), 'icon-arrow-up': cIsExpanded() }
+                                              , css: { 'icon-arrow-down': !isExpanded(), 'icon-arrow-up': isExpanded() }
                                               , visible: HasChildren()
                                               "></button>
       <span class="item-title" data-bind="html: ToNode().Title"></span>
     </div>
 
-    <ol data-bind="visible: cIsExpanded(),  template: {foreach: ToNode().ChildConnections, name:'NodeTemplate'}">
+    <ol data-bind="visible: isExpanded(),  template: {foreach: ToNode().ChildConnections, name:'NodeTemplate'}">
     </ol>
 
   </li>
@@ -41,13 +41,13 @@
       <button class="details-button  icon-untitled-2" data-bind="click: $root.showDetails, clickBubble: false "></button>
       <button class="expand-button" data-bind="click: $root.expandNode
                                                 , clickBubble: false
-                                                , css: { 'icon-arrow-down-8': !cIsExpanded(), 'icon-arrow-up-7': cIsExpanded() }
+                                                , css: { 'icon-arrow-down-8': !isExpanded(), 'icon-arrow-up-7': isExpanded() }
                                                 , visible: HasChildren()
                                                 "></button>
       <span class="item-title" data-bind="html: ToNode().Title"></span>
     </div>
 
-    <ol class="" data-bind="visible: cIsExpanded(),
+    <ol class="" data-bind="visible: isExpanded(),
                               sortable: {
                                 data: ToNode().ChildConnections,
                                 template: 'NodeTemplate',

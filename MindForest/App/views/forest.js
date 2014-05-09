@@ -3,33 +3,36 @@
   'services/app',
   'services/mind'
 ], function (logger, app, mind) {
+	"use strict";
 
-  var forestModel = {
-    title: 'Forest',
-    app: app,
+	var forestModel = {
+		title: 'Forest',
+		app: app,
 
-    activate: function () {
-      logger.log('View activated', forestModel.title);
+		activate: function () {
+			logger.log('View activated', forestModel.title);
 
-      if (mind.trees().length === 0) {
-        mind
-          .loadTrees()
-          .then(function () { logger.log('Trees received', 'Forest - activate', mind.trees()); })
-          ;
-      }
+			if (mind.trees().length === 0) {
+				mind
+				  .loadTrees()
+				  .then(function () {
+				  	logger.log('Trees received', 'Forest - activate', mind.trees()/**/);
+				  })
+				;
+			}
 
-      return true;
-    },
+			return true;
+		},
 
-    trees: mind.trees,
+		trees: mind.trees,
 
-    openTree: app.openTree,
-    logout: app.logout,
+		openTree: app.openTree,
+		logout: app.logout,
 
-    setMapToOutline: function () { app.settings.map('outline'); },
-    setMapToMM: function () { app.settings.map('mm'); },
+		setMapToOutline: function () { app.settings.map('outline'); },
+		setMapToMM: function () { app.settings.map('mm'); },
 
-  }; //forestModel (vm)
+	}; //forestModel (vm)
 
-  return forestModel;
+	return forestModel;
 }); //define

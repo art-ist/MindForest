@@ -47,6 +47,8 @@ function loadAppFile(filename, filetype) {
   //  alert("file already added!")
 }
 
+
+//Create a Guid
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -58,6 +60,7 @@ function guid() {
 }
 
 
+//Parse QueryStrig and offer it as a global variable
 var QueryString = function () {
   // This function is anonymous, is executed immediately and 
   // the return value is assigned to QueryString!

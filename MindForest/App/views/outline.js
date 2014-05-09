@@ -58,16 +58,16 @@
   function expandNode(item, event) {
     mind.currentConnection(item);
     //alert(ko.toJSON(Node));
-    //-console.log("Expanded: " + item.cIsExpanded());
-    if (item.cIsExpanded()) {
-      item.cIsExpanded(false);
+    //-console.log("Expanded: " + item.isExpanded());
+    if (item.isExpanded()) {
+      item.isExpanded(false);
     }
     else {
       //if (Node.Children.length = 0) {
 
       mind.loadChildren(item.ToNode());
       //}
-      item.cIsExpanded(true);
+      item.isExpanded(true);
     }
   } //expandNode
 
