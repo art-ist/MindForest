@@ -28,13 +28,13 @@
 		zoomOut: zoomOut,
 		setZoom: setZoom,
 
-		afterBindingRenderedTemplate: afterBindingRenderedTemplate,
-		afterBindingAddedElement: afterBindingAddedElement,
-		beforeBindingRemovedElement: beforeBindingRemovedElement
+		//afterBindingRenderedTemplate: afterBindingRenderedTemplate,
+		//afterBindingAddedElement: afterBindingAddedElement,
+		//beforeBindingRemovedElement: beforeBindingRemovedElement
+
+		plumb: null
 
 	};
-	return mm;
-
 	//#region Private Fields
 	var self = this;
 
@@ -47,32 +47,24 @@
 		clickCount = 0,
 		clickTimer = null;
 
-	var plumb = null;
-
 	//#endregion Private Fields
+	return mm;
 
 	function activate() {
 
+		mm.plumb = jsPlumb.getInstance({
+			//Container: 'mm-container',
+			Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
+			Anchors: ["Right", "Left"],
+			Endpoint: ["Blank", {}],
+			PaintStyle: {
+				lineWidth: 2,
+				strokeStyle: "#999"
+			}
+		});
+
 		var rootNode = mind.currentTree();
-		mind
-		  .loadChildren(rootNode, true)
-		  .then(function () {
-
-		  	plumb = jsPlumb.getInstance({
-		  		//Container: 'mm-container',
-		  		Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
-		  		//Connector: ["StateMachine", { curviness: 10, margin: 5, proximityLimit: 15, cssClass: 'mm-connector' }],
-		  		Anchors: ["Right", "Left"],
-		  		Endpoint: ["Blank", {}],
-		  		//Endpoints: [["Dot", { radius: 3 }], ["Dot", { radius: 3 }]],
-		  		PaintStyle: {
-		  			lineWidth: 2,
-		  			strokeStyle: "#999"
-		  		}
-		  	});
-
-		  });
-
+		mind.loadChildren(rootNode, true);
 
 	} //activate
 
@@ -138,71 +130,72 @@
 
 	//#region Private Functions
 
-	///Connects all child-nodes of the given node with a new line
-	function createLines(FromNode) {
-		jsPlumb.doWhileSuspended(function () {
-			var from = 'node-c' + FromNode.Id();
-			var container = 'container-c' + FromNode.Id();
-			//logger.log('mm creating ' + FromNode.ChildConnections().length + ' lines for ' + from);
-			for (var i = 0; i < FromNode.ChildConnections().length; i++) {
-				var to = 'node-' + FromNode.ChildConnections()[i].ToId();
-				//logger.log('mm creating line: ' + from + ' -> ' + to);
-				FromNode.ChildConnections()[i].line
-				  = plumb.connect({
-				  	source: from,
-				  	target: to,
-				  	container: container
-				  });
-			}
-		});
-	}
+	/////Connects all child-nodes of the given node with a new line
+	//function createLines(FromNode) {
+	//	jsPlumb.doWhileSuspended(function () {
+	//		var from = 'node-' + FromNode.Id();
+	//		var container = 'container-c' + FromNode.Id();
+	//		//logger.log('mm creating ' + FromNode.ChildConnections().length + ' lines for ' + from);
+	//		for (var i = 0; i < FromNode.ChildConnections().length; i++) {
+	//			var to = 'node-' + FromNode.ChildConnections()[i].ToId();
+	//			//logger.log('mm creating line: ' + from + ' -> ' + to);
+	//			FromNode.ChildConnections()[i].line
+	//			  = plumb.connect({
+	//			  	source: from,
+	//			  	target: to,
+	//			  	container: container
+	//			  });
+	//		}
+	//	});
+	//}
 
-	///Creates a line for a given connection (connectiong two nodes)
-	function createLine(Connection) {
-		var from = 'node-' + Connection.FromId();
-		var container = 'container-' + Connection.FromId();
-		var to = 'node-' + Connection.ToId();
-		Connection.line
-			  = plumb.connect({
-			  	source: from,
-			  	target: to,
-			  	container: container
-			  });
-		//logger.log('creating line ' + Connection.FromId() + ' - ' + Connection.ToId());
-	}
+	/////Creates a line for a given connection (connectiong two nodes)
+	//function createLine(Connection) {
+	//	var fromRoot = Connection.FromNode() === mm.app.mind.currentTree();
+	//	var from = fromRoot ? 'node-' + Connection.FromId() : 'node-' + Connection.FromId();
+	//	var container = fromRoot ? 'root-container' : 'container-c' + Connection.FromId();
+	//	var to = 'node-' + Connection.ToId();
+	//	console.log('creating line:  ' + from + ' ---> ' + to + ' | on ' + container);
+	//	Connection.line
+	//		  = plumb.connect({
+	//		  	source: from,
+	//		  	target: to,
+	//		  	container: container
+	//		  });
+	//}
 
-	///Removes all 'child'-lines from a given node
-	function removeLines(FromNode) {
-		jsPlumb.doWhileSuspended(function () {
-			var from = '#node-' + FromNode.Id();
-			//-logger.log('mm removing lines for ' + from);
-			for (var i = 0; i < FromNode.ChildConnections().length; i++) {
-				var line = FromNode.ChildConnections()[i].line;
-				if (line) {
-					plumb.detach(line);
-					line = null;
-				}
-			}
-		});
-	}
+	/////Removes all 'child'-lines from a given node
+	//function removeLines(FromNode) {
+	//	jsPlumb.doWhileSuspended(function () {
+	//		var from = '#node-' + FromNode.Id();
+	//		//-logger.log('mm removing lines for ' + from);
+	//		for (var i = 0; i < FromNode.ChildConnections().length; i++) {
+	//			var line = FromNode.ChildConnections()[i].line;
+	//			if (line) {
+	//				plumb.detach(line);
+	//				line = null;
+	//			}
+	//		}
+	//	});
+	//}
 
-	///Removes the line assigned to a single connection
-	function removeLine(Connection) {
-		//logger.log('removing line ' + Connection.FromId() + ' - ' + Connection.ToId());
-		if (Connection.line) {
-			plumb.detach(Connection.line);
-			Connection.line = null;
-		}
-	}
+	/////Removes the line assigned to a single connection
+	//function removeLine(Connection) {
+	//	//logger.log('removing line ' + Connection.FromId() + ' - ' + Connection.ToId());
+	//	if (Connection.line) {
+	//		plumb.detach(Connection.line);
+	//		Connection.line = null;
+	//	}
+	//}
 
-	///Repaints all lines in the diagram
-	function repaintLines(FromId) {
-		var from = 'node-' + FromId;
-		//logger.log('mm repainting lines for ' + from);
-		//plumb.repaint(from);
-		//-logger.log('mm repainting all lines because of ' + from);
-		plumb.repaintEverything();
-	}
+	/////Repaints all lines in the diagram
+	//function repaintLines(FromId) {
+	//	var from = 'node-' + FromId;
+	//	//logger.log('mm repainting lines for ' + from);
+	//	//plumb.repaint(from);
+	//	//-logger.log('mm repainting all lines because of ' + from);
+	//	plumb.repaintEverything();
+	//}
 
 	//#endregion Private Functions
 
@@ -238,7 +231,7 @@
 				  .loadChildren(con.ToNode(), selectChild)
 				  .then(function (result) {
 				  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
-				  	repaintLines(result.FromNode.Id());
+//				  	repaintLines(result.FromNode.Id());
 				  	//createLines(result.FromNode);   //creating the line on afterBindingAddedElement
 				  	if (result.selectChild >= 0) {
 				  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
@@ -249,22 +242,22 @@
 			}
 			else {
 				logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
-				setTimeout(function () {
-					createLines(con.ToNode());
-					repaintLines(con.FromId());
-				}, 500);
-				if (selectChild >= 0) {
-					mind.currentConnection(con.ToNode().ChildConnections()[selectChild]);
-				}
+				//setTimeout(function () {
+				//	createLines(con.ToNode());
+				//	repaintLines(con.FromId());
+				//}, 500);
+				//if (selectChild >= 0) {
+				//	mind.currentConnection(con.ToNode().ChildConnections()[selectChild]);
+				//}
 			}
 		}
 		else { //collapse
 			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
-			removeLines(con.ToNode());
+//			removeLines(con.ToNode());
 			con.isExpanded(false);
-			setTimeout(function () {
-				repaintLines(con.FromId());
-			}, 500);
+			//setTimeout(function () {
+			//	repaintLines(con.FromId());
+			//}, 500);
 		} //if
 	} //expandNode
 
@@ -286,6 +279,28 @@
 		// arg.targetIndex ... position in target collection
 		app.moveNode(arg.item, arg.targetParent); /*, arg.targetIndex + 1*/
 	} //afterNodeMove
+
+
+	//function afterBindingRenderedTemplate(elements, data) {
+	//	logger.log('afterBindingRenderedTemplate | ' + data.ToId(), '', { elements: elements, data: data });
+	//		createLine(data);
+
+	//} //afterBindingRenderedTemplate
+
+	//function afterBindingAddedElement(element, index, data) {
+	//	logger.log('afterBindingAddedElement | ' + data.ToId(), '', { elements: elements, index: index, data: data });
+	//	if ($(element).html()) {
+	//		createLine(data);
+	//	}
+	//} //afterBindingAddedElement
+
+	//function beforeBindingRemovedElement(element, index, data) {
+	//	logger.log('beforeBindingRemovedElement | ' + data.ToId(), '', { elements: elements, index: index, data: data });
+	//	removeLine(data);
+	//} //beforeBindingRemovedElement
+
+	//#endregion Methods
+
 
 	function zoomIn() {
 		//var zoom = app.settings.mm.zoom();
@@ -313,24 +328,5 @@
 		plumb.setZoom(factor);
 		app.settings.mm.zoom(factor);
 	} //setZoom
-
-	function afterBindingRenderedTemplate(elements, data) {
-		//logger.log('afterBindingRenderedTemplate | ' + data.ToId());
-	} //afterBindingRenderedTemplate
-
-	function afterBindingAddedElement(element, index, data) {
-		if ($(element).html()) {
-			//logger.log('afterBindingAddedElement | ' + data.ToId());//+ ' | ' + $(element).html());
-			createLine(data);
-		}
-	} //afterBindingAddedElement
-
-	function beforeBindingRemovedElement(element, index, data) {
-		//logger.log('beforeBindingRemovedElement | ' + data.ToId());
-		removeLine(data);
-	} //beforeBindingRemovedElement
-
-	//#endregion Methods
-
 
 }); //define

@@ -1,87 +1,64 @@
-﻿<link rel="stylesheet" type="text/css" href="App/views/outline.css" />
-
-<!-- NodeTemplate -->
-<!--
- <script type="text/html" id="NodeTemplate">
-   <li>
-
-     <div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
-
-     <div class="item" data-bind="class: ToNode().Class
-                                , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
-                                , click: $root.nodeClick, clickBubble: false
-                                " >
-       <!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
-<!--<button class="details-button icon-arrow-right" data-bind="click: $root.showDetails, clickBubble: false "></button>
-      <button class="expand-button" data-bind="click: $root.expandNode
-                                              , clickBubble: false
-                                              , css: { 'icon-arrow-down': !isExpanded(), 'icon-arrow-up': isExpanded() }
-                                              , visible: HasChildren()
-                                              "></button>
-      <span class="item-title" data-bind="html: ToNode().Title"></span>
-    </div>
-
-    <ol data-bind="visible: isExpanded(),  template: {foreach: ToNode().ChildConnections, name:'NodeTemplate'}">
-    </ol>
-
-  </li>
-</script>-->
-<!-- SortableNodeTemplate -->
+﻿<!--using
+	https://github.com/rniemeyer/knockout-sortable
+	http://api.jqueryui.com/sortable/
+-->
+<link rel="stylesheet" type="text/css" href="App/views/outline.css" />
 
 <script type="text/html" id="NodeTemplate">
-  <li>
+	<li>
 
-    <div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
+		<div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
 
-    <div class="item" data-bind="class: ToNode().Class
+		<div class="item" data-bind="class: ToNode().Class
                                  , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
                                  , click: $root.nodeClick, clickBubble: false
                                  ">
-      <!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
-      <button class="details-button  icon-untitled-2" data-bind="click: $root.showDetails, clickBubble: false "></button>
-      <button class="expand-button" data-bind="click: $root.expandNode
+			<!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
+			<button class="details-button  icon-untitled-2" data-bind="click: $root.showDetails, clickBubble: false "></button>
+			<button class="expand-button" data-bind="click: $root.expandNode
                                                 , clickBubble: false
                                                 , css: { 'icon-arrow-down-8': !isExpanded(), 'icon-arrow-up-7': isExpanded() }
-                                                , visible: HasChildren()
+                                                , visible: ToNode().hasChildren()
                                                 "></button>
-      <span class="item-title" data-bind="html: ToNode().Title"></span>
-    </div>
+			<span class="item-title" data-bind="html: ToNode().Text().Title"></span>
+		</div>
 
-    <ol class="" data-bind="visible: isExpanded(),
+		<ol class="" data-bind="visible: isExpanded(),
                               sortable: {
                                 data: ToNode().ChildConnections,
                                 template: 'NodeTemplate',
-                                afterMove: $parent.afterMoveNode
+                                afterMove: $root.afterMoveNode
                               }"></ol>
 
-  </li>
+	</li>
 </script>
 
-<!--  <div class="container" data-bind="sortable: data.connections"></div>-->
+<!--  <div class="container" data-bind="sortable: mind.connections"></div>-->
 
 <div class="page secondary" id="outline">
 
-  <div class="nav-bar navbar-fixed-top metro-navbar  bg-color-greenLight">
-    <div class="navbar-inner win-commandlayout">
-      <div class="header-container">
-        <a href="#" class="win-backbutton"></a>
-        <h1 data-bind="text: title"></h1>
-      </div>
-    </div>
-  </div>
+	<div class="nav-bar navbar-fixed-top metro-navbar  bg-color-greenLight">
+		<div class="navbar-inner win-commandlayout">
+			<div class="header-container">
+				<a href="#" class="win-backbutton"></a>
+				<h1 data-bind="text: title"></h1>
+			</div>
+		</div>
+	</div>
 
-  <div class="page-region">
-    <div class="page-region-content">
-      <!--
-      <ol data-bind="template: {foreach: data.connections, name:'NodeTemplate'}">
-      </ol>
-        <hr />
-        -->
-      <div>
-        <ol data-bind="sortable: { data: data.currentTree().ChildConnections, template: 'NodeTemplate', afterMove: afterMoveNode } "></ol>
-      </div>
-    </div>
-  </div>
+	<div class="page-region">
+		<div class="page-region-content">
+
+			<div>
+				<ol data-bind="sortable: { 
+																	data: mind.currentTree().ChildConnections, 
+																	template: 'NodeTemplate', 
+																	afterMove: afterMoveNode 
+																 } "></ol>
+			</div>
+
+		</div>
+	</div>
 
 </div>
 

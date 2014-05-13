@@ -43,7 +43,7 @@
 		detailsVisible: false,
 
 		settings: {
-			map: ko.observable('mm'), //default now set in index.js (until init works)
+			map: ko.observable('mm'), 
 			animationDuration: ko.observable(500),
 			cycleNavigation: ko.observable(false),
 			autoScroll: ko.observable(true),
@@ -59,6 +59,7 @@
 		login: login,
 		logout: logout,
 
+		isSelected: isSelected,
 		select: select,
 		selectNextSibling: selectNextSibling,
 		selectPreviousSibling: selectPreviousSibling,
@@ -114,7 +115,7 @@
 		mind.initialize(app);
 
 		//hook global up keyboard functions
-		document.onkeypress = document.onkeypress;
+		document.onkeypress = document_onkeypress;
 
 		//TODO: fix modal dialog keyboard shortcuts
 		//hook up modal dialog keyboard shortcuts
@@ -212,12 +213,12 @@
 				app.toggleDetails();
 				return false;
 			}
-			if (char === 'N') { // ctrl+N ... new child
+			if (char === 'M') { // ctrl+M ... new child
 				event.preventDefault(); //prevent default behaviour
 				if (edit) app.addChild();
 				return false;
 			}
-			if (char === 'M') { // ctrl+M ... new sibling
+			if (char === 'N') { // ctrl+N ... new sibling
 				event.preventDefault(); //prevent default behaviour
 				if (edit) app.addSibling();
 				return false;
@@ -235,6 +236,12 @@
 			if (char === 'Z') { // ctrl+Z ... undo (unsaved) changes
 				event.preventDefault(); //prevent default behaviour
 				if (edit) app.undo();
+				return false;
+			}
+			//Test
+			if (char === 'T') { // ctrl+Z ... undo (unsaved) changes
+				event.preventDefault(); //prevent default behaviour
+				alert('Ctrl-T detected')
 				return false;
 			}
 		} //if (event.ctrlKey)
@@ -293,21 +300,53 @@
 
 	//#region selecting items
 
-	function select(connection) {
-		//if (!connection.ToNode) return;
-		if (connection.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-			mind.loadChildren(connection.ToNode(), true);
+	function isSelected(connectionOrNode) {
+		if (connectionOrNode.ToNode) {	//it's a connection
+			return (connectionOrNode.Id() === mind.currentConnection().Id());
 		}
-		mind.currentConnection(connection);
+		else if (connectionOrNode.ConnectionsFrom) { //it's a node
+			return (connectionOrNode.Id() === mind.currentNode().Id());
+		}
+		else {
+			return false;
+		}
+	} //isSelected
 
-		if (app.settings.autoScroll()) {
-			/*app.map*/ $.scrollTo('node-' + connection.ToNode().Id());
+	function select(connectionOrNode) {
+		if (connectionOrNode.ToNode) {	//it's a connection
+			////load children
+			//if (!isSelected(connectionOrNode)) { // removed: || !app.detailsVisible 
+			//	mind.loadChildren(connectionOrNode.ToNode(), true);
+			//}
+			//select
+			mind.currentConnection(connectionOrNode);
+			mind.currentNode(null);
+			logger.log('selecting connection ' + connectionOrNode.Id(), 'app - select', connectionOrNode);
 		}
-		return connection;
+		else if (connectionOrNode.ConnectionsFrom) { //it's a node
+			////load children
+			//if (!isSelected(connectionOrNode)) { // removed: || !app.detailsVisible 
+			//	mind.loadChildren(connectionOrNode, true);
+			//}
+			//select
+			mind.currentConnection(null);
+			mind.currentNode(connectionOrNode);
+			logger.log('selecting node ' + connectionOrNode.Id(), 'app - select', connectionOrNode);
+		}
+		else {
+			mind.currentConnection(null);
+			mind.currentNode(null);
+			logger.log('!! select called with neither connection nor node', 'app - select', connectionOrNode);
+		}
+
+		////TODO: get this work
+		//if (app.settings.autoScroll()) {
+		//	/*app.map*/ $.scrollTo('node-' + connection.ToNode().Id());
+		//}
 	} //select
 
 	function selectNextSibling() {
-		if (!app.select) return;
+		//if (!app.select) return;
 		var currCon = mind.currentConnection();
 		var parent = mind.findNodeById(currCon.FromId());
 		var siblings = parent.ChildConnections();
@@ -321,7 +360,7 @@
 		}
 	} //selectNextSibling
 	function selectPreviousSibling() {
-		if (!app.select) return;
+		//if (!app.select) return;
 		var currCon = mind.currentConnection();
 		var parent = mind.findNodeById(currCon.FromId());
 		var siblings = parent.ChildConnections();
@@ -335,7 +374,7 @@
 		}
 	} //selectPreviousSibling
 	function selectFirstChild() {
-		if (!app.select) return;
+		//if (!app.select) return;
 		var currCon = mind.currentConnection();
 
 		if (currCon.HasChildren()) {
@@ -344,7 +383,7 @@
 
 	} //selectFirstChild
 	function selectFirstParent() {
-		if (!app.select) return;
+		//if (!app.select) return;
 		var currCon = mind.currentConnection();
 		var parentCon = mind.getParentConnection(currCon.FromId());
 		if (parentCon) {
@@ -396,8 +435,8 @@
 
 	var detailsLoaded = false;
 	function toggleDetails(show) {
-		if (show === 'show') app.detailsVisible = false;
-		if (show === 'hide') app.detailsVisible = true;
+		if (show === 'show') app.detailsVisible = false;	//on explicit call to show always assume it's hidden
+		if (show === 'hide') app.detailsVisible = true;		//on explicit call to hide always assume it's shown
 
 		var effect = app.settings.detailsStyle() === 'tool-right'
 					 ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
@@ -409,7 +448,8 @@
 		if (app.detailsVisible) { //hide
 			//console.log("hideDitails");
 			$('#detailsPage')
-			  .hide(effect); // 'slide', { direction: 'right' }, app.settings.animationDuration()
+			  .hide(effect) // 'slide', { direction: 'right' }, app.settings.animationDuration()
+			  .removeClass(app.settings.detailsStyle());
 			app.detailsVisible = false;
 		}
 		else { //show

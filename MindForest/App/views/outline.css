@@ -2,7 +2,7 @@
   padding-right: 40px;
 }*/
 
-#outline #doc-container {
+#doc-container {
   margin: 15px 15px 15px 20px;
 }
 
@@ -24,7 +24,7 @@
 #outline .item {
   position: relative;
   padding: 5px 0 5px 5px;
-  margin: 0px 0px 0px 0px;
+  margin: 0 0 0 0;
   background-color: #e6e7e8;
   color: black;
   border: 1px solid ActiveBorder;

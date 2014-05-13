@@ -24,10 +24,12 @@
 		//Properties
 		nodes: [],
 		connections: [],
+
 		trees: ko.observableArray([]),
-		//currentNode: ko.observable(),
-		currentConnection: ko.observable(true),
-		currentTree: ko.observable(),
+		currentTree: ko.observable(null),		//Node
+		currentConnection: ko.observable(null),	//Connection
+		currentNode: ko.observable(null),		//Node
+
 		mapModel: ko.observable({ /*currentNode*/currentConnection: null }),
 
 		//Methods

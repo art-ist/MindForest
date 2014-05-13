@@ -6,9 +6,9 @@
 
   var outlineModel = {
     //Properties
-    title: mind.currentTree().Title,
+    title: mind.currentTree().Text().Title,
     app: app,
-    data: mind,
+    mind: mind,
 
     //Lifecycle Events
 
@@ -23,58 +23,73 @@
   return outlineModel;
 
 
-  var self = this;
+  //var self = this;
 
   //#region Private Fields
 
-  var pars = $.requestParameters();
-  var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
-  var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
+  //var pars = $.requestParameters();
+  //var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
+  //var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
 
   //#endregion Private Fields
 
 
   //#region Methods
 
-  function nodeClick(item, event) {
-    var isNotSameNode = (item.ToNode().Id() != mind.currentConnection().ToNode().Id());
-    if (isNotSameNode) {
-      mind.currentConnection(item);
-      mind.loadChildren(item.ToNode(), true);
+  function nodeClick(conn, event) {
+  	var wasSelected = app.isSelected(conn);
+  	app.select(conn);
+
+    if (conn.ToNode && conn.ToNode().hasChildren()) { //intermediate level -> expand
+    	expandNode(conn);
     }
-    if (item.HasChildren()) {
-      expandNode(item, event);
-    }
-    else {
+    else {	//leaf -> show details
       if (!app.detailsVisible) {
-        showDetails(item, event);
+      	showDetails(conn, event);
       }
-      else if (!isNotSameNode) {
+      else if (wasSelected) {	//app.detailsVisible && wasSelected
         app.toggleDetails('hide');
       }
     }
   } //nodeClick
 
-  function expandNode(item, event) {
-    mind.currentConnection(item);
-    //alert(ko.toJSON(Node));
-    //-console.log("Expanded: " + item.isExpanded());
-    if (item.isExpanded()) {
-      item.isExpanded(false);
-    }
-    else {
-      //if (Node.Children.length = 0) {
+  function expandNode(con, selectChild) {
+  	if (!(selectChild >= 0)) {
+  		mind.currentConnection(con);
+  	}
+  	if (!con.isExpanded() || selectChild >= 0) { //expand
+  		//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
+  		con.isExpanded(true);
+  		//if (con.ToNode().ChildConnections().length === 0) {
 
-      mind.loadChildren(item.ToNode());
-      //}
-      item.isExpanded(true);
-    }
+  		//	//var defered = Q.defer();
+  		//	mind
+		//	  .loadChildren(con.ToNode(), selectChild)
+		//	  .then(function (result) {
+		//	  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
+		//	  	if (result.selectChild >= 0) {
+		//	  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
+		//	  	}
+		//	  })
+  		//	;
+  		//	//return defered.promise;
+  		//}
+  		//else {
+  			logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
+  			if (selectChild >= 0) {
+  				mind.currentConnection(con.ToNode().ChildConnections()[selectChild]);
+  			}
+  		//}
+  	}
+  	else { //collapse
+  		//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
+  		con.isExpanded(false);
+  	} //if
   } //expandNode
 
   function showDetails(item, event) {
     if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-
-      mind.loadChildren(item.ToNode(), true);
+      //mind.loadChildren(item.ToNode(), true);
       app.toggleDetails('show');
     }
     else {

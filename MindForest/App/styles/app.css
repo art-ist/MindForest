@@ -118,3 +118,7 @@ ul#forest {
   color: #e1a31c;
   top: -32px; right: 0;
 }
+
+.sortable-placeholder {
+	background-color: #ebebeb;
+}

@@ -1,24 +1,24 @@
 ﻿
-<div id="details-dock" data-bind="with: data.currentConnection().ToNode">
+<div id="details-dock" data-bind="with: mind.currentConnection().ToNode">
 
   <div class="nav-bar metro-navbar bg-color-blueLight">
     <div class="navbar-inner win-commandlayout">
 
-      <a href="#" class="win-command" title="Close details" onclick="app.toggleDetails('hide');">
+      <a href="#" class="win-command" title="Close details" data-bind="click: $root.app.toggleDetails('hide')">
         <span class="win-commandicon win-commandring icon-close"></span>
         <span class="win-label">Close</span>
       </a>
 
-      <a href="#" class="win-command" title="Toggle between edit and view modes" data-bind="visible: $root.user.mayEdit(), click: $root.toggleEdit">
+      <!--<a href="#" class="win-command" title="Toggle between edit and view modes" data-bind="visible: $root.user.mayEdit(), click: $root.toggleEdit">
         <span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
         <span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
-      </a>
+      </a>-->
 
       <!-- ko if: $root.state.edit() === true -->
 
       <hr class="win-command" />
 
-      <a href="#" class="win-command" data-bind="click: $root.data.saveChanges">
+      <a href="#" class="win-command" data-bind="click: $root.mind.saveChanges">
         <span class="win-commandicon win-commandring icon-disk"></span>
         <span class="win-label" data-localize="edit.save">Save</span>
       </a>
@@ -44,9 +44,9 @@
   <div class="page-region">
 
     <div class="page-region-content" data-bind="visible: !$root.state.edit()">
-      <h2 data-bind="html: Title"></h2>
-      <p data-bind="html: Content"></p>
-      <article data-bind="foreach: Details">
+      <h2 data-bind="html: Text().Title"></h2>
+      <p data-bind="html: Text().Content"></p>
+      <article data-bind="foreach: Text().Details">
         <p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
           <!-- ko if: Link && !MediaType -->
           <img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
@@ -68,12 +68,12 @@
 
 
 
-    <div class="page-region-content" data-bind="visible: $root.state.edit()">
+    <div class="page-region-content" data-bind="if: $root.state.edit()">
       <form ><!--data-bind="event: { keypress: $root.keyset.form }"-->
 
 
         <h2>
-          <input style="width:100%" type="text" data-bind="value: Title" />
+          <input style="width:100%" type="text" data-bind="value: Text().Title" />
         </h2>
 
         <label for="edit_class" data-localize="edit.class">Klasse</label>

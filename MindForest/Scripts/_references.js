@@ -1,1 +1,21 @@
-﻿
+﻿/// <reference path="../App/libraries/q.js" />
+/// <reference path="../App/libraries/jquery-2.0.3.js" />
+/// <reference path="../App/libraries/jquery-ui-1.10.3.js" />
+/// <reference path="../App/libraries/knockout-2.2.1.debug.js" />
+/// <reference path="../App/libraries/knockout-sortable.js" />
+/// <reference path="../App/libraries/breeze.debug.js" />
+/// <reference path="../App/libraries/toastr.js" />
+/// <reference path="../App/libraries/jquery.scrollTo-1.4.3.1.js" />
+/// <reference path="../App/libraries/jquery.localize.js" />
+/// <reference path="../App/libraries/Base64.js" />
+/// <reference path="../App/libraries/jquery.jsPlumb-1.5.2.js" />
+/// <reference path="../App/libraries/colorpicker/tinycolor-0.9.15.min.js" />
+/// <reference path="../App/libraries/colorpicker/pick-a-color-1.1.7.min.js" />
+/// <reference path="../App/services/_globals.js" />
+/// <reference path="../App/services/_ko.bindingHandlers.js" />
+/// <reference path="../App/styles/themes/bootmetro/js/bootstrap.js" />
+/// <reference path="../App/libraries/require.js" />
+
+/// <reference path="../App/app.config.js" />
+/// <reference path="../App/services/app.js" />
+/// <reference path="../App/services/mind.js" />

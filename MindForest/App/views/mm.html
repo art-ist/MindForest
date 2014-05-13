@@ -1,21 +1,26 @@
-﻿<link rel="stylesheet" type="text/css" href="App/views/mm.css" />
+﻿<!--using
+	https://github.com/rniemeyer/knockout-sortable
+	http://api.jqueryui.com/sortable/
+-->
+<link rel="stylesheet" type="text/css" href="App/views/mm.css" />
 
 <script type="text/html" id="NodeTemplate">
 	<li>
-		<div class="mm-item-container" data-bind="attr: { id: 'container-c' + Id() }">
+		<div class="mm-item-container" data-bind="attr: { id: 'container-c' + FromId() }">
 			<!--, DUMMY: console.log($data)-->
-			<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() }
-
-                                       , style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() }
-                                       , visible: ToNode().CloudColor
+			<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
+                                       style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },
+                                       visible: ToNode().CloudColor
                                        "></div>
-			<div class="mm-node-container" data-bind="with: ToNode, click: $root.nodeClick, clickBubble: false, dblClickBubble: false">
-
+			<div class="mm-node-container" data-bind="with: ToNode,
+																								click: $root.nodeClick, clickBubble: false,
+																								dblClickBubble: false">
 				<div class="item" data-bind="class: Class
                                    , css: { 'current': $parent.isCurrent }
                                    , style: { backgroundColor: BackColor, color: Color }
-                                   , attr: { id : 'node-c' + Id() }
+                                   , attr: { id : 'node-' + Id() }
                                    ">
+					<span data-bind="text: Id"></span>
 					<span class="item-title" data-bind="html: Text().Title"></span>
 				</div> <!--item-->
 
@@ -25,12 +30,22 @@
                                 sortable: {
                                   data:         ChildConnections,
                                   template:     'NodeTemplate',
-                                  afterRender:  $root.afterBindingRenderedTemplate,
-                                  afterAdd:     $root.afterBindingAddedElement,
-                                  beforeRemove: $root.beforeBindingRemovedElement,
-                                  afterMove:    $root.afterMoveNode
-															}">
-				</ul>
+																	isEnabled:		$root.app.state.edit,
+																	options:			{ placeholder: 'sortable-placeholder', revert: false }
+																},
+																plumb: {
+																	data: ChildConnections
+																}
+																"></ul>
+				<!--
+																	afterAdd:     $root.afterBindingAddedElement,
+																	beforeRemove: $root.beforeBindingRemovedElement																}
+																					afterRender:  $root.afterBindingRenderedTemplate,
+
+																					afterMove:    $root.afterMoveNode,
+				,
+
+									-->
 			</div>
 		</div>
 	</li>
@@ -67,7 +82,7 @@
 		<div id="mm-container" class="page-region-content">
 
 			<!--tre root-->
-			<div class="mm-root-container" data-bind="with: data.currentTree(), attr: { id: 'container-' + data.currentTree().Id() }">
+			<div class="mm-item-container" id="mm-root-item-container" data-bind="with: data.currentTree()">
 
 				<div class="mm-node-container">
 
@@ -81,13 +96,24 @@
 				</div>
 				<div class="mm-children-container">
 					<ul data-bind="sortable: {
-                                        data: ChildConnections,
-                                        template: 'NodeTemplate',
-                                        afterRender:  $root.afterBindingRenderedTemplate,
-                                        afterAdd:     $root.afterBindingAddedElement,
-                                        beforeRemove: $root.beforeBindingRemovedElement,
-                                        afterMove:    $root.afterMoveNode
-                                      } "></ul>
+													data: ChildConnections,
+                          template: 'NodeTemplate',
+													isEnabled:		$root.app.state.edit,
+													options:			{ placeholder: 'sortable-placeholder', revert: false }
+                        },
+												plumb: {
+													data: ChildConnections,
+													fromId: 'node-' + Id(),
+													containerId: 'mm-root-item-container'
+												}
+												"></ul>
+					<!--
+
+											afterRender:  $root.afterBindingRenderedTemplate,
+											afterAdd:     $root.afterBindingAddedElement,
+											beforeRemove: $root.beforeBindingRemovedElement,
+											afterMove:    $root.afterMoveNode
+				-->
 				</div>
 			</div>
 

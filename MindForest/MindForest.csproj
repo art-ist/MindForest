@@ -203,13 +203,14 @@
     <Content Include="App\app.Debug.config.js" />
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
+    <Content Include="App\libraries\knockout-sortable.min.js" />
     <Content Include="App\services\auth.js" />
     <Content Include="App\services\mind.metadata.js" />
     <Content Include="App\services\mind.js" />
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\_globals.js" />
-    <Content Include="App\services\_ko.bindingHandlers.unused.js" />
+    <Content Include="App\services\_ko.bindingHandlers.js" />
     <Content Include="App\styles\toastr.css" />
     <Content Include="App\views\forest.html" />
     <Content Include="App\views\mm.js" />
@@ -408,7 +409,6 @@
     <Content Include="_sql\2 Import FreeMind.sql" />
     <Content Include="App\libraries\jquery-2.0.3.min.map" />
     <Content Include="App\libraries\toastr.min.js.map" />
-    <None Include="App\libraries\_references.js" />
     <Content Include="App\libraries\utils.js" />
     <Content Include="App\styles\colorpicker.css" />
     <EntityDeploy Include="Models\Forest.edmx">

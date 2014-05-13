@@ -4,10 +4,10 @@ html, body {
   background-color: #649913;
 }
 
-#forestPage > .nav-bar {
+/*#forestPage > .nav-bar {
   background-color: #fff;
   border-bottom: solid 5px #BB1173; 
-}
+}*/
 #forestPage .win-commandicon {color: #fff;}
 #forestPage .win-commandring {border-color: #fff; background-color: #BB1173}
 
