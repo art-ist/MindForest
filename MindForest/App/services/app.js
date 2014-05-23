@@ -43,7 +43,7 @@
 		detailsVisible: false,
 
 		settings: {
-			map: ko.observable('mm'), 
+			map: ko.observable('mm'),
 			animationDuration: ko.observable(500),
 			cycleNavigation: ko.observable(false),
 			autoScroll: ko.observable(true),
@@ -69,6 +69,8 @@
 		showForest: showForest,
 		hideForest: hideForest,
 		openTree: openTree,
+		canOpenTreeByName: canOpenTreeByName,
+
 		toggleDetails: toggleDetails,
 		showWebPage: showWebPage,
 		hideWebPage: hideWebPage,
@@ -412,20 +414,42 @@
 		  .hide('slide', { direction: 'left' }, app.settings.animationDuration()); //'slide', { direction: 'left' }, app.settings.animationDuration()
 	} //hideForest
 
-	function openTreeByName(TreeName) {
-		mind.loadTrees()
-			.them(function () {
-				var trees = mind.trees();
-				for (var i = 0; i < trees.length; i++) {
-					for (var n = 0; n < trees[i].Texts().length; n++) {
-						if (trees[i].Texts[n].Title === TreeName) {
-							mind.currentTree(trees[i])
-							router.navigate('#/' + app.settings.map());
-							return;
-						}
-					}
-				}
-			});
+	function canOpenTreeByName(TreeName, ViewName) {
+		try {
+			logger.log('Checking if canOpenTreeByName', 'app - canOpenTreeByName', { TreeName: TreeName, ViewName: ViewName, currentTree: mind.currentTree() })
+			if (mind.currentTree()) {	//currentTree already selected -> ignore parameter and go
+				return true;
+			}
+			if (!TreeName) {	//no TreeName
+				return false;
+			}
+			return mind
+				.loadTrees()
+				.then(function () {
+					var trees = mind.trees();
+					for (var i = 0; i < trees.length; i++) {
+						for (var n = 0; n < trees[i].Texts().length; n++) {
+							if (trees[i].Texts()[n].Title() === TreeName) {
+								mind.currentTree(trees[i]);
+								if (ViewName) {
+									//Tree loaded, ready to activate view
+									return true;
+								}
+								else {
+									//no view provided->redirect to deafult view
+									return { redirect: '#/' + TreeName + '/' + app.settings.map() };
+								}
+							} //if (trees[i].Texts[n].Title === TreeName)
+						} //for trees[i].Texts()
+					} //for trees
+					//TreeName not found
+					//return { redirect: '#/' };
+					return false;
+				});
+		} catch (e) {
+			logger.error('Could not open ' + TreeName + '/' + ViewName, 'app - canOpenTreeByName', e);
+			return false;
+		}
 	}
 
 	function openTree(item, event) {

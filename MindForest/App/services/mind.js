@@ -246,11 +246,11 @@
 		mindContext
 			.fetchMetadata()
 			.then(function () {
-				logger.log('metadata received', 'mind - initialize', mindContext);
+				logger.log('metadata received', 'mind - initialize'/*, mindContext*/);
 				_extendEntities(mindContext);
 			})
 			.fail(function (err) {
-				logger.log('metadata could not be requested:' + err.message, 'mind - initialize');
+				logger.log('metadata could not be requested:' + err.message, 'mind - initialize', err);
 			})
 		;
 	} //initialize

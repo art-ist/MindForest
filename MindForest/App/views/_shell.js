@@ -18,16 +18,14 @@
 
   function onActivate() {
     var routes = [
-        { route: ['', 'home', 'forest']       , moduleId: 'forest'             , title: ''              , nav: false }
-      , { route: ['mm', 'mindmap']            , moduleId: 'mm'                 , title: 'MindMap'       , nav: false }
-      , { route: 'outline'                    , moduleId: 'outline'            , title: 'Outline'       , nav: false }
+        { route: ['', 'home', 'forest']				, moduleId: 'forest'   , title: ''            , nav: false }
+      , { route: ['(:tree/)mm', '(:tree/)mindmap']  , moduleId: 'mm'       , title: 'MindMap'     , nav: false }
+      , { route: '(:tree/)outline'					, moduleId: 'outline'  , title: 'Outline'     , nav: false }
 
       //, { route: 'my/login'         , moduleId: 'my/login'         , title: 'Anmelden'      , nav: false }
       //, { route: 'my/registration'  , moduleId: 'my/registration'  , title: 'Registrieren'  , nav: false }
       //, { route: 'my/registrationExt',moduleId: 'my/registrationExt',title: 'Registrieren'  , nav: false }
       //, { route: 'my/profile'       , moduleId: 'my/profile'       , title: 'Profil'        , nav: false }
-      //, { route: 'my/shoppingList'  , moduleId: 'my/shoppingList'  , title: 'Einkaufsliste' , nav: false }
-      //, { route: 'my/locations'     , moduleId: 'my/locations'     , title: 'Favoriten'     , nav: false }
 
       //, { route: 'about/privacy'    , moduleId: 'about/privacy'    , title: 'Privatsphäre'  , nav: false }
       //, { route: 'about/impress'    , moduleId: 'about/impress'    , title: 'Impressum'     , nav: false }

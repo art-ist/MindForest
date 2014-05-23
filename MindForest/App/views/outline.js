@@ -11,6 +11,8 @@
     mind: mind,
 
     //Lifecycle Events
+    canActivate: canActivate,
+    activate: activate,
 
     //Methods
     nodeClick: nodeClick,
@@ -22,17 +24,14 @@
   };
   return outlineModel;
 
+  function canActivate(treeName, queryString) {
+  	return app.canOpenTreeByName(treeName, 'outline');
+  } //canActivate
 
-  //var self = this;
-
-  //#region Private Fields
-
-  //var pars = $.requestParameters();
-  //var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
-  //var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
-
-  //#endregion Private Fields
-
+  function activate(treeName, queryString) {
+  	var rootNode = mind.currentTree();
+  	mind.loadChildren(rootNode, true);
+  } //activate
 
   //#region Methods
 
@@ -62,18 +61,6 @@
   		con.isExpanded(true);
   		//if (con.ToNode().ChildConnections().length === 0) {
 
-  		//	//var defered = Q.defer();
-  		//	mind
-		//	  .loadChildren(con.ToNode(), selectChild)
-		//	  .then(function (result) {
-		//	  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
-		//	  	if (result.selectChild >= 0) {
-		//	  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
-		//	  	}
-		//	  })
-  		//	;
-  		//	//return defered.promise;
-  		//}
   		//else {
   			logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
   			if (selectChild >= 0) {
