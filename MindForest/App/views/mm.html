@@ -27,16 +27,16 @@
 			</div> <!--mm-node-container-->
 			<div class="mm-children-container" data-bind="if: isExpanded">
 				<ul class="" data-bind="attr: { id : 'childrenOf-c' + $parent.Id() },
-                                sortable: {
-                                  data:         ChildConnections,
-                                  template:     'NodeTemplate',
-																	isEnabled:		$root.app.state.edit,
-																	options:			{ placeholder: 'sortable-placeholder', revert: false }
-																},
-																plumb: {
-																	data: ChildConnections
-																}
-																"></ul>
+                                        sortable: {
+                                            data:         ChildConnections,
+                                            template:     'NodeTemplate',
+										    isEnabled:		$root.app.state.edit,
+										    options:			{ placeholder: 'sortable-placeholder', revert: false }
+									    },
+									    plumb: {
+										    data: ChildConnections
+									    }
+										"></ul>
 			</div>
 		</div>
 	</li>
@@ -80,8 +80,8 @@
 					<div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
                                                , click: $root.nodeClick, clickBubble: false
                                                ">
-						<img data-bind="attr: { src: Icon, alt: Text().Title }, visible: Icon" />
-						<h2 class="item-title" data-bind="html: Text().Title, visible: !Icon()"></h2>
+						<!--<img data-bind="attr: { src: Icon, alt: Text().Title }, visible: Icon" />-->
+						<h2 class="item-title" data-bind="html: Text().Title"></h2> <!--, visible: !Icon()-->
 					</div>
 
 				</div>

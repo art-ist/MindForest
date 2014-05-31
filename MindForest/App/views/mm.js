@@ -32,6 +32,7 @@
 		plumb: null
 
 	};
+
 	//#region Private Fields
 	var self = this;
 
@@ -83,7 +84,7 @@
 
 	function nodeClick(con) {
 		//logger.log("mm NodeClick before expandNode", item);
-		expandNode(con);
+	    expandNode(con);
 	} //nodeClick
 
 	function nodeDblClick(item) {
