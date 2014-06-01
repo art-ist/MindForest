@@ -68,22 +68,33 @@ ko.bindingHandlers.plumb = {
                     console.log("--> subscribing changes on c" + c.Id());
                     //subscribe expanding and collapsing nodes
                     var subscription = c.isExpanded.subscribe(function (newValue) {
-                        console.log("--> subscription called c" + c.Id() + " with value " + newValue);
-                        //console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
-                        ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                        //setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
-                        //this.$root.plumb.repaintEverything();
+                    	try {
+							console.log("--> subscription called c" + c.Id() + " with value " + newValue);
+							console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
+							ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
+							//this.$root.plumb.repaintEverything();
+                    	} catch (e) {
+                    		console.log("Error Catch von subscription !!! -- " + JSON.toString(err));
+                    	}
+
                     }, bindingContext);
 
                     //unsubscribe on dsposal
                     ko.utils.domNodeDisposal.addDisposeCallback(element, function (p1, p2, p3, p4) {
-                        console.log("--> disposing subscription");
-                        console.log({ p1: p1, p2: p2, p3: p3, p4: p4});
-                        //bindingContext.$root.plumb.repaintEverything();
-                        //subscription.dispose();
+                    	try {
+							console.log("--> disposing subscription");
+							console.log({ p1: p1, p2: p2, p3: p3, p4: p4});
+							//bindingContext.$root.plumb.repaintEverything();
+							subscription.dispose();
+                    	} catch (e) {
+                    		console.log("Error Catch von disposing !!! -- " + JSON.toString(err));
+                    	}
+
                     });
                 } // end for (viewModel.ChildConnections)
             } // end if (viewModel.isExpanded)
+
             /* Bestimen der Pos eines Divs
             // Findet die absolute x Position eines Elementes raus
             function getAbsoluteX (elm) {
@@ -118,7 +129,7 @@ ko.bindingHandlers.plumb = {
 
         }
         catch (err) {
-            console.log("Error Catch von init !!!");
+            console.log("Error Catch von init !!! -- " + JSON.toString(err));
         }
 
 	}, //init
@@ -158,7 +169,7 @@ ko.bindingHandlers.plumb = {
 
         }
         catch (err) {
-            console.log("Error Catch von update !!!");
+        	console.log("Error Catch von update !!! -- " + JSON.toString(err));
         } // Dieser sollte das Error Problem mit "o not defined" forübergängig lösen (hat den fehler antscheinend egchatscht^^)
 
 	} //update
