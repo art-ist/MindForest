@@ -75,7 +75,7 @@ ko.bindingHandlers.plumb = {
 							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
 							//this.$root.plumb.repaintEverything();
                     	} catch (e) {
-                    		console.log("Error Catch von subscription !!! -- " + JSON.toString(err));
+                    		console.log("ERROR Catch von subscription !!! -- " + e.message);
                     	}
 
                     }, bindingContext);
@@ -88,7 +88,7 @@ ko.bindingHandlers.plumb = {
 							//bindingContext.$root.plumb.repaintEverything();
 							subscription.dispose();
                     	} catch (e) {
-                    		console.log("Error Catch von disposing !!! -- " + JSON.toString(err));
+                    		console.log("ERROR Catch von disposing !!! -- " + err.message);
                     	}
 
                     });
@@ -129,7 +129,7 @@ ko.bindingHandlers.plumb = {
 
         }
         catch (err) {
-            console.log("Error Catch von init !!! -- " + JSON.toString(err));
+            console.log("ERROR Catch von init !!! -- " + err.message);
         }
 
 	}, //init
@@ -164,12 +164,27 @@ ko.bindingHandlers.plumb = {
                     //plumb.draggable(to);
                 } //for
             } //if (connections.length)
-
-            plumb.repaintEverything();
+            
+            try {
+                //plumb.repaintEverything();
+                setTimeout(function () { plumb.repaintEverything(); }, 500);
+                /*  1.) Mit dem setTimeout wurde das Aktualisierungsproblem der Linien sowie die Linien beim erstmaligen öffnen des Baums gelöst 
+                 *      (ist nur leider noch keine entgültige Lösung da mit dem TimeOut von 500ms die Visualisierung nicht sehr flüssig läuft).
+                 *  2.) Die 500ms als TiemOut sind leider auch nicht stark zu reduzieren, da die Fehler bei geringerer Wartezeit zurückkehren.
+                 *  4.) TypeError: "o is Undefined" tritt erst beim Schliesen von Knoten auf, da durch das knockout Binding die Div mit den Linien
+                 *      gelöscht werden und das Plumb nicht mitbekommt das diese nicht mehr vorhanden sind. Jedoch beim Aktualisieren alle (auch
+                 *      die nicht mehr vorhandenen Linien) aktualisieren möchte. (o ist in diesem falle ein Objekt welches in der internen 
+                 *      Datenstrucktur vom Plump die Linien Symbolisiert und nach den Lageparametern gefragt wird, welche nicht mehr definiert sind
+                 *      nachdem Löschen der Linien innerhalb der geschlossenen Div).
+                 */
+            }
+            catch (err) { //hier taucht der "o is undefined" Error auf.
+                console.log("ERROR Catch von plumb.repaintEverything() in update -- " + err.message);
+            }
 
         }
         catch (err) {
-        	console.log("Error Catch von update !!! -- " + JSON.toString(err));
+            console.log("ERROR Catch von update !!! -- " + err.message);
         } // Dieser sollte das Error Problem mit "o not defined" forübergängig lösen (hat den fehler antscheinend egchatscht^^)
 
 	} //update
