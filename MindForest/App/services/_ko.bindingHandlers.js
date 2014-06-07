@@ -1,4 +1,31 @@
-﻿ko.bindingHandlers.fadeVisible = {
+﻿
+(function () {
+
+	//Catch binding exceptions using a custom binding provider
+	//see: http://www.knockmeout.net/2013/06/knockout-debugging-strategies-plugin.html
+	var existing = ko.bindingProvider.instance;
+
+	ko.bindingProvider.instance = {
+		nodeHasBindings: existing.nodeHasBindings,
+		getBindings: function(node, bindingContext) {
+			var bindings;
+			try {
+				bindings = existing.getBindings(node, bindingContext);
+			}
+			catch (ex) {
+				if (window.console && console.log) {
+					console.log("KO: binding error", ex.message, node, bindingContext);
+				}
+			}
+			return bindings;
+		}
+	};
+
+})();
+
+
+
+ko.bindingHandlers.fadeVisible = {
 	init: function (element, valueAccessor) {
 		// Initially set the element to be instantly visible/hidden depending on the value
 		var value = valueAccessor();
@@ -42,7 +69,7 @@ ko.bindingHandlers.plumb = {
             console.log("Begin------------init------");
             console.log({ element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
 
-            if (viewModel.Id() == 1 && !viewModel.isExpanded) {
+            if (viewModel.Id() === 1 && !viewModel.isExpanded) {
                 console.log("--> if(viewModel.Id() == 1 && !viewModel.isExpanded) = TRUE , viewModel = ");
                 console.log({ viewModel: viewModel });
 
@@ -156,10 +183,10 @@ ko.bindingHandlers.plumb = {
                     connections[i].line = plumb.connect({
                         source: from,
                         target: to,
-                        container: container,
-                        overlays: [
-                            ["Label", { label: con.Id() + '', id: "line-" + con.Id() }]
-                        ]
+                        container: container
+                        //,overlays: [
+                        //    ["Label", { label: con.Id() + '', id: "line-" + con.Id() }]
+                        //]
                     });
                     //plumb.draggable(to);
                 } //for

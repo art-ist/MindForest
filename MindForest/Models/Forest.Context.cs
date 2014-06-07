@@ -14,7 +14,6 @@ namespace MindForest.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Core.Objects.DataClasses;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     
     public partial class ForestEntities : DbContext
@@ -44,8 +43,8 @@ namespace MindForest.Models
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<NodeText> NodeTexts { get; set; }
         public DbSet<ConnectionText> ConnectionTexts { get; set; }
-    
-        [EdmFunction("ForestEntities", "GetNeighbourConnections")]
+
+				[DbFunction("ForestEntities", "GetNeighbourConnections")]
         public virtual IQueryable<Connection> GetNeighbourConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
             var nodeIdParameter = nodeId.HasValue ?
@@ -71,7 +70,7 @@ namespace MindForest.Models
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetNeighbourConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
     
-        [EdmFunction("ForestEntities", "GetChildConnections")]
+        [DbFunction("ForestEntities", "GetChildConnections")]
         public virtual IQueryable<Connection> GetChildConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
             var nodeIdParameter = nodeId.HasValue ?
@@ -96,8 +95,8 @@ namespace MindForest.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetChildConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
-    
-        [EdmFunction("ForestEntities", "GetParentConnections")]
+
+				[DbFunction("ForestEntities", "GetParentConnections")]
         public virtual IQueryable<Connection> GetParentConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
         {
             var nodeIdParameter = nodeId.HasValue ?
@@ -122,8 +121,8 @@ namespace MindForest.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
         }
-    
-        [EdmFunction("ForestEntities", "GetNodes")]
+
+				[DbFunction("ForestEntities", "GetNodes")]
         public virtual IQueryable<Node> GetNodes(string user, string lang)
         {
             var userParameter = user != null ?

@@ -161,20 +161,20 @@
 		//	owner: this,
 		//	deferEvaluation: true //required because Entity properties are not yet defined
 		//}); //Children
-		//this.Details = ko.computed({
-		//	read: function () {
-		//		var result = [];
-		//		var connections = this.ConnectionsTo();
-		//		for (var i = 0; i < connections.length; i++) {
-		//			if (connections[i].Relation() === Relation.Detail) {
-		//				result.push(connections[i].ToNode);
-		//			}
-		//		}
-		//		return result;
-		//	},
-		//	owner: this,
-		//	deferEvaluation: true //required because Entity properties are not yet defined
-		//}); //Details
+		this.Details = ko.computed({
+			read: function () {
+				var result = [];
+				var connections = this.ConnectionsTo();
+				for (var i = 0; i < connections.length; i++) {
+					if (connections[i].Relation() === Relation.Detail) {
+						result.push(connections[i].ToNode);
+					}
+				}
+				return result;
+			},
+			owner: this,
+			deferEvaluation: true //required because Entity properties are not yet defined
+		}); //Details
 		this.ChildConnections = ko.computed({
 			read: function () {
 				var result = [];
@@ -293,7 +293,10 @@
           	var result = response.results[0];
           	//logger.log('Trees fetched', 'mind - loadTrees', result);
 
-          	_loadMindResult(result, true);
+          	//load settings
+          	app.settings.forest = result.settings;
+
+          	_loadMindResult(result.trees, true);
 
           	//logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees()/*, Nodes: mind.nodes(), Connectinos: mind.connections()*/ });
           })

@@ -44,31 +44,38 @@ namespace MindForest.Controllers {
     /// ~/api/Mind/GetTrees?$filter=IsArchived eq false&$orderby=CreatedAt
     /// </example>
     [HttpGet]
-    public MindResult GetTrees(string Forest = null, string Lang = null) {
+    public dynamic GetTrees(string Forest = null, string Lang = null) {
       var db = new MindContextProvider(Forest);
-      var result = new MindResult();
+      var trees = new MindResult();
 
       //prepare parameters
       string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
       string lang = Lang ?? "%";
 
-      //get the connections
-      result.Connections = db.Context
+      //get the tree connections
+      trees.Connections = db.Context
         //.GetChildConnections(null, user, 5, 0, lang)
         .GetChildConnections(null, user, 2, 0, lang)
         .ToArray();
 
-      //get nodes
-      List<long> ids = result.Connections.Select(c => c.FromId)
+      //get tree nodes
+      List<long> ids = trees.Connections.Select(c => c.FromId)
                              .Distinct().ToList();
-      ids.AddRange(result.Connections.Select(c => c.ToId));
-      result.Nodes = db.Context.Nodes
+      ids.AddRange(trees.Connections.Select(c => c.ToId));
+      trees.Nodes = db.Context.Nodes
           .Include("Permissions")
           .Include("Texts")
           .Where(n => ids.Contains(n.Id))
           .ToArray();
 
-      return result;
+			//get forest settings //TODO: implement in db
+			var settings = new KeyValuePair<string, string>[] {
+				new KeyValuePair<string, string>( "NodeClasses" , ""),
+				new KeyValuePair<string, string>( "ConnectionClasses" , ""),
+				new KeyValuePair<string, string>( "Css" , "")
+			};
+
+			return new { trees = trees, settings = settings };
     }
 
     /// <summary>
