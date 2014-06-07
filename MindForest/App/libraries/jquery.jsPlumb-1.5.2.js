@@ -1226,15 +1226,15 @@
 		_removeClass = function(el, clazz) { jsPlumb.CurrentLibrary.removeClass(_gel(el), clazz); },
 		_gel = function(el) { return jsPlumb.CurrentLibrary.getElementObject(el); },
 		_dom = function(el) { return jsPlumb.CurrentLibrary.getDOMElement(el); },		
-		_getOffset = function(el, _instance) {
-            var o = jsPlumb.CurrentLibrary.getOffset(_gel(el));
-			if (_instance != null) {
-                var z = _instance.getZoom();
-                return {left:o.left / z, top:o.top / z };    
-            }
-            else
-                return o;
-        },		
+		_getOffset = function (el, _instance) {
+		        var o = jsPlumb.CurrentLibrary.getOffset(_gel(el));
+		        if (_instance != null) {
+		            var z = _instance.getZoom();
+		            return { left: o.left / z, top: o.top / z };
+		        }
+		        else
+		            return o;
+            },
 		_getSize = function(el) {
             return jsPlumb.CurrentLibrary.getSize(_gel(el));
         },

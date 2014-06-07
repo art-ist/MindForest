@@ -43,11 +43,11 @@
 		detailsVisible: false,
 
 		settings: {
-			map: ko.observable('mm'),
+			map: ko.observable('mm'), // outline
 			animationDuration: ko.observable(500),
 			cycleNavigation: ko.observable(false),
 			autoScroll: ko.observable(true),
-			detailsStyle: ko.observable('lightBox'), // , tool-right
+			detailsStyle: ko.observable('tool-right'), // , lightBox, tool-right
 			appBar: ko.observable('hide'),
 			mm: {
 				zoom: ko.observable(1)//,

@@ -49,7 +49,12 @@ define([
     });
 
     window.onerror = function globalErrorHandler(msg, file, line) {
-      logger.error(msg, file + ': ' + line);
+        if (msg == "TypeError: o is undefined") {
+            logger.log(msg, file + ': ' + line);
+        }
+        else {
+            logger.error(msg, file + ': ' + line);
+        }
     }
 
     //>>excludeStart("build", true);

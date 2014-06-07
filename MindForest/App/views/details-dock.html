@@ -9,10 +9,10 @@
         <span class="win-label">Close</span>
       </a>
 
-      <!--<a href="#" class="win-command" title="Toggle between edit and view modes" data-bind="visible: $root.user.mayEdit(), click: $root.toggleEdit">
+      <a href="#" class="win-command" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit"> <!-- visible: $root.user.mayEdit(),  -->
         <span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
         <span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
-      </a>-->
+      </a>
 
       <!-- ko if: $root.state.edit() === true -->
 
@@ -43,28 +43,32 @@
 
   <div class="page-region">
 
-    <div class="page-region-content" data-bind="visible: !$root.state.edit()">
-      <h2 data-bind="html: Text().Title"></h2>
-      <p data-bind="html: Text().Content"></p>
-      <article data-bind="foreach: Text().Details">
-        <p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
-          <!-- ko if: Link && !MediaType -->
-          <img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
-          <!-- ko if: MediaType == 'image' -->
-          <img src="#" data-bind="attr: { src: Link, alt: Title, title: Title }" /><!-- /ko -->
-          <!-- ko if: Icon -->
-          <!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
-          <!-- /ko -->
-          <!-- ko if: !Link() -->
-          <span class="item-title" data-bind="html: Title"></span>
-          <!-- /ko -->
-          <!-- ko if: Link -->
-          <a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.showWebPage"></a>
-          <!-- /ko -->
-        </p>
-      </article>
-      <!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
-    </div>
+      <div class="page-region-content" data-bind="if: !$root.state.edit()">
+          <h2 data-bind="html: Text().Title"></h2>
+          <p data-bind="html: Text().Content"></p>
+
+          <article data-bind="foreach: Details">
+              <p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
+
+                  <!--<article data-bind="foreach: Text().Details">
+                    <p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
+                  <!-- ko if: Link && !MediaType -->
+                  <img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
+                  <!-- ko if: MediaType == 'image' -->
+                  <img src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
+                  <!-- ko if: Icon -->
+                  <!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+                  <!-- /ko -->
+                  <!-- ko if: !Link() -->
+                  <span class="item-title" data-bind="html: Title"></span>
+                  <!-- /ko -->
+                  <!-- ko if: Link -->
+                  <a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.showWebPage"></a>
+                  <!-- /ko -->
+              </p>
+          </article>
+          <!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
+      </div>
 
 
 
