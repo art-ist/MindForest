@@ -14,7 +14,7 @@
 			}
 			catch (ex) {
 				if (window.console && console.log) {
-					console.log("KO: binding error", ex.message, node, bindingContext);
+					console.log("KO binding error: " + ex.message, node, bindingContext);
 				}
 			}
 			return bindings;
@@ -66,20 +66,20 @@ ko.bindingHandlers.plumb = {
         try {
 
             var options = valueAccessor();
-            console.log("Begin------------init------");
-            console.log({ element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
+            //console.log("Begin------------init------");
+            //console.log({ element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
 
             if (viewModel.Id() === 1 && !viewModel.isExpanded) {
-                console.log("--> if(viewModel.Id() == 1 && !viewModel.isExpanded) = TRUE , viewModel = ");
-                console.log({ viewModel: viewModel });
+                //console.log("--> if(viewModel.Id() == 1 && !viewModel.isExpanded) = TRUE , viewModel = ");
+                //console.log({ viewModel: viewModel });
 
                 for(var i = 0; i < viewModel.ConnectionsTo().length; i++) {
                     var c = viewModel.ConnectionsTo()[i];
 
-                    console.log("--> subscribing changes on c" + c.Id());
+                    //console.log("--> subscribing changes on c" + c.Id());
 
                     var subscription = c.isExpanded.subscribe(function (newValue) {
-                        console.log("--> subscription calles c" + c.Id() + " with value " + newValue);
+                        //console.log("--> subscription calles c" + c.Id() + " with value " + newValue);
                         ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                         //this.$root.plumb.repaintEverything(); // Alternative ^^
                     }, bindingContext);
@@ -92,12 +92,12 @@ ko.bindingHandlers.plumb = {
 
                     var c = viewModel.ChildConnections()[i];
 
-                    console.log("--> subscribing changes on c" + c.Id());
+                    //console.log("--> subscribing changes on c" + c.Id());
                     //subscribe expanding and collapsing nodes
                     var subscription = c.isExpanded.subscribe(function (newValue) {
                     	try {
-							console.log("--> subscription called c" + c.Id() + " with value " + newValue);
-							console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
+							//console.log("--> subscription called c" + c.Id() + " with value " + newValue);
+							//console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
 							ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
 							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
 							//this.$root.plumb.repaintEverything();
@@ -110,8 +110,8 @@ ko.bindingHandlers.plumb = {
                     //unsubscribe on dsposal
                     ko.utils.domNodeDisposal.addDisposeCallback(element, function (p1, p2, p3, p4) {
                     	try {
-							console.log("--> disposing subscription");
-							console.log({ p1: p1, p2: p2, p3: p3, p4: p4});
+							//console.log("--> disposing subscription");
+							//console.log({ p1: p1, p2: p2, p3: p3, p4: p4});
 							//bindingContext.$root.plumb.repaintEverything();
 							subscription.dispose();
                     	} catch (e) {
@@ -164,7 +164,7 @@ ko.bindingHandlers.plumb = {
 
         try {
 
-            console.log("-----------------update------");
+            //console.log("-----------------update------");
             var options = ko.utils.unwrapObservable(valueAccessor());
             //var plumb = $.data(element, 'plumb');
             var plumb = bindingContext.$root.plumb;
@@ -179,7 +179,7 @@ ko.bindingHandlers.plumb = {
                 for (var i = 0; i < connections.length; i++) {
                     var con = connections[i];
                     var to = options.toId || 'node-' + con.ToId();
-                    console.log('creating line:  ' + from + ' ---> ' + to + ' | on ' + container);
+                    //console.log('creating line:  ' + from + ' ---> ' + to + ' | on ' + container);
                     connections[i].line = plumb.connect({
                         source: from,
                         target: to,

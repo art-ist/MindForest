@@ -21,7 +21,7 @@
 			name: ko.observable('Anonymous'),
 			//id: new ko.observable('0'),
 
-			roles: ko.observableArray([]),
+			roles: ko.observableArray(['Owner']),
 
 			isInRole: function (role) {
 				return (app.user.roles().indexOf(role) > -1);
@@ -29,12 +29,12 @@
 
 			//Permissions
 			mayEdit: ko.computed(function () {
-				return (app.user && thisapp.user.isInRole('Authors'));
-			}, this, { deferEvaluation: true }), //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
+				return (app.user && (app.user.isInRole('Author') || app.user.isInRole('Owner')) );
+			}, null, { deferEvaluation: true }), //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
 
 			isAuthenticated: ko.computed(function () {
 				return (app.user && (app.user.name() !== 'Anonymous'));
-			}, this, { deferEvaluation: true }) //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
+			}, null, { deferEvaluation: true }) //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
 		}, //user
 
 		state: {
@@ -110,7 +110,7 @@
 
 		//TODO: get/store settings from localstorage
 		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
-		app.lang = QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]; //'%'
+		app.lang( QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0] ); //'%'
 
 		//to prevent circular dependency
 		auth.initialize(app);

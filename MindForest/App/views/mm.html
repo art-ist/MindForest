@@ -4,29 +4,46 @@
 -->
 <link rel="stylesheet" type="text/css" href="App/views/mm.css" />
 
-<script type="text/html" id="NodeTemplate">
-	<li>
-		<div class="mm-item-container" data-bind="attr: { id: 'container-c' + FromId() }">
-			<!--, DUMMY: console.log($data)-->
-			<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
+<div id="mm" class="page secondary">
+	<div class="page-region">
+
+		<!--settings menu-->
+		<div id="mm-menu-container" class="command-overlay">
+			<div class="dropdown">
+				<a class="win-command  win-command-small dropdown-toggle" data-toggle="dropdown">
+					<span class="win-commandicon win-commandring icon-cog"></span>
+				</a>
+				<!-- ko compose: 'views/_menu' -->
+				<!-- /ko-->
+			</div>
+		</div>
+
+		<div id="mm-container" class="page-region-content">
+
+			<!--tree node template-->
+			<script type="text/html" id="NodeTemplate">
+				<li>
+					<div class="mm-item-container" data-bind="attr: { id: 'container-c' + FromId() }">
+
+						<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
                                        style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },
                                        visible: ToNode().CloudColor
                                        "></div>
-			<div class="mm-node-container" data-bind="with: ToNode,
+						<div class="mm-node-container" data-bind="with: ToNode,
 																								click: $root.nodeClick, clickBubble: false,
 																								dblClickBubble: false">
-				<div class="item" data-bind="class: Class
+							<div class="item" data-bind="class: Class
                                    , css: { 'current': $parent.isCurrent }
                                    , style: { backgroundColor: BackColor, color: Color }
                                    , attr: { id : 'node-' + Id() }
                                    ">
-					<!--<span data-bind="text: Id"></span>-->
-					<span class="item-title" data-bind="html: Text().Title"></span>
-				</div> <!--item-->
+								<!--<span data-bind="text: Id"></span>-->
+								<span class="item-title" data-bind="html: Text().Title"></span>
+							</div> <!--item-->
 
-			</div> <!--mm-node-container-->
-			<div class="mm-children-container" data-bind="if: isExpanded">
-				<ul class="" data-bind="attr: { id : 'childrenOf-c' + $parent.Id() },
+						</div> <!--mm-node-container-->
+						<div class="mm-children-container" data-bind="if: isExpanded">
+							<ul class="" data-bind="attr: { id : 'childrenOf-c' + $parent.Id() },
                                         sortable: {
                                             data:         ChildConnections,
                                             template:     'NodeTemplate',
@@ -37,51 +54,21 @@
 										    data: ChildConnections
 									    }
 										"></ul>
-			</div>
-		</div>
-	</li>
-</script>
+						</div>
+					</div>
+				</li>
+			</script>
 
-<div id="mm" class="page secondary">
-	<div class="page-region">
-
-		<div id="mm-menu-container" class="command-overlay">
-			<div class="dropdown">
-				<a href="#" class="win-command  win-command-small dropdown-toggle" data-toggle="dropdown">
-					<span class="win-commandicon win-commandring icon-cog"></span>
-				</a>
-				<ul class="dropdown-menu" role="menu">
-					<li data-bind="visible: !app.user.isAuthenticated()"><a tabindex="-1" href="#login" data-toggle="modal"><span data-localize="app.login">Login</span></a></li>
-
-					<!-- ko if: app.user.isAuthenticated -->
-					<li data-bind="visible: app.user.isAuthenticated"><a tabindex="-1" href="#" data-bind="click: app.logout"><span data-bind="  text: app.user.name()"></span> - <span data-localize="app.logout">Logout</span></a></li>
-					<li data-bind="visible: app.user.mayEdit">
-						<a tabindex="-1" href="#" data-bind="click: app.toggleEdit">
-							<span data-localize="app.edit">Bearbeiten</span> <i class="icon-checkmark" data-bind="visible: app.state.edit"></i>
-						</a>
-					</li>
-					<!-- /ko -->
-					<!--
-						<li class="nav-header" data-localize="app.settings.showDetails">Show details</li>
-						<li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-right">dock right <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'tool-right'"></i></a></li>
-						<li><a tabindex="-1" href="#" data-localize="app.settings.showDetails-slideshow">slideshow <i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'lightBox'"></i></a></li>
-					-->
-				</ul>
-			</div>
-		</div>
-
-		<div id="mm-container" class="page-region-content">
-
-			<!--tre root-->
+			<!--tree root-->
 			<div class="mm-item-container" id="mm-root-item-container" data-bind="with: data.currentTree()">
 
 				<div class="mm-node-container">
 
 					<div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
-                                               , click: $root.nodeClick, clickBubble: false
-                                               ">
-						<!--<img data-bind="attr: { src: Icon, alt: Text().Title }, visible: Icon" />-->
-						<h2 class="item-title" data-bind="html: Text().Title"></h2> <!--, visible: !Icon()-->
+																										, click: $root.nodeClick, clickBubble: false
+																										">
+						<img data-bind="attr: { src: Icon, alt: Text().Title }, visible: Icon" />
+						<h2 class="item-title" data-bind="html: Text().Title, visible: !Icon()"></h2>
 					</div>
 
 				</div>
@@ -112,9 +99,11 @@
 			<button class="win-command win-command-small" title="Zoom: +10%" data-bind="click: zoomIn">
 				<span class="win-commandicon win-commandring icon-plus"></span>
 			</button>
-			<!--        <button class="win-command win-command-small" rel="tootlip" title="Fit">
+			<!--
+			<button class="win-command win-command-small" rel="tootlip" title="Fit">
 				<span class="win-commandicon win-commandring  icon-expand-2"></span>
-			</button>   -->
+			</button>
+			-->
 		</div> <!--mm-zoom-container-->
 
 	</div> <!--page-region-->

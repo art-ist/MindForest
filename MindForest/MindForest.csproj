@@ -227,6 +227,8 @@
     <Content Include="App\views\mm.css" />
     <Content Include="App\views\mm.html" />
     <Content Include="App\views\details-dock.html" />
+    <Content Include="App\views\_menu.html" />
+    <Content Include="App\views\_menu.js" />
     <Content Include="App\views\_shell.html" />
     <Content Include="App\views\_shell.js" />
     <Content Include="App\styles\colorpicker\pick-a-color-1.1.7.min.css" />
@@ -486,7 +488,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SecurityConfig.cs" />

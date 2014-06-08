@@ -30,7 +30,7 @@ iframe {
 	.page.tool-right {
 		z-index: 1;
 		right: 0;
-		width: 40%; 
+		width: 50%; 
 		box-shadow: 0 0 20px 2px #777;
 	}
 	.page.lightBox {

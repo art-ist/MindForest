@@ -285,24 +285,24 @@
 
 		//TODO: find out why this couses a delay significantly longer than the request time
 		var query = new breeze.EntityQuery()
-            .from("GetTrees")
-            .withParameters({ Lang: app.lang, Forest: app.forest });
+			.from("GetTrees")
+			.withParameters({ Lang: app.lang, Forest: app.forest });
 
 		return mindContext.executeQuery(query)
-          .then(function (response) {
-          	var result = response.results[0];
-          	//logger.log('Trees fetched', 'mind - loadTrees', result);
+		  .then(function (response) {
+			var result = response.results[0];
+			//logger.log('Trees fetched', 'mind - loadTrees', result);
 
-          	//load settings
-          	app.settings.forest = result.settings;
+			//load settings
+			app.settings.forest = result.settings;
 
-          	_loadMindResult(result.trees, true);
+			_loadMindResult(result.trees, true);
 
-          	//logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees()/*, Nodes: mind.nodes(), Connectinos: mind.connections()*/ });
-          })
-          .fail(function (ex) {
-          	logger.error('Could not load trees. ' + ex, 'mind - loadTrees');
-          })
+			//logger.log('Trees loaded', 'mind - loadTrees', { Trees: mind.trees()/*, Nodes: mind.nodes(), Connectinos: mind.connections()*/ });
+		  })
+		  .fail(function (ex) {
+			logger.error('Could not load trees. ' + ex, 'mind - loadTrees');
+		  })
 		; //mindContext.executeQuery(query)
 
 		//return $.ajax({
@@ -326,13 +326,13 @@
 		logger.log('loading children of ' + FromNode.Id(), 'mind - loadChildren', { FromNode: FromNode, selectChild: selectChild, });
 
 		var query = new breeze.EntityQuery()
-            .from("GetChildren")
-            .withParameters({
-            	Lang: app.lang,
-            	Forest: app.forest,
-            	NodeId: FromNode.Id(),
-            	Levels: "2"
-            });
+			.from("GetChildren")
+			.withParameters({
+				Lang: app.lang,
+				Forest: app.forest,
+				NodeId: FromNode.Id(),
+				Levels: "2"
+			});
 		query.tag = { FromNode: FromNode, selectChild: selectChild };
 
 		//expecting always one level loaded in advance ( if this is not shure move to executeQuery(query).then )
@@ -344,16 +344,16 @@
 		}
 
 		return mindContext.executeQuery(query)
-          .then(function (response) {
-          	var result = response.results[0];
+		  .then(function (response) {
+			var result = response.results[0];
 
-          	_loadMindResult(result);
+			_loadMindResult(result);
 
-          	logger.log('children of ' + FromNode.Id() + ' loaded', 'mind - loadChildren', result);
-          }) //then
-          .fail(function (ex) {
-          	logger.error(ex, 'mind - loadChildren');
-          })
+			logger.log('children of ' + FromNode.Id() + ' loaded', 'mind - loadChildren', result);
+		  }) //then
+		  .fail(function (ex) {
+			logger.error(ex, 'mind - loadChildren');
+		  })
 		; //mindContext.executeQuery(query)
 
 
@@ -485,24 +485,24 @@
 
 	function saveChanges() {
 		mindContext.saveChanges()
-          .then(function (saveResult) {
-          	var savedEntities = saveResult.entities;
-          	var keyMappings = saveResult.keyMappings;
-          	logger.success("Saved", 'SUCCESS|mind - saveChanges')
-          })
-          .fail(function (e) {
-          	try {
-          		e.entitiesWithErrors.forEach(function (item) {
-          			var message = e;
-          			var errors = item.entityAspect.getValidationErrors();
-          			errors.forEach(function (error) {
-          				e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
-          			});
-          		});
-          	} catch (ex) {
-          		logger.error("Saving failed! " + e, 'mind - saveChanges');
-          	}
-          });
+		  .then(function (saveResult) {
+			var savedEntities = saveResult.entities;
+			var keyMappings = saveResult.keyMappings;
+			logger.success("Saved", 'SUCCESS|mind - saveChanges')
+		  })
+		  .fail(function (e) {
+			try {
+				e.entitiesWithErrors.forEach(function (item) {
+					var message = e;
+					var errors = item.entityAspect.getValidationErrors();
+					errors.forEach(function (error) {
+						e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
+					});
+				});
+			} catch (ex) {
+				logger.error("Saving failed! " + e, 'mind - saveChanges');
+			}
+		  });
 	} //saveChanges
 
 	function undoChanges() {

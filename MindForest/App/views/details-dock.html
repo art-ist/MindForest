@@ -4,12 +4,12 @@
   <div class="nav-bar metro-navbar bg-color-blueLight">
     <div class="navbar-inner win-commandlayout">
 
-      <a href="#" class="win-command" title="Close details" data-bind="click: $root.app.toggleDetails('hide')">
+      <a class="win-command" title="Close details" data-bind="click: $root.toggleDetails('hide')">
         <span class="win-commandicon win-commandring icon-close"></span>
         <span class="win-label">Close</span>
       </a>
 
-      <a href="#" class="win-command" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit"> <!-- visible: $root.user.mayEdit(),  -->
+      <a class="win-command" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit"> <!-- visible: $root.user.mayEdit(),  -->
         <span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
         <span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
       </a>
@@ -18,23 +18,23 @@
 
       <hr class="win-command" />
 
-      <a href="#" class="win-command" data-bind="click: $root.mind.saveChanges">
+      <a class="win-command" data-bind="click: $root.mind.saveChanges">
         <span class="win-commandicon win-commandring icon-disk"></span>
         <span class="win-label" data-localize="edit.save">Save</span>
       </a>
-      <a href="#" class="win-command" data-bind="click: $root.addChild">
+      <a class="win-command" data-bind="click: $root.addChild">
         <span class="win-commandicon win-commandring icon-plus"></span>
         <span class="win-label" data-localize="edit.add.child">Add Child</span>
       </a>
-      <a href="#" class="win-command" data-bind="click: $root.addSibling">
+      <a class="win-command" data-bind="click: $root.addSibling">
         <span class="win-commandicon win-commandring icon-add-to-list"></span>
         <span class="win-label" data-localize="edit.add.sibling">Add Sibling</span>
       </a>
-      <a href="#" class="win-command" data-bind="click: $root.deleteNode">
+      <a class="win-command" data-bind="click: $root.deleteNode">
         <span class="win-commandicon win-commandring icon-trashcan"></span>
         <span class="win-label" data-localize="edit.delete">Delete</span>
       </a>
-      <!--<a href="#" class="button" data-bind="click: $root.app.moveNode">moveNode</a>-->
+      <!--<a class="button" data-bind="click: $root.app.moveNode">moveNode</a>-->
 
       <!-- /ko -->
 
@@ -93,7 +93,7 @@
         <select></select><!-- Liste aller Parent Knoten --><br />
 
         <label for="edit_content" data-localize="edit.notes">Notizen</label><br />
-        <textarea id="edit_content" data-bind="html: Content"></textarea><br />
+        <textarea id="edit_content" data-bind="html: Text().Content"></textarea><br />
 
         <h3>
           Details
@@ -127,7 +127,7 @@
             <!-- ko ifnot: Link -->
             <textarea rows="5" style="width:100%" data-bind="value: Title"></textarea>
             <!-- /ko -->
-            <a class="win-command win-command-small" href="#" data-bind="click: $root.app.deleteDetail" title="Delete detail">
+            <a class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
               <span class="win-commandicon win-commandring icon-delete"></span>
             </a>
           </li>

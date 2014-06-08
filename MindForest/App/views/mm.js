@@ -83,12 +83,16 @@
 	//#region Methods
 
 	function nodeClick(con) {
-		//logger.log("mm NodeClick before expandNode", item);
-	    expandNode(con);
+		if (con.ToNode().ChildConnections().length === 0) { //node has no ChildConnections
+			showDetails(con);
+		}
+		else {
+			expandNode(con);
+		}
 	} //nodeClick
 
-	function nodeDblClick(item) {
-		showDetails(item);
+	function nodeDblClick(con) {
+		showDetails(con);
 	} //nodeDblClick
 
 	function expandNode(con, selectChild) {
@@ -98,20 +102,15 @@
 		if (!con.isExpanded() || selectChild >= 0) { //expand
 			//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
 			con.isExpanded(true);
-			if (con.ToNode().ChildConnections().length === 0) {
-				mind
-				  .loadChildren(con.ToNode(), selectChild)
-				  .then(function (result) {
-				  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
-				  	if (result.selectChild >= 0) {
-				  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
-				  	}
-				  })
-				;
-			}
-			else {
-				logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
-			}
+			mind
+			  .loadChildren(con.ToNode(), selectChild)
+			  .then(function (result) {
+			  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
+			  	if (result.selectChild >= 0) {
+			  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
+			  	}
+			  })
+			;
 		}
 		else { //collapse
 			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
@@ -164,7 +163,7 @@
 		for (var i = 0; i < prefix.length; i++) {
 			container.css(prefix[i] + "transform", scale);
 		}
-		plumb.setZoom(factor);
+		mm.plumb.setZoom(factor);
 		app.settings.mm.zoom(factor);
 	} //setZoom
 
