@@ -4,7 +4,7 @@
   <div class="nav-bar metro-navbar bg-color-blueLight">
     <div class="navbar-inner win-commandlayout">
 
-      <a class="win-command" title="Close details" data-bind="click: $root.toggleDetails('hide')">
+      <a class="win-command" title="Close details" data-bind="click: function(data, event) { $root.toggleDetails('hide'); }">
         <span class="win-commandicon win-commandring icon-close"></span>
         <span class="win-label">Close</span>
       </a>
