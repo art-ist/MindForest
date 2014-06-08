@@ -48,7 +48,7 @@
 		"cloudColor" : "Gruppenfarbe",
 		"info"		: "Info",
 		"createdAt"	:	"Erstellt",
-		"modifiedAt"	: "Letzte Änderung",
+		"modifiedAt"	: "Geändert",
 		"by"			: "von"
 	}
 }

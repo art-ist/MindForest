@@ -64,6 +64,7 @@
 				strokeStyle: "#999"
 			}
 		});
+		mm.app.map = mm;
 
 		var rootNode = mind.currentTree();
 		mind.loadChildren(rootNode, true);
@@ -96,20 +97,17 @@
 	} //nodeDblClick
 
 	function expandNode(con, selectChild) {
+		//logger.log("mm expandNode: " + con.Id(), 'mm - expandNode', { con: con, selectChild: selectChild });
 		if (!(selectChild >= 0)) {
 			mind.currentConnection(con);
 		}
 		if (!con.isExpanded() || selectChild >= 0) { //expand
 			//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
 			con.isExpanded(true);
-			mind
-			  .loadChildren(con.ToNode(), selectChild)
-			  .then(function (result) {
-			  	//-logger.log('mm expandNode after data.loadChildren', { con: con, selectChild: selectChild });
-			  	if (result.selectChild >= 0) {
-			  		mind.currentConnection(con.ToNode().ChildConnections()[result.selectChild]);
-			  	}
-			  })
+			if (selectChild >= 0) {
+				mind.currentConnection(con.ChildConnections()[selectChild]);
+			}
+			mind.loadChildren(con.ToNode(), selectChild)
 			;
 		}
 		else { //collapse
@@ -118,13 +116,14 @@
 		} //if
 	} //expandNode
 
-	function showDetails(item) {
-		if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-			mind.loadChildren(item.ToNode(), true);
-			app.toggleDetails('show');
+	function showDetails(con) {
+		if (con.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
+			mind.currentConnection(con);
+			mind.loadChildren(con.ToNode(), true);
+			app.showDetails();
 		}
 		else {
-			app.toggleDetails('hide');
+			app.hideDetails();
 		}
 	} //showDetails
 

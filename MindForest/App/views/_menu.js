@@ -12,9 +12,9 @@
 		mind: mind,
 
 		langs: [
-			{ lang: 'de', name: 'Deutsch' },
-			{ lang: 'en', name: 'English' },
-			{ lang: '%', name: 'All' }
+			{ lang: 'de', name: 'Deutsch' }
+			,{ lang: 'en', name: 'English' }
+			//,{ lang: '%', name: 'All' }
 		],
 
 		//methods
@@ -44,6 +44,7 @@
 
 	function setDetailsStyle(value) {
 		menu.app.settings.detailsStyle(value);
+		menu.app.showDetails();
 	}
 
 }); //define

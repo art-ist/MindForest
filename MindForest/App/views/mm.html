@@ -26,34 +26,38 @@
 					<div class="mm-item-container" data-bind="attr: { id: 'container-c' + FromId() }">
 
 						<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
-                                       style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },
-                                       visible: ToNode().CloudColor
-                                       "></div>
+																						 style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },
+																						 visible: ToNode().CloudColor
+																						 ">
+						</div>
 						<div class="mm-node-container" data-bind="with: ToNode,
-																								click: $root.nodeClick, clickBubble: false,
-																								dblClickBubble: false">
+																											click: $root.nodeClick, clickBubble: false,
+																											dblClickBubble: false">
 							<div class="item" data-bind="class: Class
-                                   , css: { 'current': $parent.isCurrent }
-                                   , style: { backgroundColor: BackColor, color: Color }
-                                   , attr: { id : 'node-' + Id() }
-                                   ">
+																				 , css: { 'current': $parent.isCurrent }
+																				 , style: { backgroundColor: BackColor, color: Color }
+																				 , attr: { id : 'node-' + Id() }
+																				 ">
 								<!--<span data-bind="text: Id"></span>-->
 								<span class="item-title" data-bind="html: Text().Title"></span>
 							</div> <!--item-->
 
 						</div> <!--mm-node-container-->
 						<div class="mm-children-container" data-bind="if: isExpanded">
-							<ul class="" data-bind="attr: { id : 'childrenOf-c' + $parent.Id() },
-                                        sortable: {
-                                            data:         ChildConnections,
-                                            template:     'NodeTemplate',
-										    isEnabled:		$root.app.state.edit,
-										    options:			{ placeholder: 'sortable-placeholder', revert: false }
-									    },
-									    plumb: {
-										    data: ChildConnections
-									    }
-										"></ul>
+							<ul class="" data-bind="attr: { 
+																					id : 'childrenOf-c' + $parent.Id() 
+																			},
+																			sortable: {
+																					data:         ChildConnections,
+																					template:     'NodeTemplate',
+																					isEnabled:		$root.app.state.edit,
+																					options:			{ placeholder: 'sortable-placeholder', revert: false }
+																			},
+																			plumb: {
+																					data: ChildConnections
+																			}
+																			">
+							</ul>
 						</div>
 					</div>
 				</li>
@@ -74,17 +78,18 @@
 				</div>
 				<div class="mm-children-container">
 					<ul data-bind="sortable: {
-													data: ChildConnections,
-                          template: 'NodeTemplate',
-													isEnabled:		$root.app.state.edit,
-													options:			{ placeholder: 'sortable-placeholder', revert: false }
-                        },
-												plumb: {
-													data: ChildConnections,
-													fromId: 'node-' + Id(),
-													containerId: 'mm-root-item-container'
-												}
-												"></ul>
+															data: ChildConnections,
+															template: 'NodeTemplate',
+															isEnabled:		$root.app.state.edit,
+															options:			{ placeholder: 'sortable-placeholder', revert: false }
+													},
+													plumb: {
+															data: ChildConnections,
+															fromId: 'node-' + Id(),
+															containerId: 'mm-root-item-container'
+													}
+												">
+					</ul>
 				</div>
 			</div>
 

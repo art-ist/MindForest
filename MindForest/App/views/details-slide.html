@@ -4,7 +4,7 @@
 	<a id="details-command-close"
 		 class="win-command win-command-small"
 		 rel="tootlip" title="Close details"
-		 href="#" data-bind="onclick: function(data, event) { $root.toggleDetails('hide'); }">  <!-- onclick="$root.app.toggleDetails('hide');" -->
+		 data-bind="click: $root.hideDetails">
 		<span class="win-commandicon win-commandring icon-close"></span>
 	</a>
 
@@ -21,7 +21,7 @@
 				<!-- ko if: Link && !MediaType -->
 				<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 				<!-- ko if: MediaType == 'image' -->
-				<img src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
+				<img data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
 				<!-- ko if: Icon -->
 				<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 				<!-- /ko -->

@@ -4,7 +4,7 @@
   'services/mind'
 ], function (logger, app, mind) {
 
-  var outlineModel = {
+  var outline = {
     //Properties
     title: mind.currentTree().Text().Title,
     app: app,
@@ -22,13 +22,14 @@
     afterMoveNode: afterMoveNode
 
   };
-  return outlineModel;
+  return outline;
 
   function canActivate(treeName, queryString) {
   	return app.canOpenTreeByName(treeName, 'outline');
   } //canActivate
 
   function activate(treeName, queryString) {
+  	outline.app.map = outline;
   	var rootNode = mind.currentTree();
   	mind.loadChildren(rootNode, true);
   } //activate
@@ -64,7 +65,7 @@
   		//else {
   			logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
   			if (selectChild >= 0) {
-  				mind.currentConnection(con.ToNode().ChildConnections()[selectChild]);
+  				mind.currentConnection(con.ChildConnections()[selectChild]);
   			}
   		//}
   	}

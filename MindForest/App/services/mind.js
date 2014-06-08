@@ -120,29 +120,29 @@
 		//computed
 		this.Text = ko.computed({
 			read: function () {
-				return this.Texts()[0];
-				////nothing there
-				//if (!this.Texts) { return null; } 
+				//return this.Texts()[0];
+				//nothing there
+				if (!this.Texts) { return null; } 
 				////single entity
 				//if (this.Texts.Title) {
 				//	return this.Text;
 				//}
-				////empty array 
-				//if (!this.Texts().length) { return null; }
-				////find localized text
-				//for (var i = 0; i < this.Texts().length; i++) {
-				//	if (this.Texts()[i].Lang() == app.lang) {
-				//		return this.Texts()[i];
-				//	}
-				//}
-				////return neutral text
-				//for (var i = 0; i < this.Texts().length; i++) {
-				//	if (!this.Texts()[i].Lang()) {
-				//		return this.Texts()[i];
-				//	}
-				//}
-				////return whatever you have
-				//return this.Texts()[0];
+				//empty array 
+				if (!this.Texts().length) { return null; }
+				//find localized text
+				for (var i = 0; i < this.Texts().length; i++) {
+					if (this.Texts()[i].Lang() === app.lang) {
+						return this.Texts()[i];
+					}
+				}
+				//return neutral text
+				for (var i = 0; i < this.Texts().length; i++) {
+					if (!this.Texts()[i].Lang || !this.Texts()[i].Lang()) {
+						return this.Texts()[i];
+					}
+				}
+				//return whatever you have
+				return this.Texts()[0];
 			},
 			//owner: this,
 			deferEvaluation: true //required because Entity properties are not yet defined

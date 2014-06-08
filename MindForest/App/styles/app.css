@@ -53,9 +53,13 @@ iframe {
 
 .page-region {
 	width: 100%;
-	min-height: 100%;
-	/*overflow: scroll;*/
+	height: 100%;
 	margin-top: 100px; margin-bottom: -100px;
+}
+
+#detailsPage .page-region {
+	margin-top: 0; margin-bottom: 0;
+	overflow: auto;
 }
 
 .page-region-content {

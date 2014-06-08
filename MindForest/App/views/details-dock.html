@@ -1,173 +1,182 @@
 ﻿
 <div id="details-dock" data-bind="with: mind.currentConnection().ToNode">
 
-  <div class="nav-bar metro-navbar bg-color-blueLight">
-    <div class="navbar-inner win-commandlayout">
+	<!--nav-bar-->
+	<div class="nav-bar metro-navbar">
+		<div class="navbar-inner win-commandlayout">
 
-        <a class="win-command" title="Close details" data-bind="click: function(data, event) { $root.toggleDetails('hide'); }">
-            <span class="win-commandicon win-commandring icon-close"></span>
-            <span class="win-label">Close</span>
-        </a>
+			<!-- ko if: $root.state.edit() === true -->
+			<a class="win-command" data-bind="click: $root.save">
+				<span class="win-commandicon win-commandring icon-disk"></span>
+				<span class="win-label" data-localize="edit.save">Save</span>
+			</a>
+			<a class="win-command" data-bind="click: $root.addChild">
+				<span class="win-commandicon win-commandring icon-plus"></span>
+				<span class="win-label" data-localize="edit.add.child">Add Child</span>
+			</a>
+			<a class="win-command" data-bind="click: $root.addSibling">
+				<span class="win-commandicon win-commandring icon-add-to-list"></span>
+				<span class="win-label" data-localize="edit.add.sibling">Add Sibling</span>
+			</a>
+			<a class="win-command" data-bind="click: $root.deleteNode">
+				<span class="win-commandicon win-commandring icon-trashcan"></span>
+				<span class="win-label" data-localize="edit.delete">Delete</span>
+			</a>
+			<!--<a class="button" data-bind="click: $root.app.moveNode">moveNode</a>-->
+			<!-- /ko -->
 
-      <a class="win-command" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit"> <!-- visible: $root.user.mayEdit(),  -->
-        <span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
-        <span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
-      </a>
+			<!--Right-->
+			<a class="win-command pull-right" title="Close details" data-bind="click: $root.hideDetails">
+				<span class="win-commandicon win-commandring icon-close"></span>
+				<span class="win-label">Close</span>
+			</a>
+			<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
+				<!-- visible: $root.user.mayEdit(),  -->
+				<span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
+				<span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
+			</a>
 
-      <!-- ko if: $root.state.edit() === true -->
+		</div>
+	</div>
+	<!--/nav-bar-->
 
-      <hr class="win-command" />
+	<div class="page-region">
 
-      <a class="win-command" data-bind="click: $root.save">
-        <span class="win-commandicon win-commandring icon-disk"></span>
-        <span class="win-label" data-localize="edit.save">Save</span>
-      </a>
-      <a class="win-command" data-bind="click: $root.addChild">
-        <span class="win-commandicon win-commandring icon-plus"></span>
-        <span class="win-label" data-localize="edit.add.child">Add Child</span>
-      </a>
-      <a class="win-command" data-bind="click: $root.addSibling">
-        <span class="win-commandicon win-commandring icon-add-to-list"></span>
-        <span class="win-label" data-localize="edit.add.sibling">Add Sibling</span>
-      </a>
-      <a class="win-command" data-bind="click: $root.deleteNode">
-        <span class="win-commandicon win-commandring icon-trashcan"></span>
-        <span class="win-label" data-localize="edit.delete">Delete</span>
-      </a>
-      <!--<a class="button" data-bind="click: $root.app.moveNode">moveNode</a>-->
+		<!--view-->
+		<div class="page-region-content" data-bind="if: !$root.state.edit()">
+			<h2 data-bind="html: Text().Title"></h2>
+			<p data-bind="html: Text().Content"></p>
 
-      <!-- /ko -->
+			<article data-bind="foreach: Details">
+				<p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
 
-    </div>
-  </div> <!--nav-bar-->
+					<!--<article data-bind="foreach: Text().Details">
+						<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
+					<!-- ko if: Link && !MediaType -->
+					<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
+					<!-- ko if: MediaType == 'image' -->
+					<img src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
+					<!-- ko if: Icon -->
+					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+					<!-- /ko -->
+					<!-- ko if: !Link() -->
+					<span class="item-title" data-bind="html: Text().Title"></span>
+					<!-- /ko -->
+					<!-- ko if: Link -->
+					<a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.showWebPage"></a>
+					<!-- /ko -->
+				</p>
+			</article>
+			<!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
+		</div>
+		<!--/view-->
+		<!--edit-->
+		<div class="page-region-content" data-bind="if: $root.state.edit()">
+			<form role="form">
+				<!--data-bind="event: { keypress: $root.keyset.form }"-->
+				<h2 data-bind="html: Text().Title"></h2>
 
-  <div class="page-region">
+				<!--Klasse-->
+				<label for="edit_class" data-localize="edit.class">Klasse</label>
+				<select id="edit_class" data-bind="value: Class">
+					<!-- TODO: Class binding needed -->
+					<option></option>
+					<option>category</option>
+					<option>question</option>
+					<option>project</option>
+				</select>
+				<label data-localize="edit.parents">Gehört zu</label>
+				<select></select><!-- Liste aller Parent Knoten --><br />
 
-      <div class="page-region-content" data-bind="if: !$root.state.edit()">
-          <h2 data-bind="html: Text().Title"></h2>
-          <p data-bind="html: Text().Content"></p>
+				<!--Texte-->
+				<h3 data-localize="edit.text">Texte</h3><br />
+				<div data-bind="foreach: Texts">
+					<div class="panel panel-default">
+						<div class="form-group pull-right">
+							<select id="edit_class" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
+								<!-- TODO: binding -->
+								<option value=""></option>
+								<option value="de">Deutsch</option>
+								<option value="en">Englisch</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Titel</label>
+							<input style="width:100%" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
+						</div>
+						<div class="form-group">
+							<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Beschreibung</label>
+							<input style="width:100%" type="text" data-bind="value: Description, attr: { id: 'Texts_Description_'+$index() }" />
+						</div>
+						<div class="form-group">
+							<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notizen</label>
+							<textarea style="width:100%" data-bind="html: Text().Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
+						</div>
+					</div>
+				</div>
 
-          <article data-bind="foreach: Details">
-              <p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
+				<!--Details-->
+				<h3>
+					Details
+					<span class="btn-group">
+						<a class="win-command win-command-small" data-toggle="dropdown" href="#">
+							<span class="win-commandicon win-commandring icon-plus"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a data-localize="edit.add.description" onclick="app.addDetail('detail_note');">Add Description</a></li>
+							<li><a data-localize="edit.add.link" onclick="app.addDetail('details_link');">Add Link</a></li>
+						</ul>
+					</span>
+				</h3>
+				<ul class="edit-details-list" data-bind="sortable: { data: Details }">
+					<!--data-bind="foreach: Details"-->
+					<li data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
+						<!-- ko if: Link && !MediaType -->
+						<div class="icon-link" />
+						<!-- /ko -->
+						<!-- ko if: MediaType == 'image' -->
+						<img src="#" data-bind="attr: { src: Link, alt: Title, title: Title }" />
+						<!-- /ko -->
+						<!-- ko if: Icon -->
+						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+						<!-- /ko -->
+						<!-- ko if: Link -->
+						<input type="text" style="width:39%" data-bind="value: Title" />
+						<input type="text" style="width:60%" data-bind="value: Link" />
+						<!-- /ko -->
+						<!-- ko ifnot: Link -->
+						<textarea rows="5" style="width:100%" data-bind="value: Title"></textarea>
+						<!-- /ko -->
+						<a class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
+							<span class="win-commandicon win-commandring icon-delete"></span>
+						</a>
+					</li>
+				</ul>
 
-                  <!--<article data-bind="foreach: Text().Details">
-                    <p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
-                  <!-- ko if: Link && !MediaType -->
-                  <img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
-                  <!-- ko if: MediaType == 'image' -->
-                  <img src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
-                  <!-- ko if: Icon -->
-                  <!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
-                  <!-- /ko -->
-                  <!-- ko if: !Link() -->
-                  <span class="item-title" data-bind="html: Text().Title"></span>
-                  <!-- /ko -->
-                  <!-- ko if: Link -->
-                  <a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.showWebPage"></a>
-                  <!-- /ko -->
-              </p>
-          </article>
-          <!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
-      </div>
+				<!--Style-->
+				<h3 data-localize="edit.style">
+					Stil
+				</h3>
+				<label for="colorpickerField1" data-localize="edit.nodeColor">Knotenfarbe</label>
+				<input type="text" class="colorpicker" size="6" data-bind="value: BackColor" />
+				<br />
+				<label for="colorpickerField3" data-localize="edit.textColor">Textfarbe</label>
+				<input type="text" class="colorpicker" size="6" data-bind="value: Color" />
+				<br />
+				<label for="colorpickerField2" data-localize="edit.cloudColor">Gruppenfarbe</label>
+				<input type="text" class="colorpicker" size="6" data-bind="value: CloudColor" />
 
+				<!--Info-->
+				<h3 data-localize="edit.info">Info</h3>
+				<p>
+					<span data-localize="edit.modifiedAt">Modified at</span> <span data-bind="text: ModifiedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: ModifiedBy"></span>.
+					<span data-localize="edit.createdAt">Created at</span> <span data-bind="text: CreatedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: CreatedBy"></span>.<br />
+				</p>
 
+			</form>
+		</div>
+		<!--edit-->
 
-    <div class="page-region-content" data-bind="if: $root.state.edit()">
-      <form ><!--data-bind="event: { keypress: $root.keyset.form }"-->
-
-              <h2>
-                  <input style="width:100%" type="text" data-bind="value: Text().Title" />
-              </h2>
-
-              <label for="edit_class" data-localize="edit.class">Klasse</label>
-              <select id="edit_class" data-bind="value: Class">
-                  <!-- Class binding needed -->
-                  <option></option>
-                  <option>category</option>
-                  <option>question</option>
-                  <option>project</option>
-              </select>
-
-              <label data-localize="edit.parents">Gehört zu</label>
-              <select></select><!-- Liste aller Parent Knoten --><br />
-
-              <label for="edit_content" data-localize="edit.notes">Notizen</label><br />
-              <textarea id="edit_content" data-bind="html: Text().Content"></textarea><br />
-
-              <h3>
-                  Details
-                  <span class="btn-group">
-                      <a class="win-command win-command-small" data-toggle="dropdown" href="#">
-                          <span class="win-commandicon win-commandring icon-plus"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                          <li><a data-localize="edit.add.description" onclick="app.addDetail('detail_note');">Add Description</a></li>
-                          <li><a data-localize="edit.add.link" onclick="app.addDetail('details_link');">Add Link</a></li>
-                      </ul>
-                  </span>
-              </h3>
-
-              <ul class="edit-details-list" data-bind="sortable: { data: Details }">
-                  <!--data-bind="foreach: Details"-->
-                  <li data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
-                      <!-- ko if: Link && !MediaType -->
-                      <div class="icon-link" />
-                      <!-- /ko -->
-                      <!-- ko if: MediaType == 'image' -->
-                      <img src="#" data-bind="attr: { src: Link, alt: Title, title: Title }" />
-                      <!-- /ko -->
-                      <!-- ko if: Icon -->
-                      <!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
-                      <!-- /ko -->
-                      <!-- ko if: Link -->
-                      <input type="text" style="width:39%" data-bind="value: Title" />
-                      <input type="text" style="width:60%" data-bind="value: Link" />
-                      <!-- /ko -->
-                      <!-- ko ifnot: Link -->
-                      <textarea rows="5" style="width:100%" data-bind="value: Title"></textarea>
-                      <!-- /ko -->
-                      <a class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
-                          <span class="win-commandicon win-commandring icon-delete"></span>
-                      </a>
-                  </li>
-              </ul>
-              <!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
-
-
-              <h3 data-localize="edit.style">
-                  Stil
-              </h3>
-              <!-- <label for="edit_BackColor">Knotenfarbe</label>
-          <div id="colorSelector">
-            <div data-bind="style: {backgroundColor: BackColor}"></div>
-          </div>
-        <label for="edit_Color">Textfarbe</label>
-          <div id="colorSelector2">
-            <div data-bind="style: { backgroundColor: Color }" ></div>
-          </div>
-        <label for="edit_CloudColor">Gruppenfarbe</label>
-          <div id="colorSelector3">
-            <div data-bind="style: { backgroundColor: CloudColor }" ></div>
-          </div>-->
-
-              <label for="colorpickerField1" data-localize="edit.nodeColor">Knotenfarbe</label>
-              <input type="text" class="colorpicker" size="6" data-bind="value: BackColor" />
-              <br />
-              <label for="colorpickerField3" data-localize="edit.textColor">Textfarbe</label>
-              <input type="text" class="colorpicker" size="6" data-bind="value: Color" />
-              <br />
-              <label for="colorpickerField2" data-localize="edit.cloudColor">Gruppenfarbe</label>
-              <input type="text" class="colorpicker" size="6" data-bind="value: CloudColor" />
-
-              <h3 data-localize="edit.info">Info</h3>
-              <p>
-                  <span data-localize="edit.createdAt">Created at</span> <span data-bind="text: CreatedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: CreatedBy"></span>.<br />
-                  <span data-localize="edit.modifiedAt">Last modification at</span> <span data-bind="text: ModifiedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: ModifiedBy"></span>.
-              </p>
-
-</form>
-    </div> <!-- end edit template -->
-
-  </div>
+	</div>
 
 </div>

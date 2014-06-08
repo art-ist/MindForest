@@ -27,10 +27,6 @@
 		trees: mind.trees,
 
 		openTree: app.openTree,
-		logout: app.logout,
-
-		setMapToOutline: function () { app.settings.map('outline'); },
-		setMapToMM: function () { app.settings.map('mm'); },
 
 	}; //forestModel (vm)
 

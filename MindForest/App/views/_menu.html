@@ -8,32 +8,7 @@
 	</li>
 	<li data-bind="visible: app.user.isAuthenticated">
 		<a tabindex="-1">
-			<span data-bind="click: logout, text: app.user.name()"></span> - <span data-localize="app.logout">Logout</span>
-		</a>
-	</li>
-
-	<!--language-->
-	<li class="nav-header" data-localize="app.settings.language">Language</li>
-	<!-- ko foreach: langs -->
-	<li>
-		<a tabindex="-1" data-bind="click: $root.setLang ">
-			<span data-bind="text: name"></span>
-			<i class="icon-ok" data-bind="visible: $root.app.lang() === lang">●</i>
-		</a>
-	</li>
-	<!-- /ko -->
-	<!--map-->
-	<li class="nav-header" data-localize="app.settings.visualization">Visualization</li>
-	<li>
-		<a tabindex="-1" data-bind="click: function() { setMap('outline'); }">
-			<span data-localize="app.settings.visualization-outline">Outline</span>
-			<i class="icon-ok" data-bind="visible: app.settings.map() === 'outline'">●</i>
-		</a>
-	</li>
-	<li>
-		<a tabindex="-1" data-bind="click: function() { setMap('mm'); }">
-			<span data-localize="app.settings.visualization-mindmap">Mind Map</span>
-			<i class="icon-ok" data-bind="visible: app.settings.map() === 'mm'">●</i>
+			<span data-bind="click: app.logout, text: app.user.name"></span> - <span data-localize="app.logout">Logout</span>
 		</a>
 	</li>
 
@@ -49,6 +24,32 @@
 		<a tabindex="-1" data-bind="click: function() { setDetailsStyle('lightBox'); }">
 			<span data-localize="app.settings.showDetails-slideshow">slideshow</span>
 			<i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'lightBox'">●</i>
+		</a>
+	</li>
+
+	<!--language-->
+	<li class="nav-header" data-localize="app.settings.language">Language</li>
+	<!-- ko foreach: langs -->
+	<li>
+		<a tabindex="-1" data-bind="click: $root.setLang ">
+			<span data-bind="text: name"></span>
+			<i class="icon-ok" data-bind="visible: $root.app.lang() === lang">●</i>
+		</a>
+	</li>
+	<!-- /ko -->
+
+	<!--map-->
+	<li class="nav-header" data-localize="app.settings.visualization">Visualization</li>
+	<li>
+		<a tabindex="-1" data-bind="click: function() { setMap('outline'); }">
+			<span data-localize="app.settings.visualization-outline">Outline</span>
+			<i class="icon-ok" data-bind="visible: app.settings.map() === 'outline'">●</i>
+		</a>
+	</li>
+	<li>
+		<a tabindex="-1" data-bind="click: function() { setMap('mm'); }">
+			<span data-localize="app.settings.visualization-mindmap">Mind Map</span>
+			<i class="icon-ok" data-bind="visible: app.settings.map() === 'mm'">●</i>
 		</a>
 	</li>
 

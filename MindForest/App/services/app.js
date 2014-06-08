@@ -72,6 +72,8 @@
 		canOpenTreeByName: canOpenTreeByName,
 
 		toggleDetails: toggleDetails,
+		showDetails: function () { toggleDetails('show') },
+		hideDetails: function () { toggleDetails('hide') },
 		showWebPage: showWebPage,
 		hideWebPage: hideWebPage,
 		toggleEdit: toggleEdit,
@@ -350,7 +352,7 @@
 	function selectNextSibling() {
 		//if (!app.select) return;
 		var currCon = mind.currentConnection();
-		var parent = mind.findNodeById(currCon.FromId());
+		var parent = currCon.FromNode();
 		var siblings = parent.ChildConnections();
 
 		var pos = $.inArray(currCon, siblings);
@@ -364,7 +366,7 @@
 	function selectPreviousSibling() {
 		//if (!app.select) return;
 		var currCon = mind.currentConnection();
-		var parent = mind.findNodeById(currCon.FromId());
+		var parent = currCon.FromNode();
 		var siblings = parent.ChildConnections();
 
 		var pos = $.inArray(currCon, siblings);
@@ -378,18 +380,18 @@
 	function selectFirstChild() {
 		//if (!app.select) return;
 		var currCon = mind.currentConnection();
-
-		if (currCon.HasChildren()) {
-			app.map.expandNode(currCon, null, 0);
+		var childCons = currCon.ChildConnections();
+		if (childCons.length) {
+			app.map.expandNode(currCon, 0);
 		}
 
 	} //selectFirstChild
 	function selectFirstParent() {
 		//if (!app.select) return;
 		var currCon = mind.currentConnection();
-		var parentCon = mind.getParentConnection(currCon.FromId());
-		if (parentCon) {
-			app.select(parentCon);
+		var parentCons = currCon.ParentConnections();
+		if (parentCons.length) {
+			app.select(parentCons[0]);
 		}
 	} //selectFirstParent
 
@@ -453,8 +455,9 @@
 	}
 
 	function openTree(item, event) {
+		var tree = item.Text().Title();
 		mind.currentTree(item);
-		router.navigate('#/' + app.settings.map());
+		router.navigate('#/' + (tree ? tree + '/' : '') + app.settings.map());
 	} //openTree
 
 	var detailsLoaded = false;

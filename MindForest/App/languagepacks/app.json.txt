@@ -47,8 +47,8 @@
 		"textColor" :	"Textcolor",
 		"cloudColor" : "Cloudcolor",
 		"info"		: "Info",
-		"createdAt"	:	"Created at",
-		"modifiedAt"	: "Last modification at",
+		"createdAt"	:	"Created",
+		"modifiedAt"	: "Modified",
 		"by"			: "by"
 	}
 }
