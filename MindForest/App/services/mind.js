@@ -191,17 +191,18 @@
 			deferEvaluation: true //required because Entity properties are not yet defined
 		}); //ChildConnections
 		this.ParentConnections = ko.computed({
-			read: function () {
-				var result = [];
-				if (!this.ConnectionsTo || !this.ConnectionsTo()) { return result; }
-				var connections = this.ConnectionsTo();
-				for (var i = 0; i < connections.length; i++) {
-					//whana find the Node if you are on a detail? Why not?
-					//if (connections[i].Relation() === Relation.Child) {
-					result.push(connections[i]);
-					//}
-				}
-				return result;
+		    read: function () {
+		        return this.ConnectionsFrom();
+				//var result = [];
+				//if (!this.ConnectionsTo || !this.ConnectionsTo()) { return result; }
+				//var connections = this.ConnectionsTo();
+				//for (var i = 0; i < connections.length; i++) {
+				//	//whana find the Node if you are on a detail? Why not?
+				//	//if (connections[i].Relation() === Relation.Child) {
+				//	result.push(connections[i]);
+				//	//}
+				//}
+				//return result;
 			},
 			owner: this,
 			deferEvaluation: true //required because Entity properties are not yet defined

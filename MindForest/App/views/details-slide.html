@@ -4,7 +4,7 @@
 	<a id="details-command-close"
 		 class="win-command win-command-small"
 		 rel="tootlip" title="Close details"
-		 href="#" onclick="$root.app.toggleDetails('hide');">
+		 href="#" data-bind="onclick: function(data, event) { $root.toggleDetails('hide'); }">  <!-- onclick="$root.app.toggleDetails('hide');" -->
 		<span class="win-commandicon win-commandring icon-close"></span>
 	</a>
 

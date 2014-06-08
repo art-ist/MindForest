@@ -552,11 +552,17 @@
 	//#region edit
 
 	function addChild() {
+
+	    console.log("DATA-BIND: app.addChild");
+
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, "project", false, mind.currentConnection());
 		app.select(newConnection);
 	} //addChild
 
 	function addSibling() {
+
+	    console.log("DATA-BIND: app.addSibling");
+
 		//var nodeId = mind.currentConnection().ToNode().Id();
 		//var nodeUniqueId = mind.currentConnection().ToNode().UniqueId();
 		//var parentCon = mind.getParentConnection(nodeId, nodeUniqueId);
@@ -568,6 +574,9 @@
 	} //addSibling 
 
 	function cloneNode() {
+
+	    console.log("DATA-BIND: app.cloneNode");
+
 		//// Shallow copy
 		//var newObject = jQuery.extend({}, oldObject);
 		//// Deep copy
@@ -636,6 +645,8 @@
 
 	function moveNode(movingConnection, toParentChildren/*, toPosition*/) {
 
+	    console.log("DATA-BIND: app.moveNode");
+
 		movingConnection.FromId(toParentChildren.Id); //change FromId to new Parent
 
 		var childConnections = toParentChildren();
@@ -645,6 +656,9 @@
 	} //moveNode
 
 	function addDetail(klasse) {
+
+	    console.log("DATA-BIND: app.addDetails");
+
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, klasse, true);
 		if (klasse === "details_link") {
 			newConnection.ToNode().Title("New Link Text");
@@ -657,6 +671,9 @@
 	} //addDetail
 
 	function deleteNode() {
+
+	    console.log("DATA-BIND: app.deleteNode");
+
 		mind.setDeleted();
 		mind.saveChanges();
 		//only marked as Deleted not realy deleted in DB (saveChanges required)
@@ -664,6 +681,9 @@
 	} //deleteNode
 
 	function deleteDetail(item) {
+
+	    console.log("DATA-BIND: app.deleteDetails");
+
 		var parentCon = mind.getParentConnection(item.Id(), item.UniqueId());
 		mind.setDetailDeleted(item, parentCon);
 		//Detete Current detail
@@ -671,11 +691,17 @@
 	} //deleteDetail
 
 	function undo() {
+
+	    console.log("DATA-BIND: app.undo");
+
 		return mind.undoChanges();
 		//todo restore ui (-> moves)
 	} //undo
 
 	function save() {
+
+	    console.log("DATA-BIND: app.save()");
+
 		return mind.saveChanges();
 	} //save
 
