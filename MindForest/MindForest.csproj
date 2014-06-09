@@ -211,6 +211,10 @@
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
     <Content Include="App\libraries\knockout-sortable.min.js" />
+    <Content Include="App\libraries\moment-with-langs.js" />
+    <Content Include="App\libraries\moment-with-langs.min.js" />
+    <Content Include="App\libraries\moment.js" />
+    <Content Include="App\libraries\moment.min.js" />
     <Content Include="App\services\auth.js" />
     <Content Include="App\services\mind.metadata.js" />
     <Content Include="App\services\mind.js" />
@@ -384,6 +388,8 @@
     <Content Include="App\libraries\eye.js" />
     <Content Include="App\languagepacks\app.json.txt" />
     <Content Include="App\languagepacks\app-de.json.txt" />
+    <Content Include="_sql\3 DB Update to Preview 2.sql" />
+    <Content Include="_sql\3a DB Update to Preview 2 - Rearrange Connection Properties.sql" />
     <None Include="App\libraries\jquery-2.0.3.intellisense.js" />
     <Content Include="App\libraries\glimpse-knockout.js" />
     <Content Include="App\libraries\r.js" />
@@ -392,7 +398,6 @@
     <Content Include="App\libraries\toastr.js" />
     <Content Include="App\libraries\toastr.min.js" />
     <Content Include="App\libraries\typings\requirejs\require.d.ts" />
-    <Content Include="App\libraries\_jsPlumb DEMOCODE can be deleted.js" />
     <Content Include="App\libraries\jquery-2.0.3.js" />
     <Content Include="App\libraries\jquery-2.0.3.min.js" />
     <Content Include="App\libraries\jquery.js" />

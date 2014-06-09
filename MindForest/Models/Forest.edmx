@@ -4,7 +4,7 @@
 	<edmx:Runtime>
 		<!-- SSDL content -->
 		<edmx:StorageModels>
-		<Schema Namespace="MindForestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+		<Schema Namespace="MindForestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Connections">
           <Key>
             <PropertyRef Name="Id" />
@@ -45,11 +45,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Lang" Type="varchar" MaxLength="2" />
           <Property Name="UserId" Type="int" />
           <Property Name="NodeType" Type="varchar" MaxLength="10" />
           <Property Name="IsTreeRoot" Type="bit" Nullable="false" />
+          <Property Name="TreeSettings" Type="xml" />
           <Property Name="Icon" Type="nvarchar" MaxLength="1000" />
           <Property Name="Class" Type="nvarchar" MaxLength="200" />
           <Property Name="Style" Type="nvarchar" MaxLength="1000" />
@@ -63,22 +64,21 @@
           <Property Name="ReminderAt" Type="datetime2" Precision="2" />
           <Property Name="Progress" Type="tinyint" />
           <Property Name="Link" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
+          <Property Name="LinkStatus" Type="smallint" />
           <Property Name="MediaStreamId" Type="varchar" MaxLength="50" />
           <Property Name="MediaType" Type="varchar" MaxLength="50" />
           <Property Name="MediaOffest" Type="decimal" Precision="7" Scale="2" />
           <Property Name="MediaLength" Type="decimal" Precision="7" Scale="2" />
           <Property Name="MediaCycle" Type="bit" />
           <Property Name="Hook" Type="nvarchar(max)" />
+          <Property Name="RestrictAccess" Type="bit" Nullable="false" />
           <Property Name="ForeignId" Type="varchar" MaxLength="40" />
           <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
           <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ModifiedAt" Type="datetime2" Precision="3" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
-          <Property Name="LinkStatus" Type="smallint" />
-          <Property Name="TreeSettings" Type="xml" />
-          <Property Name="RestrictAccess" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="NodeTexts">
           <Key>
@@ -226,20 +226,6 @@
             </Principal>
             <Dependent Role="Permissions">
               <PropertyRef Name="NodeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Web_Membership_UserProfile">
-          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Membership" Type="Self.Membership" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfiles">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Membership">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -453,10 +439,6 @@
             <End Role="Nodes" EntitySet="Nodes" />
             <End Role="Permissions" EntitySet="Permissions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Web_Membership_UserProfile" Association="Self.FK_Web_Membership_UserProfile">
-            <End Role="UserProfiles" EntitySet="UserProfiles" />
-            <End Role="Membership" EntitySet="Membership" />
-          </AssociationSet>
           <AssociationSet Name="FK_Web_OAuthMembership_UserProfile" Association="Self.FK_Web_OAuthMembership_UserProfile">
             <End Role="UserProfiles" EntitySet="UserProfiles" />
             <End Role="OAuthMembership" EntitySet="OAuthMembership" />
@@ -551,7 +533,7 @@
 					<Key>
 						<PropertyRef Name="Id" />
 					</Key>
-					<Property Type="Int64" Name="Id" Nullable="false" />
+					<Property Type="Int64" Name="Id" Nullable="false" p1:StoreGeneratedPattern="Identity" />
 					<Property Type="String" Name="Lang" MaxLength="2" FixedLength="false" Unicode="false" />
 					<Property Type="Int32" Name="UserId" />
 					<Property Type="String" Name="NodeType" MaxLength="10" FixedLength="false" Unicode="false" />
