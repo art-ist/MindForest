@@ -44,6 +44,7 @@
 
 		addConnection: addConnection,
 		addNode: addNode,
+		addNodeText: addNodeText,
 		deleteNodeAndConnection: deleteNodeAndConnection,
 		deleteAllDetails: deleteAllDetails,
 		deleteChildNodes: deleteChildNodes,

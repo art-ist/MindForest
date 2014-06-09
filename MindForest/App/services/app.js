@@ -80,6 +80,7 @@
 
 		addChild: addChild,
 		addSibling: addSibling,
+		addText: addText,
 		cloneNode: cloneNode,
 		moveNode: moveNode,
 		addDetail: addDetail,
@@ -520,7 +521,7 @@
 			url = 'http://www.youtube.com/embed/' + data.MediaStreamId() + '?autoplay=0&autohide=1&controls=1';
 		}
 		$('#webContent').attr('src', url);
-		$('#webPage-title').text(data.Title());
+		$('#webPage-title').text(data.Text().Title());
 		$('#webPage')
 		  .addClass(app.settings.detailsStyle())
 		  .show(effect);
@@ -582,6 +583,11 @@
 		var newConnection = mind.addNode(parent, mind.currentConnection().ToNode().Position, Relation.Child);
 		mind.currentConnection(newConnection);
 	} //addSibling 
+
+	function addText(lang) {
+		var currCon = mind.currentConnection();
+		mind.addNodeText(currCon, lang);
+	}
 
 	function cloneNode() {
 
@@ -671,8 +677,8 @@
 
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, klasse, true);
 		if (klasse === "details_link") {
-			newConnection.ToNode().Title("New Link Text");
-			newConnection.ToNode().Link("New Link");
+			newConnection.ToNode().Title("Link Title");
+			newConnection.ToNode().Link("http://");
 		}
 		else {
 			newConnection.ToNode().Title("New Description");
