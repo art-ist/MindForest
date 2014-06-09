@@ -558,7 +558,7 @@
 
 		console.log("DATA-BIND: app.addChild");
 
-		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, "project", false, mind.currentConnection());
+		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
 		app.select(newConnection);
 	} //addChild
 
