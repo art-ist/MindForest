@@ -44,9 +44,9 @@
 
 		addConnection: addConnection,
 		addNode: addNode,
-		setDeleted: setDeleted,
-		setDetailDeleted: setDetailDeleted,
-		deletChildNodes: deletChildNodes,
+		deleteNodeAndConnection: deleteNodeAndConnection,
+		deleteAllDetails: deleteAllDetails,
+		deleteChildNodes: deleteChildNodes,
 
 		undoChanges: undoChanges,
 		saveChanges: saveChanges
@@ -354,7 +354,6 @@
 
 	} //loadChildren
 
-
 	function addConnection(fromNode, toNode, insertAfter, relation/*, parentCon*/) {
 
 		//get position
@@ -449,7 +448,6 @@
 		//return
 		return newConnection; //shouldn't this return the node??
 	} //addNode
-
 
 	//set current connection and node deleted and remove from parents 
 	function deleteNodeAndConnection(curCon) {
