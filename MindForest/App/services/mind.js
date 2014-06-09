@@ -431,7 +431,7 @@
 	function addNode(parentNode, insertAfter, relation) {
 	    var toNode = mindContext.createEntity('Node', {
             //TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
-		    Id: breeze.core.getUuid()/*newNodesId,*/
+		    //Id: breeze.core.getUuid()/*newNodesId,*/
 		}, breeze.EntityState.ADDED);
 
 		//initial values

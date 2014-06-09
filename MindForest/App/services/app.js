@@ -580,7 +580,7 @@
 		//var parentCon = mind.getParentConnection(parent.Id(), parent.UniqueId());
 	    //var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
 		var newConnection = mind.addNode(parent, mind.currentConnection().ToNode().Position, Relation.Child);
-		app.select(newConnection);
+		mind.currentConnection(newConnection);
 	} //addSibling 
 
 	function cloneNode() {
