@@ -556,23 +556,30 @@
 
 	function addChild() {
 
-		console.log("DATA-BIND: app.addChild");
+	    console.log("DATA-BIND: app.addChild");
 
-		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
-		app.select(newConnection);
+	    if (!mind.currentConnection().entityAspect.entityState === breeze.EntityState.Added) { // Abfrage ob neues element
+	        mind.loadChildren(mind.currentConnection().ToNode());
+        }
+	    //addNode(parentNode, insertAfter, relation)
+	    var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
+	    mind.currentConnection().isExpanded(true);
+	    mind.currentConnection(newConnection);
 	} //addChild
 
 	function addSibling() {
 
-		console.log("DATA-BIND: app.addSibling");
+	    console.log("DATA-BIND: app.addSibling. Und mind.currentConnection().ToNode().Position = " + mind.currentConnection().ToNode().Position);
 
 		//var nodeId = mind.currentConnection().ToNode().Id();
 		//var nodeUniqueId = mind.currentConnection().ToNode().UniqueId();
 		//var parentCon = mind.getParentConnection(nodeId, nodeUniqueId);
 		var currCon = mind.currentConnection();
-		var parent = mind.findNodeById(currCon.FromId());
+	    //var parent = mind.findNodeById(currCon.FromId());
+		var parent = mind.currentConnection().FromNode();
 		//var parentCon = mind.getParentConnection(parent.Id(), parent.UniqueId());
-		var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
+	    //var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
+		var newConnection = mind.addNode(parent, mind.currentConnection().ToNode().Position, Relation.Child);
 		app.select(newConnection);
 	} //addSibling 
 

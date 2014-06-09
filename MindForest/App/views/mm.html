@@ -45,18 +45,18 @@
 						</div> <!--mm-node-container-->
 						<div class="mm-children-container" data-bind="if: isExpanded">
 							<ul class="" data-bind="attr: { 
-																					id : 'childrenOf-c' + $parent.Id() 
-																			},
-																			sortable: {
-																					data:         ChildConnections,
-																					template:     'NodeTemplate',
-																					isEnabled:		$root.app.state.edit,
-																					options:			{ placeholder: 'sortable-placeholder', revert: false }
-																			},
-																			plumb: {
-																					data: ChildConnections
-																			}
-																			">
+                                                            id : 'childrenOf-c' + $parent.Id() 
+													},
+													sortable: {
+															data:         ChildConnections,
+															template:     'NodeTemplate',
+															isEnabled:		$root.app.state.edit,
+															options:			{ placeholder: 'sortable-placeholder', revert: false }
+													},
+													plumb: {
+															data: ChildConnections
+													}
+													">
 							</ul>
 						</div>
 					</div>

@@ -428,13 +428,14 @@
 		return nodeText;
 	}
 
-	function addNode(parentNode, insertAfter, relation/*, parentCon*/) {
-		var toNode = mindContext.createEntity('Node', {
-			//Id: newNodesId,
+	function addNode(parentNode, insertAfter, relation) {
+	    var toNode = mindContext.createEntity('Node', {
+            //TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
+		    Id: breeze.core.getUuid()/*newNodesId,*/
 		}, breeze.EntityState.ADDED);
 
 		//initial values
-		toNode.Texts.push(addNodeText(toNode, null));
+		addNodeText(toNode, null);
 
 		toNode.CreatedAt(new Date());
 		toNode.CreatedBy(app.user.name());
@@ -443,7 +444,7 @@
 		toNode.IsTreeRoot(false);
 
 		//create connection to link node to parentNode
-		var newConnection = addConnection(parentNode, insertAfter, relation);
+		var newConnection = addConnection(parentNode, toNode, insertAfter, relation);
 
 		//return
 		return newConnection; //shouldn't this return the node??
