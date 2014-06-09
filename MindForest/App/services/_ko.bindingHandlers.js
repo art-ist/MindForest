@@ -1,4 +1,4 @@
-﻿
+﻿//#region Binding Providers
 (function () {
 
 	//Catch binding exceptions using a custom binding provider
@@ -22,7 +22,7 @@
 	};
 
 })();
-
+//#endregion Binding Providers
 
 
 ko.bindingHandlers.fadeVisible = {
@@ -216,3 +216,84 @@ ko.bindingHandlers.plumb = {
 
 	} //update
 }; //ko.bindingHandlers.plumbSortable
+
+
+//add ko binding for Date using moment.js
+ko.bindingHandlers.textDate = {
+	init: function (element, valueAccessor, allBindingsAccessor) {
+		var value = valueAccessor();
+		var allBindings = allBindingsAccessor();
+		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
+		$(element).change(function (event) {
+			var text = $(this).val();
+			try {
+				var m = moment(text, format);
+				var val = value();
+				val.setHours(m.hour());
+				val.setMinutes(m.minute());
+				value(val);
+			}
+			catch (e) { }
+		});
+	},
+	update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		var value = ko.utils.unwrapObservable(valueAccessor());
+		var allBindings = allBindingsAccessor();
+		//Options
+		var attributeName = allBindings.bindTo || 'text';
+		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
+		//parse Date
+		var date = value === null
+						 ? null
+						 : value.toString().substring(0, 2) === 'PT'
+						 ? moment.fromPT(value)
+						 : moment(value);
+		if (date && date.isValid) {
+			//format
+			var dateString = date.format(format);
+			//var dateString = date.calendar();
+			if (attributeName === 'text') {
+				$(element).text(dateString);
+			}
+			else {
+				$(element).attr(attributeName, dateString);
+			}
+		}
+		else {
+			//todo trigger ko.validation
+			if (attributeName === 'text') {
+				$(element).text('');
+			}
+			else {
+				$(element).attr(attributeName, null);
+			}
+		}
+	}
+};
+
+//#endregion formatting
+
+//#region Global Extensions
+
+
+//Extension for moment to understand MS DateTime (actually time only) format
+moment.fromPT = function (time) {
+	if (!time) return null;
+	var h = 0, m = 0, s = 0;
+	var parts = time.replace(/PT/, '');
+	if (parts.indexOf("H") > -1) {
+		parts = parts.split("H");
+		h = parseInt(parts[0], 10);
+		parts = parts[1];
+	}
+	if (parts.indexOf("M") > -1) {
+		parts = parts.split("M");
+		m = parseInt(parts[0], 10);
+		parts = parts[1];
+	}
+	if (parts.indexOf("S") > -1) {
+		parts = parts.split("S");
+		s = parseInt(parts[0], 10);
+	}
+	return moment().year(0).month(0).date(0).hour(h).minute(m).second(s);
+};
