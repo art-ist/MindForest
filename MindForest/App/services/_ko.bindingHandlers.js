@@ -100,7 +100,7 @@ ko.bindingHandlers.plumb = {
 							//console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
 							ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
 							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
-							//this.$root.plumb.repaintEverything();
+                    		//this.$root.plumb.repaintEverything();
                     	} catch (e) {
                     		console.log("ERROR Catch von subscription !!! -- " + e.message);
                     	}

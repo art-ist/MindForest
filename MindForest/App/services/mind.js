@@ -4,6 +4,7 @@
 ], function (system, logger) {
 	"use strict";
 
+	//globally define relation "enum"
 	window.Relation = {
 		Detail: 0,
 		Child: 1,
@@ -37,8 +38,8 @@
 		loadChildren: loadChildren,
 		//loadDetails: loadDetails,
 
-		getParentConnection: getParentConnection,
-		getParentNode: getParentNode,
+		//getParentConnection: getParentConnection,
+		//getParentNode: getParentNode,
 		findNodeById: findNodeById,
 
 		addConnection: addConnection,
@@ -360,89 +361,85 @@
 
 	} //loadChildren
 
-	//function loadDetails(node) {
 
-	//	var query = new breeze.EntityQuery()
-	//        .from("GetNodeDetails")
-	//        .withParameters({ Lang: app.lang, Forest: app.forest, NodeId: node.Id() });
+	function addConnection(fromNode, toNode, insertAfter, relation/*, parentCon*/) {
 
-	//	mindContext.executeQuery(query)
-	//      .then(function (result) {
-	//      	result.results.forEach(function (item) {
-	//      		if (mindContext.getEntityByKey("Node", item.UniqueId) === null) {
-	//      			node.Details.push(item);
-	//      		}
-	//      	});
-	//      }).fail(function (e) {
-	//      	logger.error(ex, 'mind - loadDetails');
-	//      })
-	//	;//mindContext.executeQuery(query)
-
-	//} //loadDetails
-
-	function addConnection(fromNode, toNode, insertAfter, isDetail, parentCon) {
-		if (!parentCon) {
-			parentCon = getParentConnection(fromNode.Id(), fromNode.UniqueId());
-		}
-
-		var position;
-		if (insertAfter === null) {
-			position = fromNode.MaxChildPosition() + 1;
+		//get position
+		var position = 0, i = 0;
+		var siblingCons = fromNode.ConnectionsTo();
+		if (insertAfter === null || insertAfter === undefined) { //could be 0
+			for (i = 0; i < siblingCons.length; i++) {
+				if (siblingCons[i].Position() > position) {
+					position = siblingCons[i] + 1;
+				}
+			}
 		}
 		else {
 			position = insertAfter + 1;
-			//renumber following children
-			//renumberConnectionsAt(parentCon.FromId(), position);
+			//increase Position for all following connections
+			for (i = 0; i < siblingCons.length; i++) {
+				if (siblingCons[i].Position() >= position) {
+					siblingCons[i].Position( siblingCons[i].Position() + 1 );
+				}
+			}
 		}
 		//console.log(fromNode().Id() + "  " + newNodesId + "  " + position);
 
+		//create entity
 		var newConnection = mindContext.createEntity('Connection', {
-			FromId: fromNode.Id(),
-			ToId: newNodesId,
-			Position: position,
-			UniqueId: guid()
+			//FromId: fromNode.Id(),
+			//ToId: newNodesId,
+			//FromNode: fromNode,
+			//ToNode: toNode,
+			//Position: position,
+			//Relation: relation
 		}, breeze.EntityState.ADDED);
-		addExtendedConnectionPoroperties(newConnection, toNode, 1, false, false);
 
-		//initial values
+		//set initial values
+		newConnection.FromNode(fromNode);
+		//newConnection.FromId(fromNode.Id());
+		newConnection.ToNode(toNode);
+		//newConnection.ToId(toNode.Id());
+		newConnection.Position(position);
+		newConnection.Relation(relation);
 		newConnection.CreatedAt(new Date());
 		newConnection.CreatedBy(app.user.name());
 		newConnection.ModifiedAt(new Date());
 		newConnection.ModifiedBy(app.user.name());
-		if (isDetail) {
-			newConnection.IsVisible(false);
-			fromNode.Details().push(toNode);
-			fromNode.Details.valueHasMutated();
-		}
-		else {
-			newConnection.IsVisible(true);
-			fromNode.ChildConnections.push(newConnection);
-		}
 
-		fromNode.MaxChildPosition(fromNode.MaxChildPosition() + 1);
+		//
+		fromNode.ConnectionsTo.push(newConnection);
 
-		//parentCon.isExpanded(false);
-		if (typeof parentCon !== 'undefined') {
-			parentCon.isExpanded(true);
-			parentCon.HasChildren(true);
-		}
+		////get parent connection and expand
+		//if (!parentCon && fromNode.ParentConnections()) {
+		//	parentCon = fromNode.ParentConnections()[0]; //take first
+		//}
+		//if (parentCon !== undefined) {
+		//	parentCon.isExpanded(true);
+		//}
 
 		return newConnection;
 	} //addConnection
 
+	function addNodeText(toNode, lang) {
+		//create entity
+		var nodeText = mindContext.createEntity('Node', {}, breeze.EntityState.ADDED);
+		//initial values
+		nodeText.Node(toNode);
+		nodeText.Lang(lang || null);
+		//return
+		return nodeText;
+	}
+
 	function addNode(parent, insertAfter, Class, isDetail, parentCon) {
 		var toNode = mindContext.createEntity('Node', {
-			Id: newNodesId,
-			UniqueId: guid()
+			//Id: newNodesId,
 		}, breeze.EntityState.ADDED);
-		addExtendedNodePoroperties(toNode, 0);
 
-		//addParameter(toNode, newConnection, 0, 1, false, false)
-		//newConnection.ToNode = ko.observable(toNode);
 
 		//initial values
-		toNode.Title("New Node");
 		toNode.Class(Class);
+		toNode.Texts.push(addNodeText(toNode, null));
 
 		toNode.CreatedAt(new Date());
 		toNode.CreatedBy(app.user.name());
@@ -458,21 +455,26 @@
 		return newConnection;
 	} //addNode
 
+
+	//set current connection and node deleted and remove from parents 
 	function setDeleted() {
-		mind.currentConnection().entityAspect.setDeleted();
-		mind.currentConnection().ToNode().entityAspect.setDeleted();
-		if (mind.currentConnection().HasChildren()) {
-			if (confirm('Do you want to delet also the Child Nodes (Recursive)')) {
-				deletChildNodes(mind.currentConnection().ToNode().ChildConnections);
+		var curCon = mind.currentConnection();
+		curCon.entityAspect.setDeleted();
+		curCon.ToNode().entityAspect.setDeleted();
+		if (curCon.ToNode().hasChildren()) {
+			if (confirm('Do you also want to delete all child nodes (recursive)')) {
+				deletChildNodes(curCon.ToNode().ChildConnections);
 			} else {
 				// Do nothing!
 			}
 		}
-		var parent = findNodeById(mind.currentConnection().FromId());
-		parent.ChildConnections.remove(mind.currentConnection);
-		if (parent.ChildConnections().length === 0) {
-			var parentCon = getParentConnection(parent.Id(), parent.UniqueId());
-			parentCon.HasChildren(false);
+		var parent = curCon.FromNode();
+		if (curCon.ToNode().ParentConnections() && curCon.ToNode().ParentConnections().length > 1) {
+			if (confirm('Do you want to delete this node from all other parents as well')) {
+				deletChildNodes(curCon.ToNode().ChildConnections);
+			} else {
+				parent.ChildConnections.remove(mind.currentConnection);
+			}
 		}
 		parent.ChildConnections.valueHasMutated();
 	} //setDeleted
@@ -484,11 +486,25 @@
 		//-console.log("Entyty state after Deleting: " + Detail.entityAspect.entityState + "   " + Connection.entityAspect.entityState);
 	} //setDetailDeleted
 
+	//recursiveley remove 
+	function deletChildNodes(childNodes) {
+		for (var i = 0; i < childNodes().length; i++) {
+			childNodes()[i].entityAspect.setDeleted();
+			childNodes()[i].ToNode().entityAspect.setDeleted();
+			//childNodes()[i].ToNode().isDeleted(true);
+			if (childNodes()[i].HasChildren()) {
+				deletChildNodes(childNodes()[i].ToNode().ChildConnections);
+			}
+			childNodes.remove(childNodes()[i]);
+		}
+	} //deletChildNodes
+
+
 	function saveChanges() {
 		mindContext.saveChanges()
 		  .then(function (saveResult) {
-			var savedEntities = saveResult.entities;
-			var keyMappings = saveResult.keyMappings;
+			//var savedEntities = saveResult.entities;
+			//var keyMappings = saveResult.keyMappings;
 			logger.success("Saved", 'SUCCESS|mind - saveChanges')
 		  })
 		  .fail(function (e) {
@@ -510,52 +526,8 @@
 		mindContext.rejectChanges();
 	} //undoChanges
 
-	function getParentConnection(toId, uniqueId) {
-		var possibleConnections = [];
-		var k = 0;
-		var custType = mindContext.metadataStore.getEntityType("Connection");
-		var connectionEntitys = mindContext.getEntities(custType);
-		for (var i = 0; i < connectionEntitys.length; i++) {
-			var item = connectionEntitys[i];
-			if (item.ToId() === toId) {
-				possibleConnections[k++] = item;
-			}
-		}
-		if (uniqueId) {
-			for (var j = 0; j < possibleConnections.length; j++) {
-				var item2 = possibleConnections[j];
-				if (item2.ToNode().UniqueId() === uniqueId) {
-					return item2;
-				}
-			}
-		}
-		else {
-			if (possibleConnections.length > 0)
-				return possibleConnections[0];
-		}
 
-		return null;
-	} //getParentConnection
-
-	function getParentNode(toId, uniqueId) {
-		var id = getParentConnection(toId, uniqueId).FromId();
-		var parentNode = findNodeById(id);
-		return parentNode;
-	} //getParentNode
-
-	//function renumberConnectionsAt(fromId, position) {
-	//  var custType = mindContext.metadataStore.getEntityType("Connection");
-	//  var connectionEntitys = mindContext.getEntities(custType);
-	//  for (var i = 0; i < connectionEntitys.length; i++) {
-	//    var item = connectionEntitys[i];
-	//    if (item.FromId() === fromId && item.Position() >= position) {
-	//     //-console.log(item.Position());
-	//      item.Position(item.Position() + 1);
-	//     //-console.log(item.Position());
-	//    }
-	//  }
-	//}
-
+	//obsolete
 	function findNodeById(id) {
 		var custType = mindContext.metadataStore.getEntityType("Node");
 		var nodeEntitys = mindContext.getEntities(custType);
@@ -572,18 +544,6 @@
 		}
 		return null;
 	} //findNodeById
-
-	function deletChildNodes(childNodes) {
-		for (var i = 0; i < childNodes().length; i++) {
-			childNodes()[i].entityAspect.setDeleted();
-			childNodes()[i].ToNode().entityAspect.setDeleted();
-			//childNodes()[i].ToNode().isDeleted(true);
-			if (childNodes()[i].HasChildren()) {
-				deletChildNodes(childNodes()[i].ToNode().ChildConnections);
-			}
-			childNodes.remove(childNodes()[i]);
-		}
-	} //deletChildNodes
 
 	//#endregion Methods
 

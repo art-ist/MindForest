@@ -24,7 +24,6 @@
 			</a>
 			<!--<a class="button" data-bind="click: $root.app.moveNode">moveNode</a>-->
 			<!-- /ko -->
-
 			<!--Right-->
 			<a class="win-command pull-right" title="Close details" data-bind="click: $root.hideDetails">
 				<span class="win-commandicon win-commandring icon-close"></span>
@@ -92,26 +91,31 @@
 				<h3 data-localize="edit.text">Texte</h3><br />
 				<div data-bind="foreach: Texts">
 					<div class="panel panel-default">
-						<div class="form-group pull-right">
-							<select id="edit_class" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
-								<!-- TODO: binding -->
-								<option value=""></option>
-								<option value="de">Deutsch</option>
-								<option value="en">Englisch</option>
-							</select>
+						<div class="panel-heading">
+							<div class="form-group pull-right">
+								<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
+									<!-- TODO: binding -->
+									<option value="">Neutral</option>
+									<option value="de">Deutsch</option>
+									<option value="en">Englisch</option>
+								</select>
+							</div>
 						</div>
-						<div class="form-group">
-							<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Titel</label>
-							<input style="width:100%" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
+						<div class="panel-body">
+							<div class="form-group">
+								<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Titel</label>
+								<input class="input-block-level" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
+							</div>
+							<div class="form-group">
+								<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Beschreibung</label>
+								<textarea class="input-block-level" rows="2" type="text" data-bind="value: Description, attr: { id: 'Texts_Description_'+$index() }" />
+							</div>
+							<div class="form-group">
+								<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notizen (nur für Autoren)</label>
+								<textarea class="input-block-level" rows="2" data-bind="html: Text().Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
+							</div>
 						</div>
-						<div class="form-group">
-							<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Beschreibung</label>
-							<input style="width:100%" type="text" data-bind="value: Description, attr: { id: 'Texts_Description_'+$index() }" />
-						</div>
-						<div class="form-group">
-							<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notizen</label>
-							<textarea style="width:100%" data-bind="html: Text().Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
-						</div>
+
 					</div>
 				</div>
 
@@ -145,7 +149,7 @@
 						<input type="text" style="width:60%" data-bind="value: Link" />
 						<!-- /ko -->
 						<!-- ko ifnot: Link -->
-						<textarea rows="5" style="width:100%" data-bind="value: Title"></textarea>
+						<textarea rows="3" class="input-block-level" data-bind="value: Title"></textarea>
 						<!-- /ko -->
 						<a class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
 							<span class="win-commandicon win-commandring icon-delete"></span>
@@ -157,14 +161,18 @@
 				<h3 data-localize="edit.style">
 					Stil
 				</h3>
-				<label for="colorpickerField1" data-localize="edit.nodeColor">Knotenfarbe</label>
-				<input type="text" class="colorpicker" size="6" data-bind="value: BackColor" />
-				<br />
-				<label for="colorpickerField3" data-localize="edit.textColor">Textfarbe</label>
-				<input type="text" class="colorpicker" size="6" data-bind="value: Color" />
-				<br />
-				<label for="colorpickerField2" data-localize="edit.cloudColor">Gruppenfarbe</label>
-				<input type="text" class="colorpicker" size="6" data-bind="value: CloudColor" />
+				<div class="form-group">
+					<label for="colorpickerField1" data-localize="edit.nodeColor">Knotenfarbe</label>
+					<input type="text" class="colorpicker" size="6" data-bind="value: BackColor" />
+				</div>
+				<div class="form-group">
+					<label for="colorpickerField3" data-localize="edit.textColor">Textfarbe</label>
+					<input type="text" class="colorpicker" size="6" data-bind="value: Color" />
+				</div>
+				<div class="form-group">
+					<label for="colorpickerField2" data-localize="edit.cloudColor">Gruppenfarbe</label>
+					<input type="text" class="colorpicker" size="6" data-bind="value: CloudColor" />
+				</div>
 
 				<!--Info-->
 				<h3 data-localize="edit.info">Info</h3>

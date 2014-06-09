@@ -29,7 +29,7 @@
 
 			//Permissions
 			mayEdit: ko.computed(function () {
-				return (app.user && (app.user.isInRole('Author') || app.user.isInRole('Owner')) );
+				return (app.user && (app.user.isInRole('Author') || app.user.isInRole('Owner')));
 			}, null, { deferEvaluation: true }), //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
 
 			isAuthenticated: ko.computed(function () {
@@ -112,7 +112,7 @@
 
 		//TODO: get/store settings from localstorage
 		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
-		app.lang( QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0] ); //'%'
+		app.lang(QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]); //'%'
 
 		//to prevent circular dependency
 		auth.initialize(app);
@@ -556,7 +556,7 @@
 
 	function addChild() {
 
-	    console.log("DATA-BIND: app.addChild");
+		console.log("DATA-BIND: app.addChild");
 
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, "project", false, mind.currentConnection());
 		app.select(newConnection);
@@ -564,7 +564,7 @@
 
 	function addSibling() {
 
-	    console.log("DATA-BIND: app.addSibling");
+		console.log("DATA-BIND: app.addSibling");
 
 		//var nodeId = mind.currentConnection().ToNode().Id();
 		//var nodeUniqueId = mind.currentConnection().ToNode().UniqueId();
@@ -578,7 +578,7 @@
 
 	function cloneNode() {
 
-	    console.log("DATA-BIND: app.cloneNode");
+		console.log("DATA-BIND: app.cloneNode");
 
 		//// Shallow copy
 		//var newObject = jQuery.extend({}, oldObject);
@@ -621,12 +621,12 @@
 
 		//attach children
 		for (var i = 0; i < currentNode.ChildConnections().length; i++) {
-			mind.addConnection(
-			  newNode,
-			  currentNode.ChildConnections()[i].ToNode(),
-			  null,
-			false
-		  );
+			mind.addConnection( //fromNode, toNode, insertAfter, relation, parentCon
+				newNode,
+				currentNode.ChildConnections()[i].ToNode(),
+				null,
+				Relation.Child
+			);
 			//ToDo: copy connection properties
 		}
 
@@ -648,7 +648,7 @@
 
 	function moveNode(movingConnection, toParentChildren/*, toPosition*/) {
 
-	    console.log("DATA-BIND: app.moveNode");
+		console.log("DATA-BIND: app.moveNode");
 
 		movingConnection.FromId(toParentChildren.Id); //change FromId to new Parent
 
@@ -660,7 +660,7 @@
 
 	function addDetail(klasse) {
 
-	    console.log("DATA-BIND: app.addDetails");
+		console.log("DATA-BIND: app.addDetails");
 
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, klasse, true);
 		if (klasse === "details_link") {
@@ -675,7 +675,7 @@
 
 	function deleteNode() {
 
-	    console.log("DATA-BIND: app.deleteNode");
+		console.log("DATA-BIND: app.deleteNode");
 
 		mind.setDeleted();
 		mind.saveChanges();
@@ -685,7 +685,7 @@
 
 	function deleteDetail(item) {
 
-	    console.log("DATA-BIND: app.deleteDetails");
+		console.log("DATA-BIND: app.deleteDetails");
 
 		var parentCon = mind.getParentConnection(item.Id(), item.UniqueId());
 		mind.setDetailDeleted(item, parentCon);
@@ -695,7 +695,7 @@
 
 	function undo() {
 
-	    console.log("DATA-BIND: app.undo");
+		console.log("DATA-BIND: app.undo");
 
 		return mind.undoChanges();
 		//todo restore ui (-> moves)
@@ -703,7 +703,7 @@
 
 	function save() {
 
-	    console.log("DATA-BIND: app.save()");
+		console.log("DATA-BIND: app.save()");
 
 		return mind.saveChanges();
 	} //save
