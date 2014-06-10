@@ -673,16 +673,19 @@
 	} //moveNode
 
 	function addDetail(klasse) {
-
-		console.log("DATA-BIND: app.addDetails");
-
-		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, klasse, true);
+		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Detail);
 		if (klasse === "details_link") {
-			newConnection.ToNode().Title("Link Title");
+
+			console.log("DATA-BIND: app.addDetails - klasse === details_link");
+			
+			newConnection.ToNode().Text().Title("Link Title");
 			newConnection.ToNode().Link("http://");
 		}
 		else {
-			newConnection.ToNode().Title("New Description");
+
+			console.log("DATA-BIND: app.addDetails - klasse != details_link")
+
+			newConnection.ToNode().Text().Title("New Description");
 		}
 		//mind.loadDetails(mind.currentConnection().ToNode());
 	} //addDetail

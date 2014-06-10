@@ -411,7 +411,7 @@
 			fromNode.ConnectionsTo.push(newConnection); //TODO: insert at correct position
 		}
 		else {
-			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter+1, fromNode.ConnectionsTo().length-1);
+			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter+1, fromNode.ConnectionsTo().length);
 			fromNode.ConnectionsTo.push(newConnection);
 			for (var j = 0; j < storItems.length; j++) {
 				fromNode.ConnectionsTo.push(storItems[j]);
@@ -561,27 +561,26 @@
 		}
 	} //deletChildNodes
 
-
 	function saveChanges() {
 		mindContext.saveChanges()
-		  .then(function (saveResult) {
-		  	//var savedEntities = saveResult.entities;
-		  	//var keyMappings = saveResult.keyMappings;
-		  	logger.success("Saved", 'SUCCESS|mind - saveChanges')
-		  })
-		  .fail(function (e) {
-		  	try {
-		  		e.entitiesWithErrors.forEach(function (item) {
-		  			var message = e;
-		  			var errors = item.entityAspect.getValidationErrors();
-		  			errors.forEach(function (error) {
-		  				e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
-		  			});
-		  		});
-		  	} catch (ex) {
-		  		logger.error("Saving failed! " + e, 'mind - saveChanges');
-		  	}
-		  });
+			.then(function (saveResult) {
+			//var savedEntities = saveResult.entities;
+			//var keyMappings = saveResult.keyMappings;
+			logger.success("Saved", 'SUCCESS|mind - saveChanges')
+			})
+			.fail(function (e) {
+			try {
+			  	e.entitiesWithErrors.forEach(function (item) {
+			  		var message = e;
+			  		var errors = item.entityAspect.getValidationErrors();
+			  		errors.forEach(function (error) {
+			  			e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
+			  		});
+			  	});
+			} catch (ex) {
+			  	logger.error("Saving failed! " + e, 'mind - saveChanges');
+			}
+		});
 	} //saveChanges
 
 	function undoChanges() {
