@@ -694,8 +694,10 @@
 
 		console.log("DATA-BIND: app.deleteNode");
 
-		mind.setDeleted();
-		mind.saveChanges();
+		var NodeToDelete = mind.currentConnection();
+		mind.currentConnection(NodeToDelete.FromNode().ConnectionsFrom()[0]);
+		mind.deleteNodeAndConnection(NodeToDelete);
+		//mind.saveChanges();
 		//only marked as Deleted not realy deleted in DB (saveChanges required)
 		//ToDo: UI Feedback that Node is set Deleted
 	} //deleteNode

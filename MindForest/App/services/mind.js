@@ -384,8 +384,9 @@
 
 		//create entity
 		var newConnection = mindContext.createEntity('Connection', {
-			//FromId: fromNode.Id(),
-			//ToId: newNodesId,
+			//Id: breeze.core.getUuid(),
+			//FromId: 1729,//fromNode.Id(),
+			//ToId: 561,//newNodesId,
 			//FromNode: fromNode,
 			//ToNode: toNode,
 			//Position: position,
@@ -394,9 +395,10 @@
 
 		//set initial values
 		newConnection.FromNode(fromNode);
-		//newConnection.FromId(fromNode.Id());
+		//newConnection.FromId(1729); // 
 		newConnection.ToNode(toNode);
-		//newConnection.ToId(toNode.Id());
+		//newConnection.ToId(561); //
+		//newConnection.RestrictAccess = false; //
 		newConnection.Position(position);
 		newConnection.Relation(relation);
 		newConnection.CreatedAt(new Date());
@@ -449,7 +451,13 @@
 	function addNode(parentNode, insertAfter, relation) {
 	    var toNode = mindContext.createEntity('Node', {
             //TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
-		    //Id: breeze.core.getUuid()/*newNodesId,*/
+	    	//Id: breeze.core.getUuid(),/*newNodesId,*/
+	    	//RestrictAccess: false,
+	    	//CreatedAt: new Date(),
+	    	//CreatedBy: app.user.name(),
+			//ModifiedAt: new Date(),
+			//ModifiedBy: app.user.name(),
+			//IsTreeRoot: false
 		}, breeze.EntityState.ADDED);
 
 		//initial values
@@ -460,6 +468,10 @@
 		toNode.ModifiedAt(new Date());
 		toNode.ModifiedBy(app.user.name());
 		toNode.IsTreeRoot(false);
+
+		// Damit si da server ned aufregt, weil a halt gewisse werte umbedingt will^^
+		toNode.ForeignOrigin(0);
+		toNode.ForeignId(0);
 
 		//create connection to link node to parentNode
 		var newConnection = addConnection(parentNode, toNode, insertAfter, relation);
@@ -506,10 +518,10 @@
 			deleteAllDetails(curCon.ToNode());
 			curCon.ToNode().entityAspect.setDeleted();
 			curCon.entityAspect.setDeleted();
-			parent.ConnectionsTo().remove(curCon);
+			parent.ConnectionsTo.remove(curCon);
 		}
 		parent.ConnectionsTo.valueHasMutated();
-		parent.ChildConnections.valueHasMutated(); //tell ko that computed has changed
+		//parent.ChildConnections.valueHasMutated(); //tell ko that computed has changed
 	} //deleteNodeAndConnection
 
 	function deleteConnection(curCon) {
