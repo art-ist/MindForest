@@ -355,10 +355,10 @@
 
 	} //loadChildren
 
-	function addConnection(fromNode, toNode, insertAfter, relation/*, parentCon*/) {
+	function addConnection(fromNode, toNode, insertAfter, relation) {
 
 		//get position
-		var position = 0, i = 0;
+		var position = 0, i = 0, indexInsertAfter = -1;
 		var siblingCons = fromNode.ConnectionsTo();
 		if (insertAfter === null || insertAfter === undefined) { //could be 0
 			//find biggest position and add 1
@@ -372,6 +372,9 @@
 			position = insertAfter + 1;
 			//increase Position for all following connections
 			for (i = 0; i < siblingCons.length; i++) {
+				if (siblingCons[i].Position() == position - 1) {
+					indexInsertAfter = i;
+				}
 				if (siblingCons[i].Position() >= position) {
 					siblingCons[i].Position(siblingCons[i].Position() + 1);
 				}
@@ -401,8 +404,20 @@
 		newConnection.ModifiedAt(new Date());
 		newConnection.ModifiedBy(app.user.name());
 
+		console.log(fromNode.ConnectionsTo().length);
+
 		//insert into collections
-		fromNode.ConnectionsTo.push(newConnection); //TODO: insert at correct position
+		if (insertAfter === null || insertAfter === undefined) {
+			fromNode.ConnectionsTo.push(newConnection); //TODO: insert at correct position
+		}
+		else {
+			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter+1, fromNode.ConnectionsTo().length-1);
+			fromNode.ConnectionsTo.push(newConnection);
+			for (var j = 0; j < storItems.length; j++) {
+				fromNode.ConnectionsTo.push(storItems[j]);
+			}
+			console.log("addConnection: fromNode.ConnectionsTo.splice(indexInsertAfter,0,newConnection)");
+		}
 		toNode.ConnectionsFrom.push(newConnection);
 
 		//TODO: move to app.js where needed
@@ -413,6 +428,8 @@
 		//if (parentCon !== undefined) {
 		//	parentCon.isExpanded(true);
 		//}
+
+		console.log(fromNode.ConnectionsTo().length); //WARUM??? bist du immer noch so lange wie vorher obwohl du erfolgreich geändert wurdest?????
 
 		return newConnection;
 	} //addConnection

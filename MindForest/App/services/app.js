@@ -570,17 +570,18 @@
 
 	function addSibling() {
 
-	    console.log("DATA-BIND: app.addSibling. Und mind.currentConnection().ToNode().Position = " + mind.currentConnection().ToNode().Position);
+	    console.log("DATA-BIND: app.addSibling. Und mind.currentConnection().Position() = " + mind.currentConnection().Position());
 
 		//var nodeId = mind.currentConnection().ToNode().Id();
 		//var nodeUniqueId = mind.currentConnection().ToNode().UniqueId();
 		//var parentCon = mind.getParentConnection(nodeId, nodeUniqueId);
-		var currCon = mind.currentConnection();
-	    //var parent = mind.findNodeById(currCon.FromId());
-		var parent = mind.currentConnection().FromNode();
+		//var parent = mind.findNodeById(currCon.FromId());
 		//var parentCon = mind.getParentConnection(parent.Id(), parent.UniqueId());
 	    //var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
-		var newConnection = mind.addNode(parent, mind.currentConnection().ToNode().Position, Relation.Child);
+
+		//var currCon = mind.currentConnection();
+		//var parent = mind.currentConnection().FromNode();
+	    var newConnection = mind.addNode(mind.currentConnection().FromNode(), mind.currentConnection().Position(), Relation.Child);
 		mind.currentConnection(newConnection);
 	} //addSibling 
 
