@@ -496,7 +496,7 @@
 		}
 		var parent = curCon.FromNode();
 		var parentCons = curCon.ToNode().ConnectionsFrom(); // ParentConnections
-		if (parentCons && parentCons.length > 1) {
+		if (parentCons && parentCons.length > 1) { // ÁBfrage ob es mehrere Eltern gibt
 			if (confirm('Do you want to delete this node from all other parents as well')) {
 				//delete node and all parent connections
 				deleteAllTexts(curCon.ToNode());
@@ -540,8 +540,8 @@
 		var cons = node.ConnectionsTo();
 		for (var i = 0; i < cons.length; i++) {
 			if (cons[i].Relation() === Relation.Detail) {
-				cons[i].entityAspect.setDeleted();
 				cons[i].ToNode().entityAspect.setDeleted();
+				cons[i].entityAspect.setDeleted();
 				//elements are not removed from collection because this function is called only to delete parent node where the whole collection is deleted
 			}
 		}

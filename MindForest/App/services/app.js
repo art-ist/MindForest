@@ -586,6 +586,8 @@
 	} //addSibling 
 
 	function addText(lang) {
+		console.log("DATA-BIND: addText");
+		console.log(lang);
 		var currCon = mind.currentConnection();
 		mind.addNodeText(currCon, lang);
 	}
@@ -693,6 +695,10 @@
 	function deleteNode() {
 
 		console.log("DATA-BIND: app.deleteNode");
+		if (mind.currentConnection().isTreeRoot) {
+			logger.error("You cant delete the TreeRoot!");
+			return null;
+		}
 
 		var NodeToDelete = mind.currentConnection();
 		mind.currentConnection(NodeToDelete.FromNode().ConnectionsFrom()[0]);
@@ -703,13 +709,8 @@
 	} //deleteNode
 
 	function deleteDetail(item) {
-
 		console.log("DATA-BIND: app.deleteDetails");
-
-		var parentCon = mind.getParentConnection(item.Id(), item.UniqueId());
-		mind.setDetailDeleted(item, parentCon);
-		//Detete Current detail
-		mind.saveChanges();
+		mind.deleteNodeAndConnection(item.ConnectionsFrom()[0]);
 	} //deleteDetail
 
 	function undo() {
