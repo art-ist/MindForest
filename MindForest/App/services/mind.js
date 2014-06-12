@@ -365,7 +365,7 @@
 			//find biggest position and add 1
 			for (i = 0; i < siblingCons.length; i++) {
 				if (siblingCons[i].Position() > position) {
-					position = siblingCons[i] + 1;
+					position = siblingCons[i].Position() + 1;
 				}
 			}
 		} else {
