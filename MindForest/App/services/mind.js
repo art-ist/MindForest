@@ -125,13 +125,14 @@
 				//empty array 
 				if (!this.Texts().length) { return null; }
 				//find localized text
-				for (var i = 0; i < this.Texts().length; i++) {
+				var i = 0;
+				for (i = 0; i < this.Texts().length; i++) {
 					if (this.Texts()[i].Lang() === app.lang) {
 						return this.Texts()[i];
 					}
 				}
 				//return neutral text
-				for (var i = 0; i < this.Texts().length; i++) {
+				for (i = 0; i < this.Texts().length; i++) {
 					if (!this.Texts()[i].Lang || !this.Texts()[i].Lang()) {
 						return this.Texts()[i];
 					}
@@ -367,12 +368,11 @@
 					position = siblingCons[i] + 1;
 				}
 			}
-		}
-		else {
+		} else {
 			position = insertAfter + 1;
 			//increase Position for all following connections
 			for (i = 0; i < siblingCons.length; i++) {
-				if (siblingCons[i].Position() == position - 1) {
+				if (siblingCons[i].Position() === position - 1) {
 					indexInsertAfter = i;
 				}
 				if (siblingCons[i].Position() >= position) {
@@ -413,7 +413,7 @@
 			fromNode.ConnectionsTo.push(newConnection); //TODO: insert at correct position
 		}
 		else {
-			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter+1, fromNode.ConnectionsTo().length);
+			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter + 1, fromNode.ConnectionsTo().length);
 			fromNode.ConnectionsTo.push(newConnection);
 			for (var j = 0; j < storItems.length; j++) {
 				fromNode.ConnectionsTo.push(storItems[j]);
@@ -449,12 +449,12 @@
 	}
 
 	function addNode(parentNode, insertAfter, relation) {
-	    var toNode = mindContext.createEntity('Node', {
-            //TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
-	    	//Id: breeze.core.getUuid(),/*newNodesId,*/
-	    	//RestrictAccess: false,
-	    	//CreatedAt: new Date(),
-	    	//CreatedBy: app.user.name(),
+		var toNode = mindContext.createEntity('Node', {
+			//TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
+			//Id: breeze.core.getUuid(),/*newNodesId,*/
+			//RestrictAccess: false,
+			//CreatedAt: new Date(),
+			//CreatedBy: app.user.name(),
 			//ModifiedAt: new Date(),
 			//ModifiedBy: app.user.name(),
 			//IsTreeRoot: false
@@ -506,8 +506,7 @@
 					parentCons[i].entityAspect.setDeleted();
 					parentCons[i].FromNode().ConnectionsTo.remove(parentCons[i]);
 				}
-			}
-			else {
+			} else {
 				//delete current connection only
 				curCon.entityAspect.setDeleted();
 				parent.ConnectionsTo().remove(curCon);
@@ -532,8 +531,8 @@
 		curCon.entityAspect.setDeleted();
 		node.ConnectionsFrom.remove(curCon);
 		parent.ConnectionsTo.remove(curCon);
-		
-		node.ParentConnections.valueHasMutated()
+
+		node.ParentConnections.valueHasMutated();
 		parent.ChildConnections.valueHasMutated(); //tell ko that computed has changed
 	} //deleteConnection
 
@@ -576,23 +575,24 @@
 	function saveChanges() {
 		mindContext.saveChanges()
 			.then(function (saveResult) {
-			//var savedEntities = saveResult.entities;
-			//var keyMappings = saveResult.keyMappings;
-			logger.success("Saved", 'SUCCESS|mind - saveChanges')
+				//var savedEntities = saveResult.entities;
+				//var keyMappings = saveResult.keyMappings;
+				logger.success("Saved", 'SUCCESS|mind - saveChanges');
 			})
 			.fail(function (e) {
-			try {
-			  	e.entitiesWithErrors.forEach(function (item) {
-			  		var message = e;
-			  		var errors = item.entityAspect.getValidationErrors();
-			  		errors.forEach(function (error) {
-			  			e += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
-			  		});
-			  	});
-			} catch (ex) {
-			  	logger.error("Saving failed! " + e, 'mind - saveChanges');
-			}
-		});
+				try {
+					var message = 'Save FAILED: ';
+					e.entitiesWithErrors.forEach(function (item) {
+						var errors = item.entityAspect.getValidationErrors();
+						errors.forEach(function (error) {
+							message += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
+						});
+					});
+					logger.error("Saving failed! " + message, 'mind - saveChanges', e);
+				} catch (ex) {
+					logger.error("Saving failed! " + e, 'mind - saveChanges', e);
+				}
+			});
 	} //saveChanges
 
 	function undoChanges() {
@@ -609,8 +609,7 @@
 			if (item.Id() === id) {
 				if (id === mind.currentTree().Id()) {
 					return mind.currentTree();
-				}
-				else {
+				} else {
 					return item;
 				}
 			}
