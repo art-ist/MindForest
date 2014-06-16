@@ -1,14 +1,15 @@
 ﻿<ul class="dropdown-menu" role="menu">
 
 	<!--login-->
+	<li class="nav-header" data-bind="visible: app.user.isAuthenticated, text: app.user.name"></li>
 	<li data-bind="visible: !app.user.isAuthenticated()">
 		<a tabindex="-1" href="#login" data-toggle="modal">
 			<span data-localize="app.login">Login</span>
 		</a>
 	</li>
 	<li data-bind="visible: app.user.isAuthenticated">
-		<a tabindex="-1">
-			<span data-bind="click: app.logout, text: app.user.name"></span> - <span data-localize="app.logout">Logout</span>
+		<a tabindex="-1" data-bind="click: app.logout">
+			<span data-localize="app.logout">Logout</span>
 		</a>
 	</li>
 

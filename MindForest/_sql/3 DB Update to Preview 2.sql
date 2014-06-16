@@ -193,7 +193,7 @@ Create Function Mind.GetChildConnectionInfos ( @NodeId int = null, @User sysname
 	Begin
 
 		--Defaults
-		Declare @UserId int = Null;
+		Declare @UserId nvarchar(128) = Null;
 		Declare @Roles table (RoleId bigint Not Null);
 		If (@Levels Is Null) Set @Levels = 1; --default to 1 level up
 		If (@Lang Is Null) Set @Lang = '%';		--default to all languages
@@ -217,8 +217,8 @@ Create Function Mind.GetChildConnectionInfos ( @NodeId int = null, @User sysname
 		
 		--Get User credentials
 		If (@User Is Not Null) Begin
-			Set @UserId = (Select UserId From Web.UserProfiles Where UserName = @User);
-			Insert Into @Roles Select RoleId From Web.UsersInRoles Where UserId = @UserId;
+			Set @UserId = (Select Id From App.Users Where UserName = @User);
+			Insert Into @Roles Select RoleId From App.UserRoles Where UserId = @UserId;
 		End;
 
 		--Get Connections
@@ -287,15 +287,15 @@ Create Function Mind.GetParentConnectionInfos ( @NodeId int, @User sysname = nul
 	Begin
 
 		--Defaults
-		Declare @UserId int = Null;
+		Declare @UserId nvarchar(128) = Null;
 		Declare @Roles table (RoleId bigint Not Null);
 		If (@Levels Is Null) Set @Levels = 1; --default to 1 level up
 		If (@Lang Is Null) Set @Lang = '%';		--default to all languages
 		
 		--Get User credentials
 		If (@User Is Not Null) Begin
-			Set @UserId = (Select UserId From Web.UserProfiles Where UserName = @User);
-			Insert Into @Roles Select RoleId From Web.UsersInRoles Where UserId = @UserId;
+			Set @UserId = (Select Id From App.Users Where UserName = @User);
+			Insert Into @Roles Select RoleId From App.UserRoles Where UserId = @UserId;
 		End;
 
 		--Get Connections

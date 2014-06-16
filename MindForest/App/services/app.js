@@ -19,22 +19,21 @@
 
 		user: {
 			name: ko.observable('Anonymous'),
-			//id: new ko.observable('0'),
+			//email: ko.observable(null),
+			access_token: ko.observable(null),
+			roles: ko.observableArray([]),
 
-			roles: ko.observableArray(['Owner']),
-
+			isAuthenticated: ko.computed(function () {
+				return app.user.access_token() ? true : false;
+			}, null, { deferEvaluation: true }), //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
 			isInRole: function (role) {
 				return (app.user.roles().indexOf(role) > -1);
 			},
-
 			//Permissions
 			mayEdit: ko.computed(function () {
-				return (app.user && (app.user.isInRole('Author') || app.user.isInRole('Owner')));
-			}, null, { deferEvaluation: true }), //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
-
-			isAuthenticated: ko.computed(function () {
-				return (app.user && (app.user.name() !== 'Anonymous'));
+				return (app.user.isInRole('Author')); //TODO: add check if user is the creator of current node
 			}, null, { deferEvaluation: true }) //ATTENTION: must deferEvaluation because in the initial run app is not yet defined
+
 		}, //user
 
 		state: {
@@ -273,32 +272,17 @@
 	//#region security
 
 	function login(username, password) {
-		auth.login(
-		  username,
-		  password,
-		  function success(claims) {
-		  	$.each(claims, function (i, claim) {
-		  		switch (claim.Type) {
-		  			case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":
-		  				app.user.name(claim.Value);
-		  				break;
-		  			case "http://schemas.microsoft.com/ws/2008/06/identity/claims/role":
-		  				app.user.roles.push(claim.Value);
-		  				break;
-		  		}
-		  	});
-		  	console.log('[app.js - login] success', app.user);
-		  },
-		  function error(message) {
-		  	alert(JSON.stringify(message));
-		  }
-		);
+		auth.login(username, password);
 	} //login
 
 	function logout() {
+		if (app.state.edit()) {
+			//TODO: if editing save changes
+			app.state.edit(false);
+		}
 		auth.logout();
-		app.user.name('Anonymous');
-		app.user.roles.removeAll();
+		//app.user.name('Anonymous');
+		//app.user.roles.removeAll();
 	} //logout
 
 	//#endregion security

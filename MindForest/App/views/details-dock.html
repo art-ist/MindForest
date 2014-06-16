@@ -29,8 +29,7 @@
 				<span class="win-commandicon win-commandring icon-close"></span>
 				<span class="win-label">Close</span>
 			</a>
-			<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
-				<!-- visible: $root.user.mayEdit(),  -->
+			<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="visible: $root.user.mayEdit(), click: $root.toggleEdit">
 				<span class="win-commandicon win-commandring" data-bind="class: $root.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
 				<span class="win-label" data-bind="text: $root.state.edit() ? 'View' : 'Edit'"></span>
 			</a>

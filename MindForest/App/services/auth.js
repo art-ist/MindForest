@@ -4,86 +4,103 @@
   'services/logger'
 ], function (require, system, logger) {
 
-  //#region Private Fields
+	//#region Private Fields
 
-  var authServiceUri = config.host + '/api{forest}Identity';
+	var authServiceUri = config.host + '/api{forest}Identity';
 
-  //var authentication = {
-  //  scheme: 'Basic',
-  //  token: null,
-  //  setToken: function (uid, pwd) {
-  //    authentication.token = Base64.encode(uid + ":" + pwd);
-  //  }
-  //};
+	//#endregion Private Fields
 
-  //#endregion Private Fields
+	var auth = {
+		initialize: initialize,
 
-  var auth = {
-    initialize: initialize,
+		//Properties
+		app: null,
 
-    //Properties
+		//Methods
+		login: login,
+		logout: logout
+	};
 
-    //Methods
-    login: login,
-    logout: logout
-  };
+	//#region Constructor
+	//#endregion Constructor
 
+	return auth;
 
-  //#region Constructor
+	function initialize(app) {
+		auth.app = app;
+		//authServiceUri = authServiceUri.replace(/{forest}/, app.forest ? '/' + app.forest + '/' : '/');
+		authServiceUri = authServiceUri.replace(/{forest}/, '/');
 
-  ////set computed properties that require context 
+		//TODO: if available get from localstorage
 
-  //// add basic auth header to breeze calls
-  //var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
-  //ajaxAdapter.defaultSettings = {
-  //  beforeSend: function (xhr, settings) {
-  //    _addAuthorizationToken(xhr, settings);
-  //  }
-  //};
+		// add auth header to breeze calls
+		var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
+		ajaxAdapter.defaultSettings = {
+			beforeSend: function (xhr, settings) {
+				if (app.user.access_token()) {
+					xhr.setRequestHeader("Authorization", 'Bearer ' + app.user.access_token());
+				}
+			}
+		};
+	}
 
-  //#endregion Constructor
-  return auth;
+	//#region Private Functions
+	//#endregion Private Functions
 
-  function initialize(app) {
-    authServiceUri = authServiceUri.replace(/{forest}/,  app.forest ? '/' + app.forest + '/': '/');    
-  }
+	//#region Methods
 
-  //#region Private Functions
+	function login(username, password) {
+		return $.ajax({
+			type: "POST",
+			url: authServiceUri + "/Login",
+			contentType: 'application/x-www-form-urlencoded',
+			data: 'grant_type=password&username=' + username + '&password=' + password,
+		}).done(function (result, textStatus, jqXHR) {
+			var user = auth.app.user;
+			user.name(result.userName);
+			user.access_token(result.access_token);
+			//TODO: get roles
+			user.roles(['Author']);
 
-  function _addAuthorizationToken(xhr, settings) {
-    if (authentication.token) {
-      xhr.setRequestHeader("Authorization", 'Basic ' + authentication.token);
-    }
-  }
+			//function success(claims) {
+			//	$.each(claims, function (i, claim) {
+			//		switch (claim.Type) {
+			//			case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":
+			//				app.user.name(claim.Value);
+			//				break;
+			//			case "http://schemas.microsoft.com/ws/2008/06/identity/claims/role":
+			//				app.user.roles.push(claim.Value);
+			//				break;
+			//		}
+			//	});
+			//	console.log('[app.js - login] success', app.user);
+			//}
 
-  //#endregion Private Functions
+			//TODO: save to local storage
+			logger.success(result.userName + ' logged in', 'auth - login', result);
+		}).fail(function (jqXHR, textStatus, errorThrown) {
+			logger.error('Login failed: ' + textStatus, 'auth - login', errorThrown);
+		});
+	} //login
 
+	function logout() {
+		var user = auth.app.user;
+		user.name('Anonymous');
+		//user.email(null);
+		user.access_token(null);
+		//user.roles.removeAll();
+		user.roles([]);
+		//server logout
+		return $.ajax({
+			type: "POST",
+			url: authServiceUri + "/Logout"
+		}).fail(function (jqXHR, textStatus, errorThrown) {
+			logger.logError('Logout failed: ' + textStatus, 'auth - logout', errorThrown);
+		}).always(function () {
+			logger.info('Logged out');
+		});
+	} //logout
 
-  //#region Methods
-
-  function login(username, password, success, error) {
-    //console.log("[mind - login] logging in '" + username + "' with password '" + password + "', token: " + Base64.encode(username + ":" + password));
-    authentication.setToken(username, password);
-    $.ajax({
-      type: "GET",
-      url: authServiceUri + "/Get",
-      beforeSend: function (xhr, settings) {
-        _addAuthorizationToken(xhr, settings);
-      },
-      success: function (result) {
-        console.log('[mind.js - login] result', result);
-        success(result);
-      },
-      error: function (err) {
-        logger.error('Login failed. ' + err.login, 'mind - loadTrees');
-      }
-    }); //ajax
-  } //login
-
-  function logout() {
-    authentication.token = null;
-  } //logout
-
-  //#endregion Methods
+	//#endregion Methods
 
 });
