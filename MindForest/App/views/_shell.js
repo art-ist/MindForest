@@ -10,6 +10,8 @@
     activate: onActivate,
     //,bind: onBind
 
+    modal_onkeypress: app.modal_onkeypress,
+
     login: login
   };
   return shell;

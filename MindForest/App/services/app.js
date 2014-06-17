@@ -58,6 +58,8 @@
 		login: login,
 		logout: logout,
 
+		modal_onkeypress: modal_onkeypress,
+
 		isSelected: isSelected,
 		select: select,
 		selectNextSibling: selectNextSibling,
@@ -120,16 +122,6 @@
 
 		//hook global up keyboard functions
 		document.onkeypress = document_onkeypress;
-
-		//TODO: fix modal dialog keyboard shortcuts
-		//hook up modal dialog keyboard shortcuts
-		$('#login.modal').keypress(function (event) {
-			if (event.which === 13) {
-				event.preventDefault(); //prevent default scrolling behaviour
-				$(this).children('.btn-primary')[0].onclick;
-				return false;
-			}
-		});
 
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
@@ -252,6 +244,47 @@
 
 		return true;
 	}; //document_onkeypress
+
+	function modal_onkeypress(event) {
+		//see http://javascript.info/tutorial/keyboard-events
+
+		if (event.isDefaultPrevented) {
+			return false;
+		}
+		var $modal = $(event.delegateTarget);
+
+		// get the key event.type must be keypress
+		var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
+		function getChar(event) {
+			if (event.which === null) {
+				return String.fromCharCode(event.keyCode); // IE
+			}
+			else if (event.which !== 0 && event.charCode !== 0) {
+				return String.fromCharCode(event.which);   // the rest
+			}
+			else {
+				return null; // special key
+			}
+		}
+
+		//navigation
+		switch (key) {
+			case 37: //up
+				return false;
+			case 38: //left
+				return false;
+			case 39: //right
+				return false;
+			case 40: //down
+				return false;
+			case 13: //enter
+				$modal.children('.action-ok')[0].click(); //TODO: run default action
+				return false;
+			case 27: //esc				
+				$modal.children('.action-cancel')[0].click(); //TODO: close dialog (call cancel)
+				return false;
+		} //switch
+	} //dialogs_onkeypress
 
 	//#endregion Event Handlers
 

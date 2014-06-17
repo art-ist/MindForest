@@ -8,20 +8,24 @@ using System.Configuration;
 namespace MindForest.Models {
 
 	public class IdentityContext : IdentityDbContext<AppUser> {
+		private static string _forest;
 
+		//get default connection from config
+		static IdentityContext() {
+			_forest = ConfigurationManager.AppSettings["DefaultForest"];
+		}
 		//constructor: initialize db connection
 		public IdentityContext()
-			: base() {
-			string Forest = ConfigurationManager.AppSettings["DefaultForest"];
-			this.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings[Forest + "Db"].ConnectionString;
+			: base(_forest + "Db") {
+			//this.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings[_forest + "Db"].ConnectionString;
 			this.Configuration.LazyLoadingEnabled = false;
 		}
 		public IdentityContext(string Forest)
-			: base() {
-			if (string.IsNullOrEmpty(Forest)) {
-				Forest = ConfigurationManager.AppSettings["DefaultForest"];
-			}
-			this.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings[Forest + "Db"].ConnectionString;
+			: base(Forest + "Db") {
+			//if (string.IsNullOrEmpty(Forest)) {
+			//	Forest = _forest;
+			//}
+			//this.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings[Forest + "Db"].ConnectionString;
 			this.Configuration.LazyLoadingEnabled = false;
 		}
 

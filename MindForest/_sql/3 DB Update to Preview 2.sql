@@ -487,7 +487,7 @@ Create Function Mind.GetNodes ( @User sysname = null, @Lang varchar(2) = null ) 
 				n.Id In (Select p.NodeId 
 									From Mind.[Permissions] p 
 									Where 
-										p.RoleId In (Select RoleId From Web.UsersInRoles r Inner Join Web.UserProfiles up On (up.UserId = r.UserId) Where UserName = @User)
+										p.RoleId In (Select RoleId From App.UserRoles r Inner Join App.Users up On (up.Id = r.UserId) Where UserName = @User)
 										And 
 										p.Permission >= 1 /*Select*/ 
 									)

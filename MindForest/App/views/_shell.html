@@ -15,23 +15,23 @@
 
   <!--TODO: move detailsPage and webPage here and use binding (sub router?) to load-->
 
-  <div id="login" role="dialog" class="modal hide fade">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-      <h3 data-localize="login.title">Login</h3>
-    </div>
-    <div class="modal-body">
+	<div id="login" role="dialog" class="modal hide fade" data-bind="event: { keypress: modal_onkeypress }">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			<h3 data-localize="login.title">Login</h3>
+		</div>
+		<div class="modal-body">
 
-      <label for="Bamboo Pen & Touchlogin-name" data-localize="login.username">Login name</label>
-      <input id="login-name" type="text" placeholder="Name">
-      <label for="login-pwd" data-localize="login.password">Password</label>
-      <input id="login-pwd" type="password" placeholder="Password">
+			<label for="Bamboo Pen & Touchlogin-name" data-localize="login.username">Login name</label>
+			<input id="login-name" type="text" placeholder="Name">
+			<label for="login-pwd" data-localize="login.password">Password</label>
+			<input id="login-pwd" type="password" placeholder="Password">
 
-    </div>
-    <div class="modal-footer">
-      <a href="#" data-dismiss="modal" class="btn" data-localize="app.cancel">Cancel</a>
-      <a id="login-btn" href="#" class="btn btn-primary" data-localize="login.title" data-bind="click: login">Login</a>
-    </div>
-  </div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" data-dismiss="modal" class="btn action-cancel" data-localize="app.cancel">Cancel</a>
+			<a id="login-btn" href="#" class="btn btn-primary action-ok" data-localize="login.title" data-bind="click: login">Login</a>
+		</div>
+	</div>
 
 </div>
