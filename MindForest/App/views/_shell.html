@@ -1,20 +1,39 @@
 ﻿<div>
 
-  <div id="mapPage" class="page secondary" data-bind="router: {transition: 'entrance'}">
+	<div id="mapPage" class="page secondary" data-bind="router: {transition: 'entrance'}">
 
-    <div class="page-region">
-      <div class="page-region-content">
-        <div class="progress progress-indeterminate">
-          <h2 data-localize="app.loading">Loading ...</h2>
-          <div class="win-ring"></div>
-        </div>
-      </div>
-    </div>
+		<div class="page-region">
+			<div class="page-region-content">
+				<div class="progress progress-indeterminate">
+					<h2 data-localize="app.loading">Loading ...</h2>
+					<div class="win-ring"></div>
+				</div>
+			</div>
+		</div>
 
-  </div>
+	</div>
 
-  <!--TODO: move detailsPage and webPage here and use binding (sub router?) to load-->
+	<!--TODO: move detailsPage and webPage here and use binding (sub router?) to load-->
+	<div id="detailsPage"
+			 class="page secondary tool"
+			 data-bind="compose: { view: app.settings.detailViews[app.settings.detailViewIndex()].view }">
 
+		<div class="progress progress-indeterminate">
+			<div class="win-ring"></div>
+		</div>
+
+	</div>
+
+
+	<div id="webPage"
+			 data-bind="compose: { view:'views/details/webPage' , model:$data }"
+			 class="page secondary tool"
+			 style="width: 100%;">
+		<!--iframe für webpages-->
+	</div>
+
+
+	<!--TODO: move to view-->
 	<div id="login" role="dialog" class="modal hide fade" data-bind="event: { keypress: modal_onkeypress }">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>

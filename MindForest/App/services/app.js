@@ -46,12 +46,16 @@
 			animationDuration: ko.observable(500),
 			cycleNavigation: ko.observable(false),
 			autoScroll: ko.observable(true),
-			detailsStyle: ko.observable('tool-right'), // , lightBox, tool-right
 			appBar: ko.observable('hide'),
 			mm: {
 				zoom: ko.observable(1)//,
 				//wrapItems: new ko.observable(false)
-			}
+			},
+			detailViews: [
+				{ name: 'lightbox', view: 'details/lightbox', effect: { effect: 'fade' } },
+				{ name: 'dock-right', view: 'details/dock', effect: { effect: 'slide', direction: 'right' } }
+			],
+			detailViewIndex: ko.observable(0)
 		}, //settings
 
 		//Methods
@@ -483,53 +487,50 @@
 		if (show === 'show') app.detailsVisible = false;	//on explicit call to show always assume it's hidden
 		if (show === 'hide') app.detailsVisible = true;		//on explicit call to hide always assume it's shown
 
-		var effect = app.settings.detailsStyle() === 'tool-right'
-					 ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
-					 : app.settings.detailsStyle() === 'lightBox'
-					 ? { effect: 'fade', duration: app.settings.animationDuration() }
-					 : null
-		;
+		var view = app.settings.detailViews[app.settings.detailViewIndex()];
+		var effect = view.effect;
+		effect.duration = app.settings.animationDuration();
 
 		if (app.detailsVisible) { //hide
 			//console.log("hideDitails");
 			$('#detailsPage')
 			  .hide(effect) // 'slide', { direction: 'right' }, app.settings.animationDuration()
-			  .removeClass(app.settings.detailsStyle());
+			  .removeClass(view.name);
 			app.detailsVisible = false;
 		}
 		else { //show
 			//console.log("show Ditails");
 
 			$('#detailsPage')
-			  .addClass(app.settings.detailsStyle())
+			  .addClass(view.name)
 			  .show(effect); //'slide', { direction: 'right' }, app.settings.animationDuration()
 
-			if (!app.detailsLoaded) {
-				var detailsFileName;
-				switch (app.settings.detailsStyle()) {
-					case 'lightBox':
-						detailsFileName = '/App/views/details-slide.html';
-						break;
-						//case 'tool-right':
-					default:
-						detailsFileName = '/App/views/details-dock.html';
-						break;
-				}
-				$('#detailsPage').load(detailsFileName, function () {
-					//-console.log("details loaded");
-					ko.applyBindings(app, document.getElementById("detailsPage"));
-					app.detailsLoaded = true;
-				});
-			}
+			//if (!app.detailsLoaded) {
+			//	var detailsFileName;
+			//	switch (view.name) {
+			//		case 'lightBox':
+			//			detailsFileName = '/App/views/detail-lightbox.html';
+			//			break;
+			//			//case 'dock-right':
+			//		default:
+			//			detailsFileName = '/App/views/details-dock.html';
+			//			break;
+			//	}
+			//	$('#detailsPage').load(detailsFileName, function () {
+			//		//-console.log("details loaded");
+			//		ko.applyBindings(app, document.getElementById("detailsPage"));
+			//		app.detailsLoaded = true;
+			//	});
+			//}
 
 			app.detailsVisible = true;
 		}
 	} //toggleDetails
 
 	function showWebPage(data, event) {
-		var effect = app.settings.detailsStyle() === 'tool-right'
+		var effect = app.settings.detailView() === 'dock-right'
 		  ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
-			 : app.settings.detailsStyle() === 'lightBox'
+			 : app.settings.detailView() === 'lightBox'
 			 ? { effect: 'fade', duration: app.settings.animationDuration() }
 			 : null
 		;
@@ -540,14 +541,14 @@
 		$('#webContent').attr('src', url);
 		$('#webPage-title').text(data.Text().Title());
 		$('#webPage')
-		  .addClass(app.settings.detailsStyle())
+		  .addClass(app.settings.detailView())
 		  .show(effect);
 		return false;
 	} //showWebPage
 	function hideWebPage(data, event) {
-		var effect = app.settings.detailsStyle() === 'tool-right'
+		var effect = app.settings.detailView() === 'dock-right'
 			   ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
-			   : app.settings.detailsStyle() === 'lightBox'
+			   : app.settings.detailView() === 'lightBox'
 			   ? { effect: 'fade', duration: app.settings.animationDuration() }
 			   : null
 		;

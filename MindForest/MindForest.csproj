@@ -215,14 +215,19 @@
     <Content Include="App\services\_globals.js" />
     <Content Include="App\services\_ko.bindingHandlers.js" />
     <Content Include="App\styles\toastr.css" />
+    <Content Include="App\views\details\dock.js" />
+    <Content Include="App\views\details\editor.css" />
+    <Content Include="App\views\details\editor.html" />
+    <Content Include="App\views\details\editor.js" />
     <Content Include="App\views\forest.html" />
     <Content Include="App\views\mm.js" />
     <Content Include="App\views\forest.js" />
-    <Content Include="App\views\details-slide.css" />
-    <Content Include="App\views\details-slide.html" />
+    <Content Include="App\views\details\lightbox.css" />
+    <Content Include="App\views\details\lightbox.html" />
     <Content Include="App\views\mm.css" />
     <Content Include="App\views\mm.html" />
-    <Content Include="App\views\details-dock.html" />
+    <Content Include="App\views\details\dock.html" />
+    <Content Include="App\views\webPage.html" />
     <Content Include="App\views\_menu.html" />
     <Content Include="App\views\_menu.js" />
     <Content Include="App\views\_shell.html" />
@@ -465,7 +470,7 @@
     <Content Include="App\libraries\knockout-2.2.1.js" />
     <Content Include="App\services\app.js" />
     <Content Include="App\styles\app.css" />
-    <Content Include="App\views\details-dock.css" />
+    <Content Include="App\views\details\dock.css" />
     <Content Include="App\views\forest.css" />
     <Content Include="App\styles\themes\modern\modern-responsive.css" />
     <Content Include="App\styles\themes\modern\modern.css" />
@@ -564,6 +569,7 @@
     <Folder Include="App\styles\themes\base\images\" />
     <Folder Include="App\styles\themes\base\minified\images\" />
     <Folder Include="App\styles\unused\" />
+    <Folder Include="App\views\modals\" />
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
   </ItemGroup>

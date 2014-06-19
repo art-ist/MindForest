@@ -43,7 +43,7 @@
 	}
 
 	function setDetailsStyle(value) {
-		menu.app.settings.detailsStyle(value);
+		menu.app.settings.detailViewIndex(value);
 		menu.app.showDetails();
 	}
 

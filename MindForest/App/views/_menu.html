@@ -15,18 +15,14 @@
 
 	<!--details-->
 	<li class="nav-header" data-localize="app.settings.showDetails">Show details</li>
+	<!-- ko foreach: app.settings.detailViews -->
 	<li>
-		<a tabindex="-1" data-bind="click: function() { setDetailsStyle('tool-right'); }">
-			<span data-localize="app.settings.showDetails-right">dock right</span>
-			<i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'tool-right'">●</i>
+		<a tabindex="-1" data-bind="click: function() { $root.setDetailsStyle($index()); }">
+			<span data-bind="text: name"></span>
+			<i class="icon-ok" data-bind="visible: $root.app.settings.detailViewIndex() === $index()">●</i>
 		</a>
 	</li>
-	<li>
-		<a tabindex="-1" data-bind="click: function() { setDetailsStyle('lightBox'); }">
-			<span data-localize="app.settings.showDetails-slideshow">slideshow</span>
-			<i class="icon-ok" data-bind="visible: app.settings.detailsStyle() === 'lightBox'">●</i>
-		</a>
-	</li>
+	<!-- /ko -->
 
 	<!--language-->
 	<li class="nav-header" data-localize="app.settings.language">Language</li>

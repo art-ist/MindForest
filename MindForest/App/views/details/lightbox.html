@@ -1,5 +1,5 @@
-﻿
-<div id="details-slide" data-bind="with: mind.currentConnection().ToNode">
+﻿<div id="detail-lightbox" data-bind="with: mind.currentConnection().ToNode">
+	<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" />
 
 	<a id="details-command-close"
 		 class="win-command win-command-small"
@@ -52,7 +52,7 @@
 					 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
 											, click: $root.showWebPage, clickbubble: false
-           ">
+					 ">
 				<div class="pull-left">
 					<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
 				</div>
@@ -67,14 +67,14 @@
 
 		<!-- Children -->
 		<label data-bind="visible: ChildConnections().length > 0 && Details().length > 0">
-			<span data-localize="details-slide.more">More</span>
+			<span data-localize="detail-lightbox.more">More</span>
 		</label>
 		<article data-bind="foreach: ChildConnections">
 			<!-- ko with: ToNode-->
 			<div class="slide-subnode item"
 					 data-bind="class: Class
-										  , style: { backgroundColor: BackColor, color: Color }
-										  , click: $root.select, clickbubble: false
+											, style: { backgroundColor: BackColor, color: Color }
+											, click: $root.select, clickbubble: false
 					 ">
 				<h3 class="item-title" data-bind="text: Text().Title"></h3>
 			</div>

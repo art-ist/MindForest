@@ -27,7 +27,7 @@ iframe {
 	.page.tool {
 		display: none;
 	}
-	.page.tool-right {
+	.page.dock-right {
 		z-index: 1;
 		right: 0;
 		width: 50%; 

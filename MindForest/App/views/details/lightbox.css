@@ -3,7 +3,7 @@
   padding-right: 60px;
 }*/
 
-#details-slide li {
+#detail-lightbox li {
   clear: both;
   display: block;
   padding: 5px 0 5px 5px;
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-#details-slide .item {
+#detail-lightbox .item {
   position: relative;
   padding: 5px 0 5px 5px;
   margin: 0px 0px 0px 0px;
@@ -20,15 +20,15 @@
   border: 1px solid ActiveBorder;
 }
 
-  #details-slide .item:hover {  /*siehe moden.css,2974: .tile:hover*/
+  #detail-lightbox .item:hover {  /*siehe moden.css,2974: .tile:hover*/
     outline: 3px #3a3a3a solid;
   }
 
-#details-slide .item-title {
+#detail-lightbox .item-title {
   display: inline-block;
 }
 
-/*#details-slide .edit-details-list li {
+/*#detail-lightbox .edit-details-list li {
   background-color: #e6e7e8;
 }*/
 
@@ -38,7 +38,7 @@
   top: 15px;
 }
 
-#details-slide h1 {
+#detail-lightbox h1 {
   font-size: 60px;
   margin-bottom: 20px;
   margin-left: -4px;

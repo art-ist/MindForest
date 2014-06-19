@@ -18,7 +18,7 @@
 			"showDetails-slideshow" : "Diashow"
 		}
   },
-  "details-slide": {
+  "detail-lightbox": {
     "more": "Mehr"
   },
 	"webpage" : {
