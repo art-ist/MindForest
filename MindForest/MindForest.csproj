@@ -230,7 +230,7 @@
     <Content Include="App\views\details\dock.html" />
     <Content Include="App\views\modals\login.js" />
     <Content Include="App\views\modals\login.html" />
-    <Content Include="App\views\webPage.html" />
+    <Content Include="App\views\details\webPage.html" />
     <Content Include="App\views\_menu.html" />
     <Content Include="App\views\_menu.js" />
     <Content Include="App\views\_shell.html" />

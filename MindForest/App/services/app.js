@@ -500,14 +500,14 @@
 			//console.log("hideDitails");
 			$('#detailsPage')
 			  .hide(effect) // 'slide', { direction: 'right' }, app.settings.animationDuration()
-			  .removeClass(view.name);
+			  //.removeClass(view.name);
 			app.detailsVisible = false;
 		}
 		else { //show
 			//console.log("show Ditails");
 
 			$('#detailsPage')
-			  .addClass(view.name)
+			  //.addClass(view.name)
 			  .show(effect); //'slide', { direction: 'right' }, app.settings.animationDuration()
 
 			//if (!app.detailsLoaded) {

@@ -102,7 +102,7 @@ ko.bindingHandlers.plumb = {
 							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
                     		//this.$root.plumb.repaintEverything();
                     	} catch (e) {
-                    		console.log("ERROR Catch von subscription !!! -- " + e.message);
+                    		console.warn("[plumb-binding] Catch von subscription !!! -- " + e.message);
                     	}
 
                     }, bindingContext);
@@ -115,7 +115,7 @@ ko.bindingHandlers.plumb = {
 							//bindingContext.$root.plumb.repaintEverything();
 							subscription.dispose();
                     	} catch (e) {
-                    		console.log("ERROR Catch von disposing !!! -- " + err.message);
+                    		console.warn("[plumb-binding] Catch von disposing !!! -- " + err.message);
                     	}
 
                     });
@@ -152,11 +152,11 @@ ko.bindingHandlers.plumb = {
             var elm = document.getElementById("divid");
             var x = getAbsoluteX(elm);
              */
-            console.log("end-------------!init------");
+            //console.log("end-------------!init------");
 
         }
         catch (err) {
-            console.log("ERROR Catch von init !!! -- " + err.message);
+            console.warn("[plumb-binding] Catch von init !!! -- " + err.message);
         }
 
 	}, //init
@@ -206,12 +206,12 @@ ko.bindingHandlers.plumb = {
                  */
             }
             catch (err) { //hier taucht der "o is undefined" Error auf.
-                console.log("ERROR Catch von plumb.repaintEverything() in update -- " + err.message);
+                console.warn("[plumb-binding] Catch von plumb.repaintEverything() in update -- " + err.message);
             }
 
         }
         catch (err) {
-            console.log("ERROR Catch von update !!! -- " + err.message);
+            console.warn("[plumb-binding] Catch von update !!! -- " + err.message);
         } // Dieser sollte das Error Problem mit "o not defined" forübergängig lösen (hat den fehler antscheinend egchatscht^^)
 
 	} //update
