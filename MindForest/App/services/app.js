@@ -52,8 +52,8 @@
 				//wrapItems: new ko.observable(false)
 			},
 			detailViews: [
-				{ name: 'lightbox', view: 'details/lightbox', effect: { effect: 'fade' } },
-				{ name: 'dock-right', view: 'details/dock', effect: { effect: 'slide', direction: 'right' } }
+				{ name: 'dock-right', view: 'views/details/dock', effect: { effect: 'slide', direction: 'right' } },
+				{ name: 'lightbox', view: 'views/details/lightbox', effect: { effect: 'fade' } }
 			],
 			detailViewIndex: ko.observable(0)
 		}, //settings
@@ -246,16 +246,14 @@
 			}
 		} //if (event.ctrlKey)
 
+		//pass on all other keys
 		return true;
 	}; //document_onkeypress
 
-	function modal_onkeypress(event) {
+	function modal_onkeypress(data, event) {
 		//see http://javascript.info/tutorial/keyboard-events
 
-		if (event.isDefaultPrevented) {
-			return false;
-		}
-		var $modal = $(event.delegateTarget);
+		var modalSelector = '#' + event.delegateTarget.getAttribute('id');
 
 		// get the key event.type must be keypress
 		var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
@@ -282,12 +280,21 @@
 			case 40: //down
 				return false;
 			case 13: //enter
-				$modal.children('.action-ok')[0].click(); //TODO: run default action
+				var $btns = $(modalSelector + ' .action-ok');
+				if ($btns.length > 0) {
+					$btns[0].click(); //run (first) default action
+				}
 				return false;
-			case 27: //esc				
-				$modal.children('.action-cancel')[0].click(); //TODO: close dialog (call cancel)
+			case 27: //esc
+				var $btns = $(modalSelector + ' .action-cancel');
+				if ($btns.length > 0) {
+					$btns[0].click(); //run (first) cancel action (e.g. close dialog)
+				}
 				return false;
 		} //switch
+
+		//pass on all other keys
+		return true;
 	} //dialogs_onkeypress
 
 	//#endregion Event Handlers
@@ -318,8 +325,6 @@
 			app.state.edit(false);
 		}
 		auth.logout();
-		//app.user.name('Anonymous');
-		//app.user.roles.removeAll();
 	} //logout
 
 	//#endregion security
@@ -575,31 +580,31 @@
 
 	function addChild() {
 
-	    console.log("DATA-BIND: app.addChild");
+		console.log("DATA-BIND: app.addChild");
 
-	    if (!mind.currentConnection().entityAspect.entityState === breeze.EntityState.Added) { // Abfrage ob neues element
-	        mind.loadChildren(mind.currentConnection().ToNode());
-        }
-	    //addNode(parentNode, insertAfter, relation)
-	    var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
-	    mind.currentConnection().isExpanded(true);
-	    mind.currentConnection(newConnection);
+		if (!mind.currentConnection().entityAspect.entityState === breeze.EntityState.Added) { // Abfrage ob neues element
+			mind.loadChildren(mind.currentConnection().ToNode());
+		}
+		//addNode(parentNode, insertAfter, relation)
+		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
+		mind.currentConnection().isExpanded(true);
+		mind.currentConnection(newConnection);
 	} //addChild
 
 	function addSibling() {
 
-	    console.log("DATA-BIND: app.addSibling. Und mind.currentConnection().Position() = " + mind.currentConnection().Position());
+		console.log("DATA-BIND: app.addSibling. Und mind.currentConnection().Position() = " + mind.currentConnection().Position());
 
 		//var nodeId = mind.currentConnection().ToNode().Id();
 		//var nodeUniqueId = mind.currentConnection().ToNode().UniqueId();
 		//var parentCon = mind.getParentConnection(nodeId, nodeUniqueId);
 		//var parent = mind.findNodeById(currCon.FromId());
 		//var parentCon = mind.getParentConnection(parent.Id(), parent.UniqueId());
-	    //var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
+		//var newConnection = mind.addNode(parent, currCon.Position(), "project", null);
 
 		//var currCon = mind.currentConnection();
 		//var parent = mind.currentConnection().FromNode();
-	    var newConnection = mind.addNode(mind.currentConnection().FromNode(), mind.currentConnection().Position(), Relation.Child);
+		var newConnection = mind.addNode(mind.currentConnection().FromNode(), mind.currentConnection().Position(), Relation.Child);
 		mind.currentConnection(newConnection);
 	} //addSibling 
 

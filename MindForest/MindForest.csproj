@@ -215,6 +215,7 @@
     <Content Include="App\services\_globals.js" />
     <Content Include="App\services\_ko.bindingHandlers.js" />
     <Content Include="App\styles\toastr.css" />
+    <Content Include="App\views\details\lightbox.js" />
     <Content Include="App\views\details\dock.js" />
     <Content Include="App\views\details\editor.css" />
     <Content Include="App\views\details\editor.html" />
@@ -227,6 +228,8 @@
     <Content Include="App\views\mm.css" />
     <Content Include="App\views\mm.html" />
     <Content Include="App\views\details\dock.html" />
+    <Content Include="App\views\modals\login.js" />
+    <Content Include="App\views\modals\login.html" />
     <Content Include="App\views\webPage.html" />
     <Content Include="App\views\_menu.html" />
     <Content Include="App\views\_menu.js" />
@@ -569,7 +572,6 @@
     <Folder Include="App\styles\themes\base\images\" />
     <Folder Include="App\styles\themes\base\minified\images\" />
     <Folder Include="App\styles\unused\" />
-    <Folder Include="App\views\modals\" />
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
   </ItemGroup>

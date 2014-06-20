@@ -1,8 +1,9 @@
 ﻿define([
   'services/logger',
   'services/app',
-  'services/mind'
-], function (logger, app, mind) {
+  'services/mind',
+  'plugins/router'
+], function (logger, app, mind, router) {
 	"use strict";
 
 	var menu = {
@@ -40,6 +41,10 @@
 
 	function setMap(value) {
 		menu.app.settings.map(value);
+		//if (mind.currentTree()) {
+		//	var tree = mind.currentTree().Text().Title();
+		//	router.navigate('#/' + tree + '/' + value);
+		//}
 	}
 
 	function setDetailsStyle(value) {

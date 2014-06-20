@@ -23,7 +23,7 @@
   } //canActivate
 
   function activate(data, queryString) {
-  	logger.log('activating', 'dock');
+  	logger.log('View activated', 'editor');
   } //activate
 
 }); //define

@@ -9,10 +9,6 @@
 
     activate: onActivate,
     //,bind: onBind
-
-    modal_onkeypress: app.modal_onkeypress,
-
-    login: login
   };
   return shell;
 
@@ -46,9 +42,6 @@
 
   //#endregion lifecycle events
 
-  function login() {
-    app.login($('#login-name').val(), $('#login-pwd').val()); 
-    $('#login').modal('hide'); 
-  }
+
 
 });

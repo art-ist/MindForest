@@ -1,87 +1,89 @@
-﻿<div id="detail-lightbox" data-bind="with: mind.currentConnection().ToNode">
-	<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" />
+﻿<div id="detailsPage" class="page secondary tool">
+	<div id="detail-lightbox" data-bind="with: node">
+		<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" /><!--everything relative to index.(cs)html-->
 
-	<a id="details-command-close"
-		 class="win-command win-command-small"
-		 rel="tootlip" title="Close details"
-		 data-bind="click: $root.hideDetails">
-		<span class="win-commandicon win-commandring icon-close"></span>
-	</a>
+		<a id="details-command-close"
+			 class="win-command win-command-small"
+			 rel="tootlip" title="Close details"
+			 data-bind="click: $root.hideDetails">
+			<span class="win-commandicon win-commandring icon-close"></span>
+		</a>
 
-	<!-- <div class="page-region">-->
+		<!-- <div class="page-region">-->
 
-	<div class="page-region-content">
-		<!--data-bind="visible: $root.settings.edit() === false"-->
+		<div class="page-region-content">
+			<!--data-bind="visible: $root.settings.edit() === false"-->
 
-		<h1 data-bind="html: Text().Title"></h1>
-		<p data-bind="html: Text().Content"></p>
+			<h1 data-bind="html: Text().Title"></h1>
+			<p data-bind="html: Text().Content"></p>
 
-		<article data-bind="foreach: Details">
-			<p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
-				<!-- ko if: Link && !MediaType -->
-				<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
-				<!-- ko if: MediaType == 'image' -->
-				<img data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
-				<!-- ko if: Icon -->
-				<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+			<article data-bind="foreach: Details">
+				<p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
+					<!-- ko if: Link && !MediaType -->
+					<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
+					<!-- ko if: MediaType == 'image' -->
+					<img data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
+					<!-- ko if: Icon -->
+					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+					<!-- /ko -->
+					<span class="item-title" data-bind="html: Text().Title"></span>
+				</p>
+			</article>
+			<!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
+
+			<div class="listview grid-layout" data-bind="foreach: Details">
+
+				<!-- ko if: Class()=='details_link' && MediaType != 'video/youtube' -->
+				<div class="listview-item bg-color-gray"
+						 data-bind="class: Class
+											, style: { backgroundColor: BackColor, color: Color }
+											, click: $root.showWebPage, clickbubble: false
+					 ">
+					<div class="pull-left">
+						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
+					</div>
+					<div class="listview-item-body">
+						<h4 class="listview-item-heading" data-bind="text: Text().Title">Titles</h4>
+						<a class="two-lines" data-bind="text: Link, attr: { href: Link }"></a>
+					</div>
+				</div>
 				<!-- /ko -->
-				<span class="item-title" data-bind="html: Text().Title"></span>
-			</p>
-		</article>
-		<!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
-
-		<div class="listview grid-layout" data-bind="foreach: Details">
-
-			<!-- ko if: Class()=='details_link' && MediaType != 'video/youtube' -->
-			<div class="listview-item bg-color-gray"
-					 data-bind="class: Class
+				<!-- ko if: MediaType == 'video/youtube' -->
+				<div class="listview-item bg-color-redDark"
+						 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
 											, click: $root.showWebPage, clickbubble: false
 					 ">
-				<div class="pull-left">
-					<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
+					<div class="pull-left">
+						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
+					</div>
+					<div class="listview-item-body">
+						<h4 class="listview-item-heading" data-bind="text: Text().Title">Titles</h4>
+						<span class="two-lines" data-bind="text: Content"></span>
+					</div>
 				</div>
-				<div class="listview-item-body">
-					<h4 class="listview-item-heading" data-bind="text: Text().Title">Titles</h4>
-					<a class="two-lines" data-bind="text: Link, attr: { href: Link }"></a>
-				</div>
-			</div>
-			<!-- /ko -->
-			<!-- ko if: MediaType == 'video/youtube' -->
-			<div class="listview-item bg-color-redDark"
-					 data-bind="class: Class
-											, style: { backgroundColor: BackColor, color: Color }
-											, click: $root.showWebPage, clickbubble: false
-					 ">
-				<div class="pull-left">
-					<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
-				</div>
-				<div class="listview-item-body">
-					<h4 class="listview-item-heading" data-bind="text: Text().Title">Titles</h4>
-					<span class="two-lines" data-bind="text: Content"></span>
-				</div>
-			</div>
-			<!-- /ko -->
+				<!-- /ko -->
 
-		</div>
+			</div>
 
-		<!-- Children -->
-		<label data-bind="visible: ChildConnections().length > 0 && Details().length > 0">
-			<span data-localize="detail-lightbox.more">More</span>
-		</label>
-		<article data-bind="foreach: ChildConnections">
-			<!-- ko with: ToNode-->
-			<div class="slide-subnode item"
-					 data-bind="class: Class
+			<!-- Children -->
+			<label data-bind="visible: ChildConnections().length > 0 && Details().length > 0">
+				<span data-localize="detail-lightbox.more">More</span>
+			</label>
+			<article data-bind="foreach: ChildConnections">
+				<!-- ko with: ToNode-->
+				<div class="slide-subnode item"
+						 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
 											, click: $root.select, clickbubble: false
 					 ">
-				<h3 class="item-title" data-bind="text: Text().Title"></h3>
-			</div>
-			<!-- /ko -->
-		</article>
+					<h3 class="item-title" data-bind="text: Text().Title"></h3>
+				</div>
+				<!-- /ko -->
+			</article>
 
-	</div> <!--.page-region-content-->
-	<!--</div>-->
+		</div> <!--.page-region-content-->
+		<!--</div>-->
 
+	</div>
 </div>

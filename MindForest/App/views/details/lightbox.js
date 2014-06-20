@@ -22,7 +22,7 @@
   } //canActivate
 
   function activate(data, queryString) {
-  	logger.log('View activated', 'dock');
+  	logger.log('View activated', 'lightbox');
   } //activate
 
 }); //define
