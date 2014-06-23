@@ -22,7 +22,7 @@ iframe {
 	border: none;
 }
 
-.metro.tile, .listview-item {
+.metro .tile, .listview-item {
 	background-color: @forestTileBackgroundColor;
 	color: @forestTileTextColor;
 }
@@ -66,6 +66,24 @@ a.two-lines { /*tile second line*/
 	left: 0;
 }
 
+.page.modal {
+	position: fixed;
+	left: 5%; right: 5%; width: 90%;
+	top: 5%; bottom: 5%;
+	box-shadow: @modalBoxShadow;
+	overflow: visible;
+	display: none;
+}
+.page.modal.show {
+	display: block;
+}
+
+.page.modal #details-command-close, 
+.page.modal #web-command-close {
+  position: absolute;
+  right: -20px;
+  top: 15px;
+}
 
 /*#region forestPage*/
 

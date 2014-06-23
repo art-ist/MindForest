@@ -55,7 +55,7 @@
 				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right' },
 				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox' }
 			],
-			detailViewIndex: ko.observable(0)
+			detailViewIndex: ko.observable(1)
 		}, //settings
 
 		//Methods
@@ -498,9 +498,17 @@
 
 	function showWebPage(data, event) {
 		var url = data.Link();
+		//#region exceptions
+		//open facebook in new window
+		if (url.indexOf("facebook.com") > -1) {
+			window.open(url);
+			return;
+		}
+		//load youtube using embedded player
 		if (data.MediaType() === 'video/youtube') {
 			url = 'http://www.youtube.com/embed/' + data.MediaStreamId() + '?autoplay=0&autohide=1&controls=1';
 		}
+		//#endregion exceptions
 		$('#webContent').attr('src', url);
 		$('#webPage-title').text(data.Text().Title());
 		$('#webPage').addClass('show');

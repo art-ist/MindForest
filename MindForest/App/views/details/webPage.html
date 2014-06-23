@@ -1,29 +1,19 @@
 ﻿<!--model: shell-->
-<div id="webPage"
-		 class="page secondary tool"
-		 style="width: 100%;">
 
-	<!-- <div class="nav-bar navbar-fixed-top metro-navbar">
-		<div class="navbar-inner win-commandlayout">
-			<div class="header-container">
-				<a href="#" class="back-button big page-back" data-bind="click: app.hideWebPage"></a>
-				<h1 id="webPage-title">External Webpage</h1>
-			</div>
-		</div>
-	</div> -->
+<div id="webPage" class="page detail modal webpage">
 
 	<a id="web-command-close"
 		 class="win-command win-command-small"
 		 rel="tootlip" title="Close website"
-		 href="#" onclick="app.hideWebPage();">
+		 href="#" data-bind="click: app.hideWebPage">
 		<span class="win-commandicon win-commandring icon-close"></span>
 	</a>
 
 	<h2 id="webPage-title" data-localize="webpage.title">External Webpage</h2>
-
-	<h2 data-localize="app.loadingExternal">Loading ...</h2>
+	<!--<h2 data-localize="app.loadingExternal">Loading ...</h2>-->
 	<!-- <div class="page-region"> -->
-	<iframe id="webContent" src="#" style="width: 100%; height: 100%;"></iframe>
+	<iframe id="webContent" src="#" style="width: 100%; height: 100%;">
+	</iframe>
 	<!-- </div> -->
 
 </div>

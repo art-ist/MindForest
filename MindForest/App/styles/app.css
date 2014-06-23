@@ -20,7 +20,7 @@ body {
 iframe {
   border: none;
 }
-.metro.tile,
+.metro .tile,
 .listview-item {
   background-color: #555555;
   color: #ffffff;
@@ -64,6 +64,26 @@ a.two-lines {
 }
 .dock.left.show {
   left: 0;
+}
+.page.modal {
+  position: fixed;
+  left: 5%;
+  right: 5%;
+  width: 90%;
+  top: 5%;
+  bottom: 5%;
+  box-shadow: 0 0 200px 20px rgba(0, 0, 0, 0.6);
+  overflow: visible;
+  display: none;
+}
+.page.modal.show {
+  display: block;
+}
+.page.modal #details-command-close,
+.page.modal #web-command-close {
+  position: absolute;
+  right: -20px;
+  top: 15px;
 }
 /*#region forestPage*/
 ul#tree-list {
