@@ -67,13 +67,11 @@ ul#tree-list {
 /*#region mapPage*/
 #mapPage.dock.right {
   width: 50%;
-  left: 0;
   right: 50%;
 }
 #mapPage.dock.left {
   width: 50%;
   left: 50%;
-  right: 0;
 }
 /*#endregion mapPage*/
 #mapPage nav-bar {
@@ -81,9 +79,6 @@ ul#tree-list {
 }
 /*#endregion page defaults*/
 /*#region detailsPage*/
-#detailsPage {
-  background-color: #ffffff;
-}
 #detailsPage nav-bar {
   background-color: #343c45;
 }

@@ -1,49 +1,56 @@
-﻿/*#detailsPage .page-region-content {
-  padding-left: 80px;  
-  padding-right: 60px;
-}*/
-
-#detail-lightbox li {
+﻿#detailsPage.lightbox {
+  position: fixed;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  top: 10%;
+  bottom: 10%;
+  box-shadow: 0 0 200px 20px rgba(0, 0, 0, 0.6);
+  overflow: visible;
+  padding: 15px 10px 10px 10px;
+  display: none;
+}
+#detailsPage.lightbox.show {
+  display: block;
+}
+#detailsPage.lightbox li {
   clear: both;
   display: block;
   padding: 5px 0 5px 5px;
   margin: 0 0 5px 5px;
   position: relative;
 }
-
-#detail-lightbox .item {
+#detailsPage.lightbox .item {
   position: relative;
   padding: 5px 0 5px 5px;
-  margin: 0px 0px 0px 0px;
+  margin: 0;
   background-color: #e6e7e8;
   color: black;
   border: 1px solid ActiveBorder;
 }
-
-  #detail-lightbox .item:hover {  /*siehe moden.css,2974: .tile:hover*/
-    outline: 3px #3a3a3a solid;
-  }
-
-#detail-lightbox .item-title {
+#detailsPage.lightbox .item:hover {
+  /*siehe moden.css,2974: .tile:hover*/
+  outline: 3px #3a3a3a solid;
+  z-index: 99;
+}
+#detailsPage.lightbox .item-title {
   display: inline-block;
 }
-
-/*#detail-lightbox .edit-details-list li {
+/*#detailsPage.lightbox .edit-details-list li {
   background-color: #e6e7e8;
 }*/
-
-#details-command-close, #web-command-close {
+#details-command-close,
+#web-command-close {
   position: absolute;
   right: -20px;
   top: 15px;
 }
-
-#detail-lightbox h1 {
+#detailsPage.lightbox h1 {
   font-size: 60px;
   margin-bottom: 20px;
   margin-left: -4px;
 }
-.slide-subnode {
+/*.slide-subnode {
   margin-bottom: 5px !important;
 }
 .listview-item-body a:visited, .listview-item-body a:link {
@@ -53,4 +60,4 @@
 .listview-item-body a:active, .listview-item-body a:hover {
   font-size: 10px;
   color: #ff6a00;
-}
+}*/

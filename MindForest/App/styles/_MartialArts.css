@@ -9,12 +9,16 @@
 
 /*#region Forest (content) specific classes*/
 
-.Kyu5 { background-color: #ffd600 !important; }
+.Kyu5 { background-color: #ffd600; }
 .Kyu4 { background-color: #e3a21a; }
 .Kyu3 { background-color: #99b433; }
 .Kyu2 { background-color: #2d89ef; }
 .Kyu1 { background-color: #b77b26; }
-.Dan1 { background-color: #282828; color: #ffffff;}
+.Dan1 { background-color: #000; color: #ffffff;}
+.Dan2 { background-color: #333; color: #ffffff;}
+.Dan3 { background-color: #555; color: #ffffff;}
+.Dan4 { background-color: #666; color: #ffffff;}
+.Dan5 { background-color: #888; color: #ffffff;}
 
 .left { background-image: url(/Images/directionleft.png); background-position: left center; background-repeat: no-repeat; }
 .right{ background-image: url(/Images/directionright.png); background-position: left center; background-repeat: no-repeat; }

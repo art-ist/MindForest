@@ -55,7 +55,7 @@
 
   function expandNode(con, selectChild) {
   	if (!(selectChild >= 0)) {
-  		mind.currentConnection(con);
+  		app.select(con);  //mind.currentConnection(con);
   	}
   	if (!con.isExpanded() || selectChild >= 0) { //expand
   		//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
@@ -65,7 +65,7 @@
   		//else {
   			logger.log('mm expandNode without data.loadChildren', { con: con, selectChild: selectChild });
   			if (selectChild >= 0) {
-  				mind.currentConnection(con.ChildConnections()[selectChild]);
+  				app.select(con.ChildConnections()[selectChild]);  //mind.currentConnection(con.ChildConnections()[selectChild]);
   			}
   		//}
   	}

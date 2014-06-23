@@ -52,8 +52,8 @@
 				//wrapItems: new ko.observable(false)
 			},
 			detailViews: [
-				{ name: 'dock-right', view: 'views/details/dock', effect: { effect: 'slide', direction: 'right' } },
-				{ name: 'lightbox', view: 'views/details/lightbox', effect: { effect: 'fade' } }
+				{ name: 'dock-right', view: 'views/details/dock', css: 'dock right' },
+				{ name: 'lightbox', view: 'views/details/lightbox', css: 'lightbox' }
 			],
 			detailViewIndex: ko.observable(0)
 		}, //settings
@@ -130,15 +130,16 @@
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
 
-	function findNodeById(collection, nodeId) {
-		if (typeof (collection) === ko.observableArray)
-			collection = collection();
-		for (var i = 0; i < collection.length; i++) {
-			if (collection[i].Id === nodeId)
-				return collection[i];
-		}
-		return null;
-	}
+	////obsolete
+	//function findNodeById(collection, nodeId) {
+	//	if (typeof (collection) === ko.observableArray)
+	//		collection = collection();
+	//	for (var i = 0; i < collection.length; i++) {
+	//		if (collection[i].Id === nodeId)
+	//			return collection[i];
+	//	}
+	//	return null;
+	//}
 
 	//#endregion Private Functions
 
@@ -351,7 +352,7 @@
 			//}
 			//select
 			mind.currentConnection(connectionOrNode);
-			mind.currentNode(null);
+			mind.currentNode(connectionOrNode.ToNode());
 			logger.log('selecting connection ' + connectionOrNode.Id(), 'app - select', connectionOrNode);
 		}
 		else if (connectionOrNode.ConnectionsFrom) { //it's a node
@@ -445,7 +446,7 @@
 
 	function canOpenTreeByName(TreeName, ViewName) {
 		try {
-			logger.log('Checking if canOpenTreeByName', 'app - canOpenTreeByName', { TreeName: TreeName, ViewName: ViewName, currentTree: mind.currentTree() })
+			//logger.log('Checking if canOpenTreeByName', 'app - canOpenTreeByName', { TreeName: TreeName, ViewName: ViewName, currentTree: mind.currentTree() })
 			if (mind.currentTree()) {	//currentTree already selected -> ignore parameter and go
 				return true;
 			}
@@ -493,75 +494,37 @@
 		if (show === 'hide') app.detailsVisible = true;		//on explicit call to hide always assume it's shown
 
 		var view = app.settings.detailViews[app.settings.detailViewIndex()];
-		var effect = view.effect;
-		effect.duration = app.settings.animationDuration();
+		var detailsSelector = '#detailsPage.' + view.css.replace(' ', '.');
+		//var effect = view.effect;
+		//effect.duration = app.settings.animationDuration();
+		logger.log(app.detailsVisible ? 'hiding' : 'showing' + ' details', 'app - toggleDetails', detailsSelector);
 
 		if (app.detailsVisible) { //hide
-			//console.log("hideDitails");
-			$('#detailsPage')
-			  .hide(effect) // 'slide', { direction: 'right' }, app.settings.animationDuration()
-			  //.removeClass(view.name);
+			$('#detailsPage').removeClass('show');
+			$('#mapPage').removeClass(view.css);
 			app.detailsVisible = false;
 		}
 		else { //show
-			//console.log("show Ditails");
-
-			$('#detailsPage')
-			  //.addClass(view.name)
-			  .show(effect); //'slide', { direction: 'right' }, app.settings.animationDuration()
-
-			//if (!app.detailsLoaded) {
-			//	var detailsFileName;
-			//	switch (view.name) {
-			//		case 'lightBox':
-			//			detailsFileName = '/App/views/detail-lightbox.html';
-			//			break;
-			//			//case 'dock-right':
-			//		default:
-			//			detailsFileName = '/App/views/details-dock.html';
-			//			break;
-			//	}
-			//	$('#detailsPage').load(detailsFileName, function () {
-			//		//-console.log("details loaded");
-			//		ko.applyBindings(app, document.getElementById("detailsPage"));
-			//		app.detailsLoaded = true;
-			//	});
-			//}
-
+			$('#detailsPage').addClass('show');
+			$(detailsSelector).addClass('show');
+			$('#mapPage').addClass(view.css);
 			app.detailsVisible = true;
 		}
 	} //toggleDetails
 
 	function showWebPage(data, event) {
-		var effect = app.settings.detailView() === 'dock-right'
-		  ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
-			 : app.settings.detailView() === 'lightBox'
-			 ? { effect: 'fade', duration: app.settings.animationDuration() }
-			 : null
-		;
 		var url = data.Link();
 		if (data.MediaType() === 'video/youtube') {
 			url = 'http://www.youtube.com/embed/' + data.MediaStreamId() + '?autoplay=0&autohide=1&controls=1';
 		}
 		$('#webContent').attr('src', url);
 		$('#webPage-title').text(data.Text().Title());
-		$('#webPage')
-		  .addClass(app.settings.detailView())
-		  .show(effect);
+		$('#webPage').addClass('show');
 		return false;
 	} //showWebPage
 	function hideWebPage(data, event) {
-		var effect = app.settings.detailView() === 'dock-right'
-			   ? { effect: 'slide', direction: 'right', duration: app.settings.animationDuration() }
-			   : app.settings.detailView() === 'lightBox'
-			   ? { effect: 'fade', duration: app.settings.animationDuration() }
-			   : null
-		;
-
-		$('#webPage')
-		  .hide(effect);
-		$('#webContent')
-		  .attr('src', 'about:blank');
+		$('#webPage').removeClass('show');
+		$('#webContent').attr('src', 'about:blank');
 		return false;
 	} //hideWebPage
 
@@ -588,7 +551,7 @@
 		//addNode(parentNode, insertAfter, relation)
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
 		mind.currentConnection().isExpanded(true);
-		mind.currentConnection(newConnection);
+		app.select(newConnection);  //mind.currentConnection(newConnection);
 	} //addChild
 
 	function addSibling() {
@@ -605,7 +568,7 @@
 		//var currCon = mind.currentConnection();
 		//var parent = mind.currentConnection().FromNode();
 		var newConnection = mind.addNode(mind.currentConnection().FromNode(), mind.currentConnection().Position(), Relation.Child);
-		mind.currentConnection(newConnection);
+		app.select(newConnection);  //mind.currentConnection(newConnection);
 	} //addSibling 
 
 	function addText(lang) {
@@ -626,7 +589,7 @@
 
 		var currentConnection = mind.currentConnection();
 		var currentNode = currentConnection.ToNode();
-		var parent = mind.findNodeById(currCon.FromId());
+		var parent = currentConnection.FromNode(); 
 		var newConnection = mind.addNode(parent, currCon.Position(), currentNode.class, null);
 		var newNode = newConnection.ToNode();
 
@@ -724,7 +687,7 @@
 		}
 
 		var NodeToDelete = mind.currentConnection();
-		mind.currentConnection(NodeToDelete.FromNode().ConnectionsFrom()[0]);
+		app.select(NodeToDelete.FromNode().ConnectionsFrom()[0]);  //mind.currentConnection(NodeToDelete.FromNode().ConnectionsFrom()[0]);
 		mind.deleteNodeAndConnection(NodeToDelete);
 		//mind.saveChanges();
 		//only marked as Deleted not realy deleted in DB (saveChanges required)

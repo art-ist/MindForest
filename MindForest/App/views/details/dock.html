@@ -1,5 +1,5 @@
-﻿<div id="detailsPage" class="page secondary tool dock-right">
-	<div id="details-dock" data-bind="with: node">
+﻿<div id="detailsPage" class="page dock right">
+	<div id="details-dock">
 
 		<link rel="stylesheet" type="text/css" href="App/views/details/dock.css" /><!--everything relative to index.(cs)html-->
 		<!--nav-bar-->
@@ -19,27 +19,27 @@
 		</div>
 		<!--/nav-bar-->
 
-		<div class="page-region">
+		<div class="page-region" data-bind="with: node">
 
 			<!--view-->
-			<div class="page-region-content" data-bind="if: !app.state.edit()">
-				<h2 data-bind="html: Text().Title"></h2>
-				<p data-bind="html: Text().Content"></p>
+			<div class="page-region-content">
+				<h2 data-bind="html: $data.Text().Title"></h2>
+				<p data-bind="html: $data.Text().Content"></p>
 
 				<article data-bind="foreach: Details">
 					<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
 
 						<!--<article data-bind="foreach: Text().Details">
-							<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
+						<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
 						<!-- ko if: Link && !MediaType -->
 						<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 						<!-- ko if: MediaType == 'image' -->
-						<img src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" /><!-- /ko -->
+						<img src="#" data-bind="attr: { src: Link, alt: $data.Text().Title, title: $data.Text().Title }" /><!-- /ko -->
 						<!-- ko if: Icon -->
 						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 						<!-- /ko -->
 						<!-- ko if: !Link() -->
-						<span class="item-title" data-bind="html: Text().Title"></span>
+						<span class="item-title" data-bind="html: $data.Text().Title"></span>
 						<!-- /ko -->
 						<!-- ko if: Link -->
 						<a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.app.showWebPage"></a>

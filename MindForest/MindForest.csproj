@@ -214,16 +214,34 @@
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\_globals.js" />
     <Content Include="App\services\_ko.bindingHandlers.js" />
+    <Content Include="App\styles\_definitions.css">
+      <DependentUpon>_definitions.less</DependentUpon>
+    </Content>
+    <Content Include="App\styles\_definitions.min.css">
+      <DependentUpon>_definitions.css</DependentUpon>
+    </Content>
+    <Content Include="App\styles\app.css">
+      <DependentUpon>app.less</DependentUpon>
+    </Content>
+    <Content Include="App\styles\app.min.css">
+      <DependentUpon>app.css</DependentUpon>
+    </Content>
     <Content Include="App\styles\toastr.css" />
+    <Content Include="App\views\details\lightbox.css">
+      <DependentUpon>lightbox.less</DependentUpon>
+    </Content>
     <Content Include="App\views\details\lightbox.js" />
     <Content Include="App\views\details\dock.js" />
     <Content Include="App\views\details\editor.css" />
     <Content Include="App\views\details\editor.html" />
     <Content Include="App\views\details\editor.js" />
+    <Content Include="App\views\details\lightbox.min.css">
+      <DependentUpon>lightbox.css</DependentUpon>
+    </Content>
     <Content Include="App\views\forest.html" />
     <Content Include="App\views\mm.js" />
     <Content Include="App\views\forest.js" />
-    <Content Include="App\views\details\lightbox.css" />
+    <None Include="App\views\details\lightbox.less" />
     <Content Include="App\views\details\lightbox.html" />
     <Content Include="App\views\mm.css" />
     <Content Include="App\views\mm.html" />
@@ -388,6 +406,7 @@
     <Content Include="App\libraries\eye.js" />
     <Content Include="App\languagepacks\app.json.txt" />
     <Content Include="App\languagepacks\app-de.json.txt" />
+    <Content Include="App\styles\_definitions.less" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
@@ -472,9 +491,8 @@
     <Content Include="App\libraries\knockout-2.2.1.debug.js" />
     <Content Include="App\libraries\knockout-2.2.1.js" />
     <Content Include="App\services\app.js" />
-    <Content Include="App\styles\app.css" />
+    <None Include="App\styles\app.less" />
     <Content Include="App\views\details\dock.css" />
-    <Content Include="App\views\forest.css" />
     <Content Include="App\styles\themes\modern\modern-responsive.css" />
     <Content Include="App\styles\themes\modern\modern.css" />
     <Content Include="App\views\outline.css" />

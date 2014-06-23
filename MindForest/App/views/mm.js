@@ -83,12 +83,17 @@
 
 	//#region Methods
 
-	function nodeClick(con) {
-		if (con.ToNode().ChildConnections().length === 0) { //node has no ChildConnections
-			showDetails(con);
+	function nodeClick(connectionOrNode) {
+		if (connectionOrNode.ToNode) {
+			if (connectionOrNode.ToNode().ChildConnections().length === 0) { //node has no ChildConnections
+				showDetails(connectionOrNode);
+			}
+			else {
+				expandNode(connectionOrNode);
+			}
 		}
-		else {
-			expandNode(con);
+		else { //root
+			app.select(connectionOrNode);
 		}
 	} //nodeClick
 
@@ -99,16 +104,15 @@
 	function expandNode(con, selectChild) {
 		//logger.log("mm expandNode: " + con.Id(), 'mm - expandNode', { con: con, selectChild: selectChild });
 		if (!(selectChild >= 0)) {
-			mind.currentConnection(con);
+			app.select(con);  //mind.currentConnection(con);
 		}
 		if (!con.isExpanded() || selectChild >= 0) { //expand
 			//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
 			con.isExpanded(true);
 			if (selectChild >= 0) {
-				mind.currentConnection(con.ChildConnections()[selectChild]);
+				app.select(con.ChildConnections()[selectChild]);  //mind.currentConnection(con.ChildConnections()[selectChild]);
 			}
-			mind.loadChildren(con.ToNode(), selectChild)
-			;
+			mind.loadChildren(con.ToNode(), selectChild);
 		}
 		else { //collapse
 			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
@@ -118,7 +122,7 @@
 
 	function showDetails(con) {
 		if (con.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-			mind.currentConnection(con);
+			app.select(con);  //mind.currentConnection(con);
 			mind.loadChildren(con.ToNode(), true);
 			app.showDetails();
 		}
