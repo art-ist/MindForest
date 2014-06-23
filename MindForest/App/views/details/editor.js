@@ -4,26 +4,24 @@
   'services/mind'
 ], function (logger, app, mind) {
 
-  var vm = {
-    //Properties
-    app: app,
+	var vm = {
+		//Properties
+		app: app,
 
-    connection: mind.currentConnection(),
-  	node: mind.currentConnection().ToNode(),
+		connection: app.mind.currentConnection,
+		node: app.mind.currentNode,
 
-    //Lifecycle Events
-    canActivate: canActivate,
-    activate: activate,
+		//Lifecycle Events
+		compositionComplete: compositionComplete
 
-  };
-  return vm;
+	};
+	return vm;
 
-  function canActivate(data, queryString) {
-  	return true;
-  } //canActivate
-
-  function activate(data, queryString) {
-  	logger.log('View activated', 'editor');
-  } //activate
+	function compositionComplete(view, parent) {
+		//logger.log('Composition complete', 'dock', view);
+		if (app.detailsVisible) {
+			app.showDetails();
+		}
+	}
 
 }); //define

@@ -25,7 +25,7 @@
 				<!--tree node template-->
 				<script type="text/html" id="NodeTemplate">
 					<li>
-						<div class="mm-item-container" data-bind="attr: { id: 'container-c' + FromId() }">
+						<div class="mm-item-container" data-bind="attr: { id: 'container-c' + Id() }">
 
 							<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
 																						 style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },

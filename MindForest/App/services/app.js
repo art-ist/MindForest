@@ -52,8 +52,8 @@
 				//wrapItems: new ko.observable(false)
 			},
 			detailViews: [
-				{ name: 'dock-right', view: 'views/details/dock', css: 'dock right' },
-				{ name: 'lightbox', view: 'views/details/lightbox', css: 'lightbox' }
+				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right' },
+				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox' }
 			],
 			detailViewIndex: ko.observable(0)
 		}, //settings
@@ -71,8 +71,6 @@
 		selectFirstChild: selectFirstChild,
 		selectFirstParent: selectFirstParent,
 
-		showForest: showForest,
-		hideForest: hideForest,
 		openTree: openTree,
 		canOpenTreeByName: canOpenTreeByName,
 
@@ -346,6 +344,7 @@
 
 	function select(connectionOrNode) {
 		if (connectionOrNode.ToNode) {	//it's a connection
+			logger.log('selecting connection ' + connectionOrNode.Id(), 'app - select'/*, connectionOrNode*/, '#container-c' + connectionOrNode.Id());
 			////load children
 			//if (!isSelected(connectionOrNode)) { // removed: || !app.detailsVisible 
 			//	mind.loadChildren(connectionOrNode.ToNode(), true);
@@ -353,9 +352,11 @@
 			//select
 			mind.currentConnection(connectionOrNode);
 			mind.currentNode(connectionOrNode.ToNode());
-			logger.log('selecting connection ' + connectionOrNode.Id(), 'app - select', connectionOrNode);
+			//scroll item into view
+			$('#mapPage').scrollTo('#container-c' + connectionOrNode.Id(), { duration: app.settings.animationDuration });
 		}
 		else if (connectionOrNode.ConnectionsFrom) { //it's a node
+			logger.log('selecting node ' + connectionOrNode.Id(), 'app - select'/*, connectionOrNode*/);
 			////load children
 			//if (!isSelected(connectionOrNode)) { // removed: || !app.detailsVisible 
 			//	mind.loadChildren(connectionOrNode, true);
@@ -363,12 +364,11 @@
 			//select
 			mind.currentConnection(null);
 			mind.currentNode(connectionOrNode);
-			logger.log('selecting node ' + connectionOrNode.Id(), 'app - select', connectionOrNode);
 		}
 		else {
+			logger.log('!! select called with neither connection nor node', 'app - select', connectionOrNode);
 			mind.currentConnection(null);
 			mind.currentNode(null);
-			logger.log('!! select called with neither connection nor node', 'app - select', connectionOrNode);
 		}
 
 		////TODO: get this work
@@ -424,25 +424,6 @@
 	} //selectFirstParent
 
 	//#endregion selecting items
-
-	function showForest(mode) {
-		//if (!mind.trees().length) {
-		mind.loadTrees();
-		//}
-		if (app.detailsVisible === true) {
-			$('#detailsPage').hide();
-		}
-		if (mode === 'start') {
-			$("#forestPage").show();
-		}
-		else {
-			$('#forestPage').show('slide', { direction: 'left' }, app.settings.animationDuration()); // 'slide', { direction: 'left' }, app.settings.animationDuration()
-		}
-	} //showForest
-	function hideForest() {
-		$('#forestPage')
-		  .hide('slide', { direction: 'left' }, app.settings.animationDuration()); //'slide', { direction: 'left' }, app.settings.animationDuration()
-	} //hideForest
 
 	function canOpenTreeByName(TreeName, ViewName) {
 		try {
@@ -508,6 +489,9 @@
 			$('#detailsPage').addClass('show');
 			$(detailsSelector).addClass('show');
 			$('#mapPage').addClass(view.css);
+			if (mind.currentConnection()) {
+				$('#mapPage').scrollTo('#container-c' + mind.currentConnection().Id(), { duration: app.settings.animationDuration });
+			}
 			app.detailsVisible = true;
 		}
 	} //toggleDetails

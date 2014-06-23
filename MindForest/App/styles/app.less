@@ -22,6 +22,16 @@ iframe {
 	border: none;
 }
 
+.metro.tile, .listview-item {
+	background-color: @forestTileBackgroundColor;
+	color: @forestTileTextColor;
+}
+
+a.two-lines { /*tile second line*/
+	color: @forestTileTextColor;
+	opacity: 0.8;
+}
+
 /*#endregion element customizations*/
 
 /*#region page defaults*/
@@ -62,10 +72,6 @@ iframe {
 ul#tree-list {
 	padding-top: 20px;
 }
-.tile.app {
-	background-color: @forestTileBackgroundColor;
-	color: @forestTileTextColor;
-}
 
 /*#endregion forestPage*/
 
@@ -101,6 +107,10 @@ ul#tree-list {
 
 #detailsPage nav-bar {
 	background-color: @mapHeaderBackgroundColor;
+}
+
+.text-comment {
+	color: #808080;
 }
 
 /*#endregion detailsPage*/

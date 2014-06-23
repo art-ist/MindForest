@@ -20,6 +20,16 @@ body {
 iframe {
   border: none;
 }
+.metro.tile,
+.listview-item {
+  background-color: #555555;
+  color: #ffffff;
+}
+a.two-lines {
+  /*tile second line*/
+  color: #ffffff;
+  opacity: 0.8;
+}
 /*#endregion element customizations*/
 /*#region page defaults*/
 .page {
@@ -59,10 +69,6 @@ iframe {
 ul#tree-list {
   padding-top: 20px;
 }
-.tile.app {
-  background-color: #555555;
-  color: #ffffff;
-}
 /*#endregion forestPage*/
 /*#region mapPage*/
 #mapPage.dock.right {
@@ -86,6 +92,9 @@ ul#tree-list {
 }
 #detailsPage nav-bar {
   background-color: #343c45;
+}
+.text-comment {
+  color: #808080;
 }
 /*#endregion detailsPage*/
 /*#region webPage*/

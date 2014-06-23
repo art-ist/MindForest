@@ -15,8 +15,8 @@
 		<div class="page-region-content">
 			<!--data-bind="visible: $root.app.settings.edit() === false"-->
 
-			<h1 data-bind="html: Text().Title"></h1>
-			<p data-bind="html: Text().Content"></p>
+			<h1 class="text-title" data-bind="html: Text().Title"></h1>
+			<p class="text-description" data-bind="html: Text().Description"></p>
 
 			<article data-bind="foreach: Details">
 				<p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">

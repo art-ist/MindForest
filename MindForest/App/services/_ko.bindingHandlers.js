@@ -229,7 +229,7 @@ ko.bindingHandlers.plumb = {
             //plumb.removeAll();
             if (connections.length) {
                 var from = options.fromId || 'node-' + connections[0].FromId();
-                var container = options.containerId || 'container-c' + connections[0].FromId();
+                var container = options.containerId || 'container-c' + connections[0].Id();
                 for (var i = 0; i < connections.length; i++) {
                     var con = connections[i];
                     var to = options.toId || 'node-' + con.ToId();

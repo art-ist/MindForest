@@ -428,7 +428,6 @@
     <Content Include="App\libraries\jquery.jsPlumb-1.5.2-min.js" />
     <Content Include="App\libraries\jquery.jsPlumb-1.5.2.js" />
     <Content Include="App\libraries\jquery.localize.js" />
-    <Content Include="App\libraries\jquery.scrollTo-1.4.3.1-min.js" />
     <Content Include="App\libraries\knockout-sortable.js" />
     <Content Include="App\libraries\colorpicker\pick-a-color-1.1.7.min.js" />
     <Content Include="App\libraries\colorpicker\tinycolor-0.9.15.min.js" />

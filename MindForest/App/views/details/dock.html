@@ -1,7 +1,9 @@
 ﻿<div id="detailsPage" class="page dock right">
 	<div id="details-dock">
-
 		<link rel="stylesheet" type="text/css" href="App/views/details/dock.css" /><!--everything relative to index.(cs)html-->
+
+		<!-- ko if: !app.state.edit() -->
+
 		<!--nav-bar-->
 		<div class="nav-bar metro-navbar">
 			<div class="navbar-inner win-commandlayout">
@@ -23,8 +25,9 @@
 
 			<!--view-->
 			<div class="page-region-content">
-				<h2 data-bind="html: $data.Text().Title"></h2>
-				<p data-bind="html: $data.Text().Content"></p>
+				<h2 class="text-title" data-bind="html: $data.Text().Title"></h2>
+				<p class="text-description" data-bind="html: $data.Text().Description"></p>
+				<p class="text-comment" data-bind="html: $data.Text().Comment"></p>
 
 				<article data-bind="foreach: Details">
 					<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
@@ -42,7 +45,7 @@
 						<span class="item-title" data-bind="html: $data.Text().Title"></span>
 						<!-- /ko -->
 						<!-- ko if: Link -->
-						<a class="item-title" data-bind="text: Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
+						<a class="item-title" data-bind="text: $data.Text().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
 						<!-- /ko -->
 					</p>
 				</article>
@@ -51,6 +54,13 @@
 			<!--/view-->
 
 		</div>
+
+		<!-- /ko -->
+		<!-- ko if: app.state.edit() -->
+			<!-- ko compose: 'views/details/editor' -->
+			<!-- /ko -->
+		<!-- /ko -->
+
 
 	</div>
 </div>
