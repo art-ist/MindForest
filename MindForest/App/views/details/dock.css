@@ -3,7 +3,7 @@
   padding-right: 60px;
 }*/
 
-#detailsPage.dock-right {
+#detailsPage.dock.right {
   position: fixed;
   top: 0; right: 0; bottom: 0;
 }

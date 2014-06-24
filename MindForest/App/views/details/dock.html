@@ -1,0 +1,66 @@
+﻿<div id="detailsPage" class="page dock right">
+	<div id="details-dock">
+		<link rel="stylesheet" type="text/css" href="App/views/details/dock.css" /><!--everything relative to index.(cs)html-->
+
+		<!-- ko if: !app.state.edit() -->
+
+		<!--nav-bar-->
+		<div class="nav-bar metro-navbar">
+			<div class="navbar-inner win-commandlayout">
+				<!--Right-->
+				<a class="win-command pull-right" title="Close details" data-bind="click: app.hideDetails">
+					<span class="win-commandicon win-commandring icon-close"></span>
+					<span class="win-label">Close</span>
+				</a>
+				<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="visible: app.user.mayEdit(), click: app.toggleEdit">
+					<span class="win-commandicon win-commandring" data-bind="class: app.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
+					<span class="win-label" data-bind="text: app.state.edit() ? 'View' : 'Edit'"></span>
+				</a>
+
+			</div>
+		</div>
+		<!--/nav-bar-->
+
+		<div class="page-region" data-bind="with: node">
+
+			<!--view-->
+			<div class="page-region-content">
+				<h2 class="text-title" data-bind="html: $data.Text().Title"></h2>
+				<p class="text-description" data-bind="html: $data.Text().Description"></p>
+				<p class="text-comment" data-bind="html: $data.Text().Comment"></p>
+
+				<article data-bind="foreach: Details">
+					<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
+
+						<!--<article data-bind="foreach: Text().Details">
+						<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
+						<!-- ko if: Link && !MediaType -->
+						<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
+						<!-- ko if: MediaType == 'image' -->
+						<img src="#" data-bind="attr: { src: Link, alt: $data.Text().Title, title: $data.Text().Title }" /><!-- /ko -->
+						<!-- ko if: Icon -->
+						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
+						<!-- /ko -->
+						<!-- ko if: !Link() -->
+						<span class="item-title" data-bind="html: $data.Text().Title"></span>
+						<!-- /ko -->
+						<!-- ko if: Link -->
+						<a class="item-title" data-bind="text: $data.Text().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
+						<!-- /ko -->
+					</p>
+				</article>
+				<!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
+			</div>
+			<!--/view-->
+
+		</div>
+
+		<!-- /ko -->
+		<!-- ko if: app.state.edit() -->
+			<!-- ko compose: 'views/details/editor' -->
+			<!-- /ko -->
+		<!-- /ko -->
+
+
+	</div>
+</div>

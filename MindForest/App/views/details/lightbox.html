@@ -1,22 +1,22 @@
-﻿<div id="detailsPage" class="page secondary tool lightBox">
-	<div id="detail-lightbox" data-bind="with: node">
+﻿<div id="detailsPage" class="page detail modal lightbox" data-bind="with: node">
+	<!--<div id="detail-lightbox">-->
 
 		<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" /><!--everything relative to index.(cs)html-->
 
 		<a id="details-command-close"
 			 class="win-command win-command-small"
 			 rel="tootlip" title="Close details"
-			 data-bind="click: $root.hideDetails">
+			 data-bind="click: $root.app.hideDetails">
 			<span class="win-commandicon win-commandring icon-close"></span>
 		</a>
 
 		<!-- <div class="page-region">-->
 
 		<div class="page-region-content">
-			<!--data-bind="visible: $root.settings.edit() === false"-->
+			<!--data-bind="visible: $root.app.settings.edit() === false"-->
 
-			<h1 data-bind="html: Text().Title"></h1>
-			<p data-bind="html: Text().Content"></p>
+			<h1 class="text-title" data-bind="html: Text().Title"></h1>
+			<p class="text-description" data-bind="html: Text().Description"></p>
 
 			<article data-bind="foreach: Details">
 				<p data-bind="visible: Class()=='details_note', class: Class, style: { backgroundColor: BackColor, color: Color }">
@@ -35,10 +35,10 @@
 			<div class="listview grid-layout" data-bind="foreach: Details">
 
 				<!-- ko if: Class()=='details_link' && MediaType != 'video/youtube' -->
-				<div class="listview-item bg-color-gray"
+				<div class="listview-item"
 						 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
-											, click: $root.showWebPage, clickbubble: false
+											, click: $root.app.showWebPage, clickbubble: false
 					 ">
 					<div class="pull-left">
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
@@ -50,10 +50,10 @@
 				</div>
 				<!-- /ko -->
 				<!-- ko if: MediaType == 'video/youtube' -->
-				<div class="listview-item bg-color-redDark"
+				<div class="listview-item"
 						 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
-											, click: $root.showWebPage, clickbubble: false
+											, click: $root.app.showWebPage, clickbubble: false
 					 ">
 					<div class="pull-left">
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
@@ -76,7 +76,7 @@
 				<div class="slide-subnode item"
 						 data-bind="class: Class
 											, style: { backgroundColor: BackColor, color: Color }
-											, click: $root.select, clickbubble: false
+											, click: $root.app.select, clickbubble: false
 					 ">
 					<h3 class="item-title" data-bind="text: Text().Title"></h3>
 				</div>
@@ -86,5 +86,5 @@
 		</div> <!--.page-region-content-->
 		<!--</div>-->
 
-	</div>
+	<!--</div>-->
 </div>

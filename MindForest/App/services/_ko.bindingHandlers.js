@@ -1,4 +1,5 @@
 ﻿//#region Binding Providers
+
 (function () {
 
 	//Catch binding exceptions using a custom binding provider
@@ -22,9 +23,13 @@
 	};
 
 })();
+
 //#endregion Binding Providers
 
 
+//#region general ko.bindingHandlers
+
+//fadeVisible: visible usung fadeIn/fadeOut effects
 ko.bindingHandlers.fadeVisible = {
 	init: function (element, valueAccessor) {
 		// Initially set the element to be instantly visible/hidden depending on the value
@@ -38,7 +43,7 @@ ko.bindingHandlers.fadeVisible = {
 	}
 };
 
-//class binding (like css binding but gets the classname from binding)
+//class: like css binding but gets the classname from binding (multiple classnames seperated by blank are possible)
 ko.bindingHandlers.class = {
 	update: function (element, valueAccessor) {
 		if (element['__ko__previousClassValue__']) {
@@ -47,19 +52,68 @@ ko.bindingHandlers.class = {
 		var value = ko.utils.unwrapObservable(valueAccessor());
 		$(element).addClass(value);
 		element['__ko__previousClassValue__'] = value;
-		//var values = ko.utils
-		//	.unwrapObservable(valueAccessor())
-		//	.replace(/[,;\s]/g, ' ') //replace , or multiple whitespaces with single blanc
-		//	.replace(/^\s+|\s+$/, ' ')	//trim (remove leading or trailing blanks)
-		//	.split(' ');
-		//for (var i = 0; i < length; i++) {
-		//	$(element).addClass(values[i]);
-		//}
-		//element['__ko__previousClassValue__'] = value; //TODO: coange to values
 	}
 };
 
-//class binding (like css binding but gets the classname from binding)
+//textDate: formatted DateTime binding using moment.js and the moment.fromPT extension
+ko.bindingHandlers.textDate = {
+	init: function (element, valueAccessor, allBindingsAccessor) {
+		var value = valueAccessor();
+		var allBindings = allBindingsAccessor();
+		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
+		$(element).change(function (event) {
+			var text = $(this).val();
+			try {
+				var m = moment(text, format);
+				var val = value();
+				val.setHours(m.hour());
+				val.setMinutes(m.minute());
+				value(val);
+			}
+			catch (e) { }
+		});
+	},
+	update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		var value = ko.utils.unwrapObservable(valueAccessor());
+		var allBindings = allBindingsAccessor();
+		//Options
+		var attributeName = allBindings.bindTo || 'text';
+		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
+		//parse Date
+		var date = value === null
+						 ? null
+						 : value.toString().substring(0, 2) === 'PT'
+						 ? moment.fromPT(value)
+						 : moment(value);
+		if (date && date.isValid) {
+			//format
+			var dateString = date.format(format);
+			//var dateString = date.calendar();
+			if (attributeName === 'text') {
+				$(element).text(dateString);
+			}
+			else {
+				$(element).attr(attributeName, dateString);
+			}
+		}
+		else {
+			//todo trigger ko.validation
+			if (attributeName === 'text') {
+				$(element).text('');
+			}
+			else {
+				$(element).attr(attributeName, null);
+			}
+		}
+	}
+};
+
+//#endregion general ko.bindingHandlers
+
+
+//#region App specific ko.bindingHandlers
+
+//databound connection lines used in mm
 ko.bindingHandlers.plumb = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 
@@ -175,7 +229,7 @@ ko.bindingHandlers.plumb = {
             //plumb.removeAll();
             if (connections.length) {
                 var from = options.fromId || 'node-' + connections[0].FromId();
-                var container = options.containerId || 'container-c' + connections[0].FromId();
+                var container = options.containerId || 'container-c' + connections[0].Id();
                 for (var i = 0; i < connections.length; i++) {
                     var con = connections[i];
                     var to = options.toId || 'node-' + con.ToId();
@@ -217,64 +271,10 @@ ko.bindingHandlers.plumb = {
 	} //update
 }; //ko.bindingHandlers.plumbSortable
 
+//#endregion App specific ko.bindingHandlers
 
-//add ko binding for Date using moment.js
-ko.bindingHandlers.textDate = {
-	init: function (element, valueAccessor, allBindingsAccessor) {
-		var value = valueAccessor();
-		var allBindings = allBindingsAccessor();
-		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
-		$(element).change(function (event) {
-			var text = $(this).val();
-			try {
-				var m = moment(text, format);
-				var val = value();
-				val.setHours(m.hour());
-				val.setMinutes(m.minute());
-				value(val);
-			}
-			catch (e) { }
-		});
-	},
-	update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-		var value = ko.utils.unwrapObservable(valueAccessor());
-		var allBindings = allBindingsAccessor();
-		//Options
-		var attributeName = allBindings.bindTo || 'text';
-		var format = allBindings.format || 'DD.MM.YYYY HH:mm';
-		//parse Date
-		var date = value === null
-						 ? null
-						 : value.toString().substring(0, 2) === 'PT'
-						 ? moment.fromPT(value)
-						 : moment(value);
-		if (date && date.isValid) {
-			//format
-			var dateString = date.format(format);
-			//var dateString = date.calendar();
-			if (attributeName === 'text') {
-				$(element).text(dateString);
-			}
-			else {
-				$(element).attr(attributeName, dateString);
-			}
-		}
-		else {
-			//todo trigger ko.validation
-			if (attributeName === 'text') {
-				$(element).text('');
-			}
-			else {
-				$(element).attr(attributeName, null);
-			}
-		}
-	}
-};
-
-//#endregion formatting
 
 //#region Global Extensions
-
 
 //Extension for moment to understand MS DateTime (actually time only) format
 moment.fromPT = function (time) {
@@ -297,3 +297,5 @@ moment.fromPT = function (time) {
 	}
 	return moment().year(0).month(0).date(0).hour(h).minute(m).second(s);
 };
+
+//#endregion Global Extensions

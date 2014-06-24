@@ -1,47 +1,46 @@
-﻿<div id="forestPage" class="page tool-left">
-
-	<div class="nav-bar navbar-fixed-top metro-navbar">
-		<div class="navbar-inner win-commandlayout">
-			<div class="header-container">
-				<h1>Start</h1>
-			</div>
-			<!--
-			<a  class="win-command" rel="tootlip" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
-				<span class="win-commandicon win-commandring" data-bind="class: $root.settings.edit() === false ? 'icon-pencil' : 'icon-eye'"></span>
-				<span class="win-label" data-bind="text: $root.settings.edit() === false ? 'Edit' : 'View'"></span>
-			</a>
-
-			<a  class="win-command" data-bind="click: $root.addChild">
-				<span class="win-commandicon win-commandring icon-plus"></span>
-				<span class="win-label">Add Tree</span>
-			</a>
-			-->
-
-			<div class="btn-group pull-right dropdown">
-				<a class="win-command dropdown-toggle" data-toggle="dropdown">
-					<span class="win-commandicon win-commandring  icon-cog"></span>
-					<!--<span class="win-label">Settings</span>-->
+﻿<div id="forestPage" class="page">
+		<div class="nav-bar navbar-fixed-top metro-navbar">
+			<div class="navbar-inner win-commandlayout">
+				<div class="header-container">
+					<h1>Start</h1>
+				</div>
+				<!--
+				<a  class="win-command" rel="tootlip" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
+					<span class="win-commandicon win-commandring" data-bind="class: $root.settings.edit() === false ? 'icon-pencil' : 'icon-eye'"></span>
+					<span class="win-label" data-bind="text: $root.settings.edit() === false ? 'Edit' : 'View'"></span>
 				</a>
-				<!-- ko compose: 'views/_menu' -->
-				<!-- /ko-->
+
+				<a  class="win-command" data-bind="click: $root.addChild">
+					<span class="win-commandicon win-commandring icon-plus"></span>
+					<span class="win-label">Add Tree</span>
+				</a>
+				-->
+
+				<div class="btn-group pull-right dropdown">
+					<a class="win-command dropdown-toggle" data-toggle="dropdown">
+						<span class="win-commandicon win-commandring icon-cog"></span>
+						<!--<span class="win-label">Settings</span>-->
+					</a>
+					<!-- ko compose: 'views/_menu' -->
+					<!-- /ko-->
+				</div>
+
 			</div>
-
 		</div>
-	</div>
-	<div id="alerts-container"></div>
+		<div id="alerts-container"></div>
 
-	<div class="page-region">
-		<div class="page-region-content metro">
+		<div class="page-region">
+			<div class="page-region-content metro">
 
-			<ul id="forest" class="list_view grid-layout" data-bind="template: { foreach: trees }">
-				<li class="tile app bg-color-gray" data-bind="click: $parent.openTree, clickBubble: false">
-					<div class="app-label">
-						<div class="name" data-bind="text: Text().Title"></div>
-					</div>
-				</li>
-			</ul>
+				<ul id="tree-list" class="list_view grid-layout" data-bind="template: { foreach: trees }">
+					<li class="tile app" data-bind="click: $parent.openTree, clickBubble: false">
+						<div class="app-label">
+							<div class="name" data-bind="text: Text().Title"></div>
+						</div>
+					</li>
+				</ul>
 
+			</div>
 		</div>
-	</div>
 
-</div>
+	</div>

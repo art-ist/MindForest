@@ -1,96 +1,78 @@
 ﻿/*#region App theming TODO: move to themes*/
 
-html, body {
-  background-color: #649913;
+html, .page, #forestPage > .nav-bar {
+	background-color: #649913;
 }
 
-/*#forestPage > .nav-bar {
-  background-color: #fff;
-  border-bottom: solid 5px #BB1173; 
-}*/
-#forestPage .win-commandicon {color: #fff;}
-#forestPage .win-commandring {border-color: #fff; background-color: #BB1173}
-
-
-#detailsPage {
-
-}
-#details-command-close:hover, #web-command-close:hover {
-  opacity: 1;
-}
-#details-command-close, #web-command-close {
-  opacity: 0.6;
-}
-#details-command-close .win-commandicon {
-  background-color: #649913;
-  color: #fff;
-}
-#details-command-close .win-commandring {
-  border-color: #649913;
-}
-
-#web-command-close .win-commandicon {
-  background-color: #e1a31c;
-  color: #fff;
-}
-#web-command-close .win-commandring {
-  border-color: #e1a31c;
-}
-
-.nav-bar {
+.btn-primary {
 	background-color: #bb1173;
+	border-color: #bb1173;
 }
 
-/*#detail-lightbox h1 {
-  color: #bb1173;
-}*/
+	#detailsPage.dock .nav-bar, .modal .nav-bar {
+		background-color: #bb1173;
+	}
 
-#mm {
-  background-color: #649913;
-}
-#mm .page-region {
-}
+	#details-command-close .win-commandicon {
+		background-color: #649913;
+		color: #fff;
+	}
+
+	#details-command-close .win-commandring {
+		border-color: #649913;
+	}
+
+	#web-command-close .win-commandicon {
+		background-color: #e1a31c;
+		color: #fff;
+	}
+
+	#web-command-close .win-commandring {
+		border-color: #e1a31c;
+	}
 
 #mm-container {
-  border-color: #bb1173;
-  border-style: solid;
-  border-width: 1px 1px 5px 1px;
-  
-  -webkit-box-shadow: 0px 0px 10px #4f4f4f;
-  -moz-box-shadow: 0px 0px 10px #4f4f4f; 
-  box-shadow: 0px 0px 10px #5c5c5c;
+	background-color: #fff;
+	color: #4c4b4e;
+	padding: 40px;
+	margin-right: 0; /*TODO: find a way to overwrite with width */
 
-  background-color: #fff;
-  color: #4c4b4e;
-
-  padding: 40px;
-
-  margin-right: auto;
+	border-color: #bb1173;
+	border-style: solid;
+	border-width: 1px 1px 5px 1px;
+	-webkit-box-shadow: 0px 0px 10px #4f4f4f;
+	-moz-box-shadow: 0px 0px 10px #4f4f4f;
+	box-shadow: 0 0 10px #5c5c5c;
 }
 
 /*#endregion App theming TODO: move to themes*/
 
 
 /*#region Forest (content) specific classes*/
+/*TODO: move to forest config*/
 
 .category {
-  /*background-color: #525252;*/
-  color: #212121;
-  font-weight: 400;
+	/*background-color: #525252;*/
+	color: #212121;
+	font-weight: 400;
 }
+
 .question {
-  background: url('/Images/question.png') no-repeat left top;
-  background-color: #e6e7e8;
+	background: url('/Images/question.png') no-repeat left top;
+	background-color: #e6e7e8;
 }
-  .question .item-title {
-    margin-left: 24px;
-  }
+
+	.question .item-title {
+		margin-left: 24px;
+	}
+
 .project {
-  background: url('/Images/checkmark.png') no-repeat left top;
-  background-color: #e6e7e8;
+	background: url('/Images/checkmark.png') no-repeat left top;
+	background-color: #e6e7e8;
 }
-  .project .item-title {
-    margin-left: 26px;
-  }
+
+	.project .item-title {
+		margin-left: 26px;
+	}
 
 /*#endregion Forest (content) specific classes*/

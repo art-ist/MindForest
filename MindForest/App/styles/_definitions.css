@@ -20,16 +20,6 @@ body {
 iframe {
   border: none;
 }
-.metro .tile,
-.listview-item {
-  background-color: #555555;
-  color: #ffffff;
-}
-a.two-lines {
-  /*tile second line*/
-  color: #ffffff;
-  opacity: 0.8;
-}
 /*#endregion element customizations*/
 /*#region page defaults*/
 .page {
@@ -65,41 +55,23 @@ a.two-lines {
 .dock.left.show {
   left: 0;
 }
-.page.modal {
-  position: fixed;
-  left: 5%;
-  right: 5%;
-  width: 90%;
-  top: 5%;
-  bottom: 5%;
-  box-shadow: 0 0 200px 20px rgba(0, 0, 0, 0.6);
-  overflow: visible;
-  display: none;
-}
-.page.modal.show {
-  display: block;
-}
-.page.modal #details-command-close,
-.page.modal #web-command-close {
-  position: absolute;
-  right: -20px;
-  top: 15px;
-}
 /*#region forestPage*/
 ul#tree-list {
   padding-top: 20px;
+}
+.tile.app {
+  background-color: #555555;
+  color: #ffffff;
 }
 /*#endregion forestPage*/
 /*#region mapPage*/
 #mapPage.dock.right {
   width: 50%;
-  left: 0;
   right: 50%;
 }
 #mapPage.dock.left {
   width: 50%;
   left: 50%;
-  right: 0;
 }
 /*#endregion mapPage*/
 #mapPage nav-bar {
@@ -107,14 +79,8 @@ ul#tree-list {
 }
 /*#endregion page defaults*/
 /*#region detailsPage*/
-#detailsPage {
-  background-color: #ffffff;
-}
 #detailsPage nav-bar {
   background-color: #343c45;
-}
-.text-comment {
-  color: #808080;
 }
 /*#endregion detailsPage*/
 /*#region webPage*/

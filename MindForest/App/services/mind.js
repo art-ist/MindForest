@@ -31,7 +31,7 @@
 		currentConnection: ko.observable(null),	//Connection
 		currentNode: ko.observable(null),		//Node
 
-		mapModel: ko.observable({ /*currentNode*/currentConnection: null }),
+		mapModel: ko.observable({ /*currentNode*/currentConnection: null }), //Used?
 
 		//Methods
 		loadTrees: loadTrees,
@@ -40,7 +40,7 @@
 
 		//getParentConnection: getParentConnection,
 		//getParentNode: getParentNode,
-		findNodeById: findNodeById,
+		//findNodeById: findNodeById,
 
 		addConnection: addConnection,
 		addNode: addNode,
@@ -254,10 +254,10 @@
 
 	//#region Private Functions
 
-
 	function _loadMindResult(result, reset) {
 
 		if (reset) {
+			//reset trees collection
 			var trees = [];
 			for (var i = 0; i < result.Nodes.length; i++) {
 				var item = result.Nodes[i];
@@ -320,7 +320,7 @@
 	} //loadTrees
 
 	function loadChildren(FromNode, selectChild) {
-		logger.log('loading children of ' + FromNode.Id(), 'mind - loadChildren', { FromNode: FromNode, selectChild: selectChild, });
+		logger.log('loading children of ' + FromNode.Id(), 'mind - loadChildren'/*, { FromNode: FromNode, selectChild: selectChild, }*/);
 
 		var query = new breeze.EntityQuery()
 			.from("GetChildren")
@@ -336,7 +336,7 @@
 		if (selectChild && FromNode.Children && FromNode.Children().length > 0) {
 			//select first child
 			try {
-				mind.currentConnection(FromNode.Children()[0]);
+				app.select(FromNode.Children()[0]);  //mind.currentConnection(FromNode.Children()[0]);
 			} catch (e) { }
 		}
 
@@ -346,13 +346,12 @@
 
 		  	_loadMindResult(result);
 
-		  	logger.log('children of ' + FromNode.Id() + ' loaded', 'mind - loadChildren', result);
+		  	logger.log('children of ' + FromNode.Id() + ' loaded', 'mind - loadChildren'/*, result*/);
 		  }) //then
 		  .fail(function (ex) {
 		  	logger.error(ex, 'mind - loadChildren');
 		  })
 		; //mindContext.executeQuery(query)
-
 
 	} //loadChildren
 
@@ -600,22 +599,22 @@
 	} //undoChanges
 
 
-	//obsolete
-	function findNodeById(id) {
-		var custType = mindContext.metadataStore.getEntityType("Node");
-		var nodeEntitys = mindContext.getEntities(custType);
-		for (var i = 0; i < nodeEntitys.length; i++) {
-			var item = nodeEntitys[i];
-			if (item.Id() === id) {
-				if (id === mind.currentTree().Id()) {
-					return mind.currentTree();
-				} else {
-					return item;
-				}
-			}
-		}
-		return null;
-	} //findNodeById
+	////obsolete
+	//function findNodeById(id) {
+	//	var custType = mindContext.metadataStore.getEntityType("Node");
+	//	var nodeEntitys = mindContext.getEntities(custType);
+	//	for (var i = 0; i < nodeEntitys.length; i++) {
+	//		var item = nodeEntitys[i];
+	//		if (item.Id() === id) {
+	//			if (id === mind.currentTree().Id()) {
+	//				return mind.currentTree();
+	//			} else {
+	//				return item;
+	//			}
+	//		}
+	//	}
+	//	return null;
+	//} //findNodeById
 
 	//#endregion Methods
 

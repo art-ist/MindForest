@@ -3,26 +3,24 @@
   'services/app'
 ], function (logger, app) {
 
-  var vm = {
-    //Properties
-    app: app,
+	var vm = {
+		//Properties
+		app: app,
 
-    connection: app.mind.currentConnection(),
-    node: app.mind.currentConnection() ? app.mind.currentConnection().ToNode() : null,
+		connection: app.mind.currentConnection,
+		node: app.mind.currentNode,
 
-    //Lifecycle Events
-    canActivate: canActivate,
-    activate: activate,
+		//Lifecycle Events
+		compositionComplete: compositionComplete
 
-  };
-  return vm;
+	};
+	return vm;
 
-  function canActivate(data, queryString) {
-  	return true;
-  } //canActivate
-
-  function activate(data, queryString) {
-  	logger.log('View activated', 'lightbox');
-  } //activate
+	function compositionComplete(view, parent) {
+		//logger.log('Composition complete', 'dock', view);
+		if (app.detailsVisible) {
+			app.showDetails();
+		}
+	}
 
 }); //define
