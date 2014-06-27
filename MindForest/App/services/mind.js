@@ -390,7 +390,7 @@
 			//ToNode: toNode,
 			//Position: position,
 			//Relation: relation
-		}, breeze.EntityState.ADDED);
+		}, breeze.EntityState.added);
 
 		//set initial values
 		newConnection.FromNode(fromNode);
@@ -419,7 +419,7 @@
 			}
 			console.log("addConnection: fromNode.ConnectionsTo.splice(indexInsertAfter,0,newConnection)");
 		}
-		toNode.ConnectionsFrom.push(newConnection);
+		fromNode.ConnectionsFrom.push(newConnection);
 
 		//TODO: move to app.js where needed
 		////get parent connection and expand
@@ -457,7 +457,7 @@
 			//ModifiedAt: new Date(),
 			//ModifiedBy: app.user.name(),
 			//IsTreeRoot: false
-		}, breeze.EntityState.ADDED);
+		}, breeze.EntityState.added);
 
 		//initial values
 		addNodeText(toNode, null);
