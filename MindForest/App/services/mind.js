@@ -58,31 +58,28 @@
 	////set computed properties that require context 
 
 	//// add basic auth header to breeze calls
-
-	//#endregion Constructor
-	return mind;
-
-
-	//#region Models
-
 	//Connection
 	function Connection() {
+		//extensions in the constructor will be turned into observables by breeze and on export be serialized as unmapped
 
-		//simple values (transformed to observables by breeze)
-		this.isExpanded = false;
-		//computed
-		this.isCurrent = ko.computed({
+		this.isExpanded = false; //simple values (transformed to observables by breeze)
+
+	} //Connection
+	var ConnectionInitializer = function (self) {
+		//extensions in the post-construction initializer will be NOT made observable by breeze will NOT be exported
+
+		self.isCurrent = ko.computed({
 			read: function () {
-				return this === mind.currentConnection();
+				return self === mind.currentConnection();
 			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
+			owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}); //isCurrent
-		this.ChildConnections = ko.computed({
+		self.ChildConnections = ko.computed({
 			read: function () {
 				var result = [];
-				if (!this.ToNode || !this.ToNode()) { return result; }
-				var connections = this.ToNode().ConnectionsTo();
+				if (!self.ToNode || !self.ToNode()) { return result; }
+				var connections = self.ToNode().ConnectionsTo();
 				for (var i = 0; i < connections.length; i++) {
 					if (connections[i].Relation() === Relation.Child) {
 						result.push(connections[i]);
@@ -90,63 +87,64 @@
 				}
 				return result;
 			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //ChildConnections
-		this.ParentConnections = ko.computed({
+			owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //ChildConnections
+		self.ParentConnections = ko.computed({
 			read: function () {
 				var result = [];
-				if (!this.FromNode || !this.FromNode()) { return result; }
-				return this.FromNode().ConnectionsFrom();
+				if (!self.FromNode || !self.FromNode()) { return result; }
+				return self.FromNode().ConnectionsFrom();
 			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //ParentConnections
-
-	} //Connection
+			owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //ParentConnections
+	}; //ConnectionInitializer
 
 	//Node
 	function Node() {
-		//var eventRate = { rateLimit: 50, method: "notifyWhenChangesStop" }; //rateLimit: notify of changes max every XX ms, delay until no change for XX ms 
-		//var notifyAlways = { notify: 'always' };
+		//extensions in the constructor will be turned into observables by breeze and on export be serialized as unmapped
 
-		//simple values (transformed to observables by breeze)
 		this.isDeleted = false;
-		//computed
-		this.Text = ko.computed({
+
+	} //Node
+	var NodeInitializer = function (self) {
+		//extensions in the post-construction initializer will be NOT made observable by breeze will NOT be exported
+
+		self.Local = ko.computed({
 			read: function () {
-				//return this.Texts()[0];
+				//return self.Texts()[0];
 				//nothing there
-				if (!this.Texts) { return null; }
+				if (!self.Texts) { return null; }
 				////single entity
-				//if (this.Texts.Title) {
-				//	return this.Text;
+				//if (self.Texts.Title) {
+				//	return self.Text;
 				//}
 				//empty array 
-				if (!this.Texts().length) { return null; }
+				if (!self.Texts().length) { return null; }
 				//find localized text
 				var i = 0;
-				for (i = 0; i < this.Texts().length; i++) {
-					if (this.Texts()[i].Lang() === app.lang) {
-						return this.Texts()[i];
+				for (i = 0; i < self.Texts().length; i++) {
+					if (self.Texts()[i].Lang() === app.lang) {
+						return self.Texts()[i];
 					}
 				}
 				//return neutral text
-				for (i = 0; i < this.Texts().length; i++) {
-					if (!this.Texts()[i].Lang || !this.Texts()[i].Lang()) {
-						return this.Texts()[i];
+				for (i = 0; i < self.Texts().length; i++) {
+					if (!self.Texts()[i].Lang || !self.Texts()[i].Lang()) {
+						return self.Texts()[i];
 					}
 				}
 				//return whatever you have
-				return this.Texts()[0];
-			},
-			//owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}, this); //Text
-		//this.Children = ko.computed({ //"ChildNodes"
+				return self.Texts()[0];
+			}
+			,owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}, self); //Text
+		//self.Children = ko.computed({ //"ChildNodes"
 		//	read: function () {
 		//		var result = [];
-		//		var connections = this.ConnectionsTo();
+		//		var connections = self.ConnectionsTo();
 		//		for (var i = 0; i < connections.length; i++) {
 		//			if (connections[i].Relation() === Relation.Child) {
 		//				result.push(connections[i].ToNode);
@@ -154,44 +152,44 @@
 		//		}
 		//		return result;
 		//	},
-		//	owner: this,
+		//	owner: self,
 		//	deferEvaluation: true //required because Entity properties are not yet defined
-		//}); //Children
-		this.Details = ko.computed({
+		//}); //.extend({ throttle: 500 }); //Children
+		self.Details = ko.computed({
 			read: function () {
 				var result = [];
-				var connections = this.ConnectionsTo();
+				var connections = self.ConnectionsTo();
 				for (var i = 0; i < connections.length; i++) {
 					if (connections[i].Relation() === Relation.Detail) {
 						result.push(connections[i].ToNode);
 					}
 				}
 				return result;
-			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //Details
-		this.ChildConnections = ko.computed({
+			}
+			,owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //Details
+		self.ChildConnections = ko.computed({
 			read: function () {
 				var result = [];
-				if (!this.ConnectionsTo || !this.ConnectionsTo()) { return result; }
-				var connections = this.ConnectionsTo();
+				if (!self.ConnectionsTo || !self.ConnectionsTo()) { return result; }
+				var connections = self.ConnectionsTo();
 				for (var i = 0; i < connections.length; i++) {
 					if (connections[i].Relation() === Relation.Child) {
 						result.push(connections[i]);
 					}
 				}
 				return result;
-			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //ChildConnections
-		this.ParentConnections = ko.computed({
+			}
+			,owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //ChildConnections
+		self.ParentConnections = ko.computed({
 			read: function () {
-				return this.ConnectionsFrom();
+				return self.ConnectionsFrom();
 				//var result = [];
-				//if (!this.ConnectionsTo || !this.ConnectionsTo()) { return result; }
-				//var connections = this.ConnectionsTo();
+				//if (!self.ConnectionsTo || !self.ConnectionsTo()) { return result; }
+				//var connections = self.ConnectionsTo();
 				//for (var i = 0; i < connections.length; i++) {
 				//	//whana find the Node if you are on a detail? Why not?
 				//	//if (connections[i].Relation() === Relation.Child) {
@@ -199,28 +197,31 @@
 				//	//}
 				//}
 				//return result;
-			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //ParentConnections
-		this.hasChildren = ko.computed({ //"HasChildNodes"
+			}
+			,owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //ParentConnections
+		self.hasChildren = ko.computed({ //"HasChildNodes"
 			read: function () {
 				//has at least one non-details-connection
-				var connections = this.ConnectionsTo();
+				var connections = self.ConnectionsTo();
 				for (var i = 0; i < connections.length; i++) {
 					if (connections[i].Relation() === Relation.Child) {
 						return true;
 					}
 				}
 				return false;
-			},
-			owner: this,
-			deferEvaluation: true //required because Entity properties are not yet defined
-		}); //HasChildren
+			}
+			,owner: self
+			//,deferEvaluation: true //required because Entity properties are not yet defined
+		}); //.extend({ throttle: 500 }); //HasChildren
 
-	} //Node
+	}; //NodeInitializer
 
-	//#endregion Models
+
+	//#endregion Constructor
+	return mind;
+	//-----------------------------------------------------------------------------
 
 
 	function _extendEntities(context) {
@@ -229,14 +230,20 @@
 		// and: http://www.breezejs.com/documentation/extending-entities
 		var metadata = context.metadataStore;
 
-		metadata.registerEntityTypeCtor("Node", Node); // "Node:#MindForest.Models"
-		metadata.registerEntityTypeCtor("Connection", Connection); // "Connection:#MindForest.Models"
+		metadata.registerEntityTypeCtor("Connection", Connection, ConnectionInitializer); // "Connection:#MindForest.Models"
+		metadata.registerEntityTypeCtor("Node", Node, NodeInitializer); // "Node:#MindForest.Models"
 
 	} //_extendEntities
 
 	function initialize(a) {
 		app = a;
 		mindServiceUri = mindServiceUri.replace(/{forest}/g, app.forest ? '/' + app.forest + '/' : '/');
+
+		//intercept breeze ajax calls
+		var ajaxAdapter = breeze.config.getAdapterInstance('ajax');
+		ajaxAdapter.requestInterceptor = function (requestInfo) {
+			logger.log('issuing ajax call', 'mind - breeze', requestInfo);
+		}
 
 		mindContext = new breeze.EntityManager(mindServiceUri);
 		//mindMetadata = mindContext.metadataStore;//see: http://www.breezejs.com/documentation/naming-convention
@@ -266,6 +273,12 @@
 				}
 			} //for
 			mind.trees(trees);
+		}
+		for (var n = 0; n < result.Nodes.length; n++) {
+			NodeInitializer(result.Nodes[n]);
+		}
+		for (var c = 0; c < result.Connections.length; c++) {
+			ConnectionInitializer(ConnectionInitializer[c]);
 		}
 
 	} //_loadMindResult
@@ -383,33 +396,28 @@
 
 		//create entity
 		var newConnection = mindContext.createEntity('Connection', {
-			//Id: breeze.core.getUuid(),
-			//FromId: 1729,//fromNode.Id(),
-			//ToId: 561,//newNodesId,
-			//FromNode: fromNode,
-			//ToNode: toNode,
-			//Position: position,
-			//Relation: relation
-		}, breeze.EntityState.added);
+			FromNode: fromNode,
+			ToNode: toNode,
+			Position: position,
+			//RestrictAccess: false,
+			Relation: relation,
+			CreatedAt: new Date(),
+			CreatedBy: app.user.name(),
+			ModifiedAt: new Date(),
+			ModifiedBy: app.user.name()
+		});
 
-		//set initial values
-		newConnection.FromNode(fromNode);
-		//newConnection.FromId(1729); // 
-		newConnection.ToNode(toNode);
-		//newConnection.ToId(561); //
-		//newConnection.RestrictAccess = false; //
-		newConnection.Position(position);
-		newConnection.Relation(relation);
-		newConnection.CreatedAt(new Date());
-		newConnection.CreatedBy(app.user.name());
-		newConnection.ModifiedAt(new Date());
-		newConnection.ModifiedBy(app.user.name());
+		////set initial values
+		//newConnection.FromNode(fromNode);
+		////newConnection.FromId(1729); // 
+		//newConnection.ToNode(toNode);
+		////newConnection.ToId(561); //
 
-		console.log(fromNode.ConnectionsTo().length);
+		logger.log('fromNode.ConnectionsTo().length: ' + fromNode.ConnectionsTo().length, 'mind - addConnection');
 
 		//insert into collections
 		if (insertAfter === null || insertAfter === undefined) {
-			fromNode.ConnectionsTo.push(newConnection); //TODO: insert at correct position
+			fromNode.ConnectionsTo.push(newConnection); //TODO: insert to parent at correct position
 		}
 		else {
 			var storItems = fromNode.ConnectionsTo.splice(indexInsertAfter + 1, fromNode.ConnectionsTo().length);
@@ -417,9 +425,9 @@
 			for (var j = 0; j < storItems.length; j++) {
 				fromNode.ConnectionsTo.push(storItems[j]);
 			}
-			console.log("addConnection: fromNode.ConnectionsTo.splice(indexInsertAfter,0,newConnection)");
+			//logger.log("fromNode.ConnectionsTo.splice(indexInsertAfter,0,newConnection)", 'mind - addConnection');
 		}
-		fromNode.ConnectionsFrom.push(newConnection);
+		toNode.ConnectionsFrom.push(newConnection); //insert to child
 
 		//TODO: move to app.js where needed
 		////get parent connection and expand
@@ -430,47 +438,34 @@
 		//	parentCon.isExpanded(true);
 		//}
 
-		console.log(fromNode.ConnectionsTo().length); //WARUM??? bist du immer noch so lange wie vorher obwohl du erfolgreich geändert wurdest?????
+		logger.log('fromNode.ConnectionsTo().length (after push): ' + fromNode.ConnectionsTo().length, 'mind - addConnection'); //WARUM??? bist du immer noch so lange wie vorher obwohl du erfolgreich geändert wurdest?????
 
 		return newConnection;
 	} //addConnection
 
-	function addNodeText(toNode, lang) {
+	function addNodeText(node, lang) {
 		//create entity
 		var nodeText = mindContext.createEntity('NodeText', {}, breeze.EntityState.ADDED);
 		//initial values
-		nodeText.Node(toNode);
+		nodeText.Node(node);
 		nodeText.Lang(lang || null);
 		//add to Nodes Texts collection
-		toNode.Texts.push(nodeText);
+		node.Texts.push(nodeText);
 		//return
 		return nodeText;
 	}
 
 	function addNode(parentNode, insertAfter, relation) {
 		var toNode = mindContext.createEntity('Node', {
-			//TODO: Problem mit db tauglicher id nicht gelöst, nur um cliend seitig funktionalitäten zu haben
-			//Id: breeze.core.getUuid(),/*newNodesId,*/
-			//RestrictAccess: false,
-			//CreatedAt: new Date(),
-			//CreatedBy: app.user.name(),
-			//ModifiedAt: new Date(),
-			//ModifiedBy: app.user.name(),
-			//IsTreeRoot: false
-		}, breeze.EntityState.added);
+			CreatedAt: new Date(),
+			CreatedBy: app.user.name(),
+			ModifiedAt: new Date(),
+			ModifiedBy: app.user.name(),
+			IsTreeRoot: false
+		});
 
-		//initial values
+		//add neutral Texts
 		addNodeText(toNode, null);
-
-		toNode.CreatedAt(new Date());
-		toNode.CreatedBy(app.user.name());
-		toNode.ModifiedAt(new Date());
-		toNode.ModifiedBy(app.user.name());
-		toNode.IsTreeRoot(false);
-
-		// Damit si da server ned aufregt, weil a halt gewisse werte umbedingt will^^
-		toNode.ForeignOrigin(0);
-		toNode.ForeignId(0);
 
 		//create connection to link node to parentNode
 		var newConnection = addConnection(parentNode, toNode, insertAfter, relation);
@@ -557,7 +552,6 @@
 	} //deleteAllTexts
 
 
-
 	//recursiveley remove 
 	function deleteChildNodes(childNodes) {
 		for (var i = 0; i < childNodes().length; i++) {
@@ -572,11 +566,18 @@
 	} //deletChildNodes
 
 	function saveChanges() {
+		//-find problem in changes
+		//logger.log("saving changes: mindContext", 'mind - saveChanges', mindContext);
+		var changes = mindContext.getChanges(); // we'll stash just the changes
+		logger.log("saving changes: changes", 'mind - saveChanges', changes);
+		var changesExport = mindContext.exportEntities(changes);
+		logger.log("saving changes: exported", 'mind - saveChanges', changesExport);
+		//-find problem in changes
 		mindContext.saveChanges()
 			.then(function (saveResult) {
 				//var savedEntities = saveResult.entities;
 				//var keyMappings = saveResult.keyMappings;
-				logger.success("Saved", 'SUCCESS|mind - saveChanges');
+				logger.success("Saved successfully", 'mind - saveChanges');
 			})
 			.fail(function (e) {
 				try {

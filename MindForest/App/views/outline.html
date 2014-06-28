@@ -10,7 +10,7 @@
 
 		<div class="cloud" data-bind="style: { backgroundColor: ToNode().CloudColor }"></div>
 
-		<div class="item" data-bind="class: ToNode().Class
+		<div class="item" data-bind="class: ToNode().CssClass
                                  , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
                                  , click: $root.nodeClick, clickBubble: false
                                  ">
@@ -21,7 +21,7 @@
                                                 , css: { 'icon-arrow-down-8': !isExpanded(), 'icon-arrow-up-7': isExpanded() }
                                                 , visible: ToNode().hasChildren()
                                                 "></button>
-			<span class="item-title" data-bind="html: ToNode().Text().Title"></span>
+			<span class="item-title" data-bind="html: ToNode().Local().Title"></span>
 		</div>
 
 		<ol class="" data-bind="visible: isExpanded(),

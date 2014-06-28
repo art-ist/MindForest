@@ -5,6 +5,63 @@
 		<!-- SSDL content -->
 		<edmx:StorageModels>
 		<Schema Namespace="MindForestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+          <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="UserExternalLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IdentityUser_Id" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Hometown" Type="nvarchar(max)" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Connections">
           <Key>
             <PropertyRef Name="Id" />
@@ -15,7 +72,7 @@
           <Property Name="Position" Type="int" Nullable="false" />
           <Property Name="IsVisible" Type="bit" />
           <Property Name="AlwaysExpand" Type="bit" />
-          <Property Name="Class" Type="nvarchar" MaxLength="200" />
+          <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
           <Property Name="Style" Type="nvarchar" MaxLength="1000" />
           <Property Name="Color" Type="varchar" MaxLength="10" />
           <Property Name="Width" Type="varchar" MaxLength="10" />
@@ -52,7 +109,7 @@
           <Property Name="IsTreeRoot" Type="bit" Nullable="false" />
           <Property Name="TreeSettings" Type="xml" />
           <Property Name="Icon" Type="nvarchar" MaxLength="1000" />
-          <Property Name="Class" Type="nvarchar" MaxLength="200" />
+          <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
           <Property Name="Style" Type="nvarchar" MaxLength="1000" />
           <Property Name="Color" Type="varchar" MaxLength="10" />
           <Property Name="BackColor" Type="varchar" MaxLength="10" />
@@ -100,65 +157,65 @@
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="NodeId" Type="bigint" Nullable="false" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Permission" Type="tinyint" Nullable="false" />
         </EntityType>
-        <EntityType Name="Membership">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
-          <Property Name="IsConfirmed" Type="bit" />
-          <Property Name="LastPasswordFailureDate" Type="datetime" />
-          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="PasswordChangedDate" Type="datetime" />
-          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
-          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="OAuthMembership">
-          <Key>
-            <PropertyRef Name="Provider" />
-            <PropertyRef Name="ProviderUserId" />
-          </Key>
-          <Property Name="Provider" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="ProviderUserId" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Roles">
-          <Key>
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserProfiles">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
-          <Property Name="DisplayName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="Settings" Type="xml" />
-        </EntityType>
-        <EntityType Name="UsersInRoles">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
-        </EntityType>
+        <Association Name="FK_app_UserClaims_app_Users_IdentityUser_Id">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserClaims" Type="Self.UserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClaims">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_UserExternalLogins_app_Users_IdentityUser_Id">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserExternalLogins" Type="Self.UserExternalLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserExternalLogins">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_UserRoles_app_Roles_RoleId">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_UserRoles_app_Users_IdentityUser_Id">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Mind__Permission_Role">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Roles">
-              <PropertyRef Name="RoleId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Permissions">
               <PropertyRef Name="RoleId" />
@@ -229,44 +286,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Web_OAuthMembership_UserProfile">
-          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OAuthMembership" Type="Self.OAuthMembership" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfiles">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="OAuthMembership">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_Web_UsersInRoles_RoleId">
-          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
-          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Roles">
-              <PropertyRef Name="RoleId" />
-            </Principal>
-            <Dependent Role="UsersInRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_Web_UsersInRoles_UserId">
-          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1" />
-          <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfiles">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UsersInRoles">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="GetChildConnections" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
           <Parameter Name="NodeId" Type="int" Mode="In" />
           <Parameter Name="User" Type="nvarchar" Mode="In" />
@@ -283,7 +302,7 @@
                 <Property Name="Position" Type="int" Nullable="false" />
                 <Property Name="IsVisible" Type="bit" />
                 <Property Name="AlwaysExpand" Type="bit" />
-                <Property Name="Class" Type="nvarchar" MaxLength="200" />
+                <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
                 <Property Name="Style" Type="nvarchar" MaxLength="1000" />
                 <Property Name="Color" Type="varchar" MaxLength="10" />
                 <Property Name="Width" Type="varchar" MaxLength="10" />
@@ -314,7 +333,7 @@
                 <Property Name="Position" Type="int" Nullable="false" />
                 <Property Name="IsVisible" Type="bit" />
                 <Property Name="AlwaysExpand" Type="bit" />
-                <Property Name="Class" Type="nvarchar" MaxLength="200" />
+                <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
                 <Property Name="Style" Type="nvarchar" MaxLength="1000" />
                 <Property Name="Color" Type="varchar" MaxLength="10" />
                 <Property Name="Width" Type="varchar" MaxLength="10" />
@@ -340,8 +359,9 @@
                 <Property Name="UserId" Type="int" />
                 <Property Name="NodeType" Type="varchar" MaxLength="10" />
                 <Property Name="IsTreeRoot" Type="bit" Nullable="false" />
+                <Property Name="TreeSettings" Type="xml" />
                 <Property Name="Icon" Type="nvarchar" MaxLength="1000" />
-                <Property Name="Class" Type="nvarchar" MaxLength="200" />
+                <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
                 <Property Name="Style" Type="nvarchar" MaxLength="1000" />
                 <Property Name="Color" Type="varchar" MaxLength="10" />
                 <Property Name="BackColor" Type="varchar" MaxLength="10" />
@@ -353,22 +373,21 @@
                 <Property Name="ReminderAt" Type="datetime2" Precision="2" />
                 <Property Name="Progress" Type="tinyint" />
                 <Property Name="Link" Type="nvarchar" MaxLength="1000" />
+                <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
+                <Property Name="LinkStatus" Type="smallint" />
                 <Property Name="MediaStreamId" Type="varchar" MaxLength="50" />
                 <Property Name="MediaType" Type="varchar" MaxLength="50" />
                 <Property Name="MediaOffest" Type="decimal" Precision="7" Scale="2" />
                 <Property Name="MediaLength" Type="decimal" Precision="7" Scale="2" />
                 <Property Name="MediaCycle" Type="bit" />
                 <Property Name="Hook" Type="nvarchar(max)" />
+                <Property Name="RestrictAccess" Type="bit" Nullable="false" />
                 <Property Name="ForeignId" Type="varchar" MaxLength="40" />
                 <Property Name="ForeignOrigin" Type="nvarchar" MaxLength="200" />
                 <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
                 <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
                 <Property Name="ModifiedAt" Type="datetime2" Precision="3" Nullable="false" />
                 <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-                <Property Name="LinkTestedAt" Type="datetime2" Precision="2" />
-                <Property Name="LinkStatus" Type="smallint" />
-                <Property Name="TreeSettings" Type="xml" />
-                <Property Name="RestrictAccess" Type="bit" Nullable="false" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -389,7 +408,7 @@
                 <Property Name="Position" Type="int" Nullable="false" />
                 <Property Name="IsVisible" Type="bit" />
                 <Property Name="AlwaysExpand" Type="bit" />
-                <Property Name="Class" Type="nvarchar" MaxLength="200" />
+                <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
                 <Property Name="Style" Type="nvarchar" MaxLength="1000" />
                 <Property Name="Color" Type="varchar" MaxLength="10" />
                 <Property Name="Width" Type="varchar" MaxLength="10" />
@@ -405,16 +424,32 @@
           </ReturnType>
         </Function>
         <EntityContainer Name="MindForestModelStoreContainer">
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="App" store:Type="Tables" />
+          <EntitySet Name="UserClaims" EntityType="Self.UserClaims" Schema="App" store:Type="Tables" />
+          <EntitySet Name="UserExternalLogins" EntityType="Self.UserExternalLogins" Schema="App" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="App" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="App" store:Type="Tables" />
           <EntitySet Name="Connections" EntityType="Self.Connections" Schema="Mind" store:Type="Tables" />
           <EntitySet Name="ConnectionTexts" EntityType="Self.ConnectionTexts" Schema="Mind" store:Type="Tables" />
           <EntitySet Name="Nodes" EntityType="Self.Nodes" Schema="Mind" store:Type="Tables" />
           <EntitySet Name="NodeTexts" EntityType="Self.NodeTexts" Schema="Mind" store:Type="Tables" />
           <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="Mind" store:Type="Tables" />
-          <EntitySet Name="Membership" EntityType="Self.Membership" Schema="Web" store:Type="Tables" />
-          <EntitySet Name="OAuthMembership" EntityType="Self.OAuthMembership" Schema="Web" store:Type="Tables" />
-          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="Web" store:Type="Tables" />
-          <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="Web" store:Type="Tables" />
-          <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="Web" store:Type="Tables" />
+          <AssociationSet Name="FK_app_UserClaims_app_Users_IdentityUser_Id" Association="Self.FK_app_UserClaims_app_Users_IdentityUser_Id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClaims" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_UserExternalLogins_app_Users_IdentityUser_Id" Association="Self.FK_app_UserExternalLogins_app_Users_IdentityUser_Id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserExternalLogins" EntitySet="UserExternalLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_UserRoles_app_Roles_RoleId" Association="Self.FK_app_UserRoles_app_Roles_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_UserRoles_app_Users_IdentityUser_Id" Association="Self.FK_app_UserRoles_app_Users_IdentityUser_Id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
           <AssociationSet Name="FK_Mind__Permission_Role" Association="Self.FK_Mind__Permission_Role">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Permissions" EntitySet="Permissions" />
@@ -439,18 +474,6 @@
             <End Role="Nodes" EntitySet="Nodes" />
             <End Role="Permissions" EntitySet="Permissions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Web_OAuthMembership_UserProfile" Association="Self.FK_Web_OAuthMembership_UserProfile">
-            <End Role="UserProfiles" EntitySet="UserProfiles" />
-            <End Role="OAuthMembership" EntitySet="OAuthMembership" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Web_UsersInRoles_RoleId" Association="Self.fk_Web_UsersInRoles_RoleId">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Web_UsersInRoles_UserId" Association="Self.fk_Web_UsersInRoles_UserId">
-            <End Role="UserProfiles" EntitySet="UserProfiles" />
-            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
 		<!-- CSDL content -->
@@ -459,14 +482,6 @@
 				<EntityContainer Name="ForestEntities" p1:LazyLoadingEnabled="false">
 					<EntitySet Name="Nodes" EntityType="MindForest.Models.Node" />
 					<EntitySet Name="Connections" EntityType="MindForest.Models.Connection" />
-					<EntitySet Name="Memberships" EntityType="MindForest.Models.Membership" />
-					<EntitySet Name="OAuthMemberships" EntityType="MindForest.Models.OAuthMembership" />
-					<EntitySet Name="Roles" EntityType="MindForest.Models.Role" />
-					<EntitySet Name="UserProfiles" EntityType="MindForest.Models.UserProfile" />
-					<AssociationSet Name="UsersInRoles" Association="MindForest.Models.UsersInRoles">
-						<End Role="Role" EntitySet="Roles" />
-						<End Role="UserProfile" EntitySet="UserProfiles" />
-					</AssociationSet>
 					<EntitySet Name="Permissions" EntityType="MindForest.Models.Permission" />
 					<AssociationSet Name="FK_Mind__Connection_ToNode" Association="MindForest.Models.FK_Mind__Connection_ToNode">
 						<End Role="Node" EntitySet="Nodes" />
@@ -480,19 +495,6 @@
 						<End Role="Node" EntitySet="Nodes" />
 						<End Role="Permission" EntitySet="Permissions" />
 					</AssociationSet>
-					<AssociationSet Name="FK_Mind__Permission_Role" Association="MindForest.Models.FK_Mind__Permission_Role">
-						<End Role="Role" EntitySet="Roles" />
-						<End Role="Permission" EntitySet="Permissions" />
-					</AssociationSet>
-					<AssociationSet Name="FK_Web_Membership_UserProfile" Association="MindForest.Models.FK_Web_Membership_UserProfile">
-						<End Role="UserProfile" EntitySet="UserProfiles" />
-						<End Role="Membership" EntitySet="Memberships" />
-					</AssociationSet>
-					<AssociationSet Name="FK_Web_OAuthMembership_UserProfile" Association="MindForest.Models.FK_Web_OAuthMembership_UserProfile">
-						<End Role="UserProfile" EntitySet="UserProfiles" />
-						<End Role="OAuthMembership" EntitySet="OAuthMemberships" />
-					</AssociationSet>
-
 					<EntitySet Name="NodeTexts" EntityType="MindForest.Models.NodeText" />
 					<AssociationSet Name="FK_Mind_NodeTexts_Nodes" Association="MindForest.Models.FK_Mind_NodeTexts_Nodes">
 						<End Role="Node" EntitySet="Nodes" />
@@ -528,6 +530,31 @@
 						<End Role="Connection" EntitySet="Connections" />
 						<End Role="ConnectionText" EntitySet="ConnectionTexts" />
 					</AssociationSet>
+          <EntitySet Name="UserClaims" EntityType="MindForest.Models.UserClaim" />
+          <EntitySet Name="UserExternalLogins" EntityType="MindForest.Models.UserExternalLogin" />
+          <EntitySet Name="UserRoles" EntityType="MindForest.Models.UserRole" />
+          <EntitySet Name="Users" EntityType="MindForest.Models.User" />
+          <AssociationSet Name="FK_app_UserClaims_app_Users_IdentityUser_Id" Association="MindForest.Models.FK_app_UserClaims_app_Users_IdentityUser_Id">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserClaim" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_UserExternalLogins_app_Users_IdentityUser_Id" Association="MindForest.Models.FK_app_UserExternalLogins_app_Users_IdentityUser_Id">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserExternalLogin" EntitySet="UserExternalLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_app_UserRoles_app_Users_IdentityUser_Id" Association="MindForest.Models.FK_app_UserRoles_app_Users_IdentityUser_Id">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <EntitySet Name="Roles" EntityType="MindForest.Models.Role" />
+          <AssociationSet Name="FK_app_UserRoles_app_Roles_RoleId" Association="MindForest.Models.FK_app_UserRoles_app_Roles_RoleId">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mind__Permission_Role" Association="MindForest.Models.FK_Mind__Permission_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
 				</EntityContainer>
 				<EntityType Name="Node">
 					<Key>
@@ -539,7 +566,7 @@
 					<Property Type="String" Name="NodeType" MaxLength="10" FixedLength="false" Unicode="false" />
 					<Property Type="Boolean" Name="IsTreeRoot" Nullable="false" DefaultValue="false" />
 					<Property Type="String" Name="Icon" MaxLength="1000" FixedLength="false" Unicode="true" />
-					<Property Type="String" Name="Class" MaxLength="200" FixedLength="false" Unicode="true" />
+					<Property Type="String" Name="CssClass" MaxLength="200" FixedLength="false" Unicode="true" />
 					<Property Type="String" Name="Style" MaxLength="1000" FixedLength="false" Unicode="true" />
 					<Property Type="String" Name="Color" MaxLength="10" FixedLength="false" Unicode="false" />
 					<Property Type="String" Name="BackColor" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -577,7 +604,7 @@
 						<PropertyRef Name="Id" />
 					</Key>
 					<Property Name="Id" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-					<Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+					<Property Name="CssClass" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
 					<Property Type="Int64" Name="FromId" Nullable="false" />
 					<Property Type="Int64" Name="ToId" Nullable="false" />
 					<Property Name="Relation" Type="Byte" Nullable="false" />
@@ -598,69 +625,16 @@
 					<NavigationProperty Name="FromNode" Relationship="MindForest.Models.FK_Mind_Connection_FromNode" FromRole="Connection" ToRole="Node" />
 					<NavigationProperty Name="Texts" Relationship="MindForest.Models.FK_Mind_ConnectionTexts_Connections" FromRole="Connection" ToRole="ConnectionText" />
 				</EntityType>
-				<EntityType Name="Membership">
-					<Key>
-						<PropertyRef Name="UserId" />
-					</Key>
-					<Property Name="UserId" Type="Int32" Nullable="false" />
-					<Property Name="CreateDate" Type="DateTime" Precision="3" />
-					<Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-					<Property Name="IsConfirmed" Type="Boolean" />
-					<Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
-					<Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
-					<Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-					<Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
-					<Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-					<Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-					<Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
-					<NavigationProperty Name="UserProfile" Relationship="MindForest.Models.FK_Web_Membership_UserProfile" FromRole="Membership" ToRole="UserProfile" />
-				</EntityType>
-				<EntityType Name="OAuthMembership">
-					<Key>
-						<PropertyRef Name="Provider" />
-						<PropertyRef Name="ProviderUserId" />
-					</Key>
-					<Property Name="Provider" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-					<Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-					<Property Name="UserId" Type="Int32" Nullable="false" />
-					<NavigationProperty Name="UserProfile" Relationship="MindForest.Models.FK_Web_OAuthMembership_UserProfile" FromRole="OAuthMembership" ToRole="UserProfile" />
-				</EntityType>
-				<EntityType Name="Role">
-					<Key>
-						<PropertyRef Name="RoleId" />
-					</Key>
-					<Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-					<Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-					<NavigationProperty Name="UserProfiles" Relationship="MindForest.Models.UsersInRoles" FromRole="Role" ToRole="UserProfile" />
-					<NavigationProperty Name="Permissions" Relationship="MindForest.Models.FK_Mind__Permission_Role" FromRole="Role" ToRole="Permission" />
-				</EntityType>
-				<EntityType Name="UserProfile">
-					<Key>
-						<PropertyRef Name="UserId" />
-					</Key>
-					<Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-					<Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-					<Property Name="DisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-					<Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-					<Property Name="Settings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-					<NavigationProperty Name="Roles" Relationship="MindForest.Models.UsersInRoles" FromRole="UserProfile" ToRole="Role" />
-					<NavigationProperty Name="Membership" Relationship="MindForest.Models.FK_Web_Membership_UserProfile" FromRole="UserProfile" ToRole="Membership" />
-					<NavigationProperty Name="OAuthMemberships" Relationship="MindForest.Models.FK_Web_OAuthMembership_UserProfile" FromRole="UserProfile" ToRole="OAuthMembership" />
-				</EntityType>
-				<Association Name="UsersInRoles">
-					<End Type="MindForest.Models.Role" Role="Role" Multiplicity="*" />
-					<End Type="MindForest.Models.UserProfile" Role="UserProfile" Multiplicity="*" />
-				</Association>
 				<EntityType Name="Permission">
 					<Key>
 						<PropertyRef Name="NodeId" />
 						<PropertyRef Name="RoleId" />
 					</Key>
 					<Property Name="NodeId" Type="Int64" Nullable="false" />
-					<Property Name="RoleId" Type="Int32" Nullable="false" />
+					<Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
 					<Property Name="PermissionType" Type="Byte" Nullable="false" />
 					<NavigationProperty Name="Node" Relationship="MindForest.Models.FK_Mind_Permission_Node" FromRole="Permission" ToRole="Node" />
-					<NavigationProperty Name="Role" Relationship="MindForest.Models.FK_Mind__Permission_Role" FromRole="Permission" ToRole="Role" />
+          <NavigationProperty Name="Role" Relationship="MindForest.Models.FK_Mind__Permission_Role" FromRole="Permission" ToRole="Role" />
 				</EntityType>
 				<Association Name="FK_Mind__Connection_ToNode">
 					<End Type="MindForest.Models.Node" Role="Node" Multiplicity="1">
@@ -699,46 +673,6 @@
 						</Principal>
 						<Dependent Role="Permission">
 							<PropertyRef Name="NodeId" />
-						</Dependent>
-					</ReferentialConstraint>
-				</Association>
-				<Association Name="FK_Mind__Permission_Role">
-					<End Type="MindForest.Models.Role" Role="Role" Multiplicity="1" />
-					<End Type="MindForest.Models.Permission" Role="Permission" Multiplicity="*" />
-					<ReferentialConstraint>
-						<Principal Role="Role">
-							<PropertyRef Name="RoleId" />
-						</Principal>
-						<Dependent Role="Permission">
-							<PropertyRef Name="RoleId" />
-						</Dependent>
-					</ReferentialConstraint>
-				</Association>
-				<Association Name="FK_Web_Membership_UserProfile">
-					<End Type="MindForest.Models.UserProfile" Role="UserProfile" Multiplicity="1">
-						<OnDelete Action="Cascade" />
-					</End>
-					<End Type="MindForest.Models.Membership" Role="Membership" Multiplicity="0..1" />
-					<ReferentialConstraint>
-						<Principal Role="UserProfile">
-							<PropertyRef Name="UserId" />
-						</Principal>
-						<Dependent Role="Membership">
-							<PropertyRef Name="UserId" />
-						</Dependent>
-					</ReferentialConstraint>
-				</Association>
-				<Association Name="FK_Web_OAuthMembership_UserProfile">
-					<End Type="MindForest.Models.UserProfile" Role="UserProfile" Multiplicity="1">
-						<OnDelete Action="Cascade" />
-					</End>
-					<End Type="MindForest.Models.OAuthMembership" Role="OAuthMembership" Multiplicity="*" />
-					<ReferentialConstraint>
-						<Principal Role="UserProfile">
-							<PropertyRef Name="UserId" />
-						</Principal>
-						<Dependent Role="OAuthMembership">
-							<PropertyRef Name="UserId" />
 						</Dependent>
 					</ReferentialConstraint>
 				</Association>
@@ -795,6 +729,134 @@
 						</Dependent>
 					</ReferentialConstraint>
 				</Association>
+        <EntityType Name="UserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="MindForest.Models.FK_app_UserClaims_app_Users_IdentityUser_Id" FromRole="UserClaim" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserExternalLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="MindForest.Models.FK_app_UserExternalLogins_app_Users_IdentityUser_Id" FromRole="UserExternalLogin" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IdentityUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="MindForest.Models.FK_app_UserRoles_app_Users_IdentityUser_Id" FromRole="UserRole" ToRole="User" />
+          <NavigationProperty Name="Role" Relationship="MindForest.Models.FK_app_UserRoles_app_Roles_RoleId" FromRole="UserRole" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Hometown" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserClaims" Relationship="MindForest.Models.FK_app_UserClaims_app_Users_IdentityUser_Id" FromRole="User" ToRole="UserClaim" />
+          <NavigationProperty Name="UserExternalLogins" Relationship="MindForest.Models.FK_app_UserExternalLogins_app_Users_IdentityUser_Id" FromRole="User" ToRole="UserExternalLogin" />
+          <NavigationProperty Name="UserRoles" Relationship="MindForest.Models.FK_app_UserRoles_app_Users_IdentityUser_Id" FromRole="User" ToRole="UserRole" />
+        </EntityType>
+        <Association Name="FK_app_UserClaims_app_Users_IdentityUser_Id">
+          <End Type="MindForest.Models.User" Role="User" Multiplicity="0..1" />
+          <End Type="MindForest.Models.UserClaim" Role="UserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserClaim">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_UserExternalLogins_app_Users_IdentityUser_Id">
+          <End Type="MindForest.Models.User" Role="User" Multiplicity="0..1" />
+          <End Type="MindForest.Models.UserExternalLogin" Role="UserExternalLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserExternalLogin">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_UserRoles_app_Users_IdentityUser_Id">
+          <End Type="MindForest.Models.User" Role="User" Multiplicity="0..1" />
+          <End Type="MindForest.Models.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="IdentityUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserRoles" Relationship="MindForest.Models.FK_app_UserRoles_app_Roles_RoleId" FromRole="Role" ToRole="UserRole" />
+          <NavigationProperty Name="Permissions" Relationship="MindForest.Models.FK_Mind__Permission_Role" FromRole="Role" ToRole="Permission" />
+        </EntityType>
+        <Association Name="FK_app_UserRoles_app_Roles_RoleId">
+          <End Type="MindForest.Models.Role" Role="Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MindForest.Models.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mind__Permission_Role">
+          <End Type="MindForest.Models.Role" Role="Role" Multiplicity="1" />
+          <End Type="MindForest.Models.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -831,7 +893,7 @@
 								<ScalarProperty Name="BackColor" ColumnName="BackColor" />
 								<ScalarProperty Name="Color" ColumnName="Color" />
 								<ScalarProperty Name="Style" ColumnName="Style" />
-								<ScalarProperty Name="Class" ColumnName="Class" />
+								<ScalarProperty Name="CssClass" ColumnName="CssClass" />
 								<ScalarProperty Name="Icon" ColumnName="Icon" />
 								<ScalarProperty Name="IsTreeRoot" ColumnName="IsTreeRoot" />
 								<ScalarProperty Name="NodeType" ColumnName="NodeType" />
@@ -849,7 +911,7 @@
 								<ScalarProperty Name="FromId" ColumnName="FromId" />
 								<ScalarProperty Name="Relation" ColumnName="Relation" />
 								<ScalarProperty Name="Position" ColumnName="Position" />
-								<ScalarProperty Name="Class" ColumnName="Class" />
+								<ScalarProperty Name="CssClass" ColumnName="CssClass" />
 								<ScalarProperty Name="Style" ColumnName="Style" />
 								<ScalarProperty Name="Color" ColumnName="Color" />
 								<ScalarProperty Name="AlwaysExpand" ColumnName="AlwaysExpand" />
@@ -865,59 +927,6 @@
 							</MappingFragment>
 						</EntityTypeMapping>
 					</EntitySetMapping>
-					<EntitySetMapping Name="Memberships">
-						<EntityTypeMapping TypeName="MindForest.Models.Membership">
-							<MappingFragment StoreEntitySet="Membership">
-								<ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
-								<ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
-								<ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-								<ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
-								<ScalarProperty Name="Password" ColumnName="Password" />
-								<ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
-								<ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
-								<ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
-								<ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
-								<ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-								<ScalarProperty Name="UserId" ColumnName="UserId" />
-							</MappingFragment>
-						</EntityTypeMapping>
-					</EntitySetMapping>
-					<EntitySetMapping Name="OAuthMemberships">
-						<EntityTypeMapping TypeName="MindForest.Models.OAuthMembership">
-							<MappingFragment StoreEntitySet="OAuthMembership">
-								<ScalarProperty Name="UserId" ColumnName="UserId" />
-								<ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
-								<ScalarProperty Name="Provider" ColumnName="Provider" />
-							</MappingFragment>
-						</EntityTypeMapping>
-					</EntitySetMapping>
-					<EntitySetMapping Name="Roles">
-						<EntityTypeMapping TypeName="MindForest.Models.Role">
-							<MappingFragment StoreEntitySet="Roles">
-								<ScalarProperty Name="RoleName" ColumnName="RoleName" />
-								<ScalarProperty Name="RoleId" ColumnName="RoleId" />
-							</MappingFragment>
-						</EntityTypeMapping>
-					</EntitySetMapping>
-					<EntitySetMapping Name="UserProfiles">
-						<EntityTypeMapping TypeName="MindForest.Models.UserProfile">
-							<MappingFragment StoreEntitySet="UserProfiles">
-								<ScalarProperty Name="Settings" ColumnName="Settings" />
-								<ScalarProperty Name="Email" ColumnName="Email" />
-								<ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-								<ScalarProperty Name="UserName" ColumnName="UserName" />
-								<ScalarProperty Name="UserId" ColumnName="UserId" />
-							</MappingFragment>
-						</EntityTypeMapping>
-					</EntitySetMapping>
-					<AssociationSetMapping Name="UsersInRoles" TypeName="MindForest.Models.UsersInRoles" StoreEntitySet="UsersInRoles">
-						<EndProperty Name="UserProfile">
-							<ScalarProperty Name="UserId" ColumnName="UserId" />
-						</EndProperty>
-						<EndProperty Name="Role">
-							<ScalarProperty Name="RoleId" ColumnName="RoleId" />
-						</EndProperty>
-					</AssociationSetMapping>
 					<EntitySetMapping Name="Permissions">
 						<EntityTypeMapping TypeName="MindForest.Models.Permission">
 							<MappingFragment StoreEntitySet="Permissions">
@@ -960,6 +969,65 @@
           <FunctionImportMapping FunctionImportName="GetNeighbourConnections" FunctionName="MindForestModel.Store.GetNeighbourConnections" />
           <FunctionImportMapping FunctionImportName="GetParentConnections" FunctionName="MindForestModel.Store.GetParentConnections" />
           <FunctionImportMapping FunctionImportName="GetNodes" FunctionName="MindForestModel.Store.GetNodes" />
+          <EntitySetMapping Name="UserClaims">
+            <EntityTypeMapping TypeName="MindForest.Models.UserClaim">
+              <MappingFragment StoreEntitySet="UserClaims">
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserExternalLogins">
+            <EntityTypeMapping TypeName="MindForest.Models.UserExternalLogin">
+              <MappingFragment StoreEntitySet="UserExternalLogins">
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="MindForest.Models.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="IdentityUser_Id" ColumnName="IdentityUser_Id" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MindForest.Models.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="Hometown" ColumnName="Hometown" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="MindForest.Models.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
 				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

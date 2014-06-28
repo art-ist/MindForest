@@ -12,12 +12,14 @@ namespace MindForest.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OAuthMembership
+    public partial class UserClaim
     {
-        public string Provider { get; set; }
-        public string ProviderUserId { get; set; }
-        public int UserId { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public string ClaimType { get; set; }
+        public string ClaimValue { get; set; }
+        public string IdentityUser_Id { get; set; }
     
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace MindForest.Models
         }
     
         public long Id { get; set; }
-        public string Class { get; set; }
+        public string CssClass { get; set; }
         public long FromId { get; set; }
         public long ToId { get; set; }
         public byte Relation { get; set; }

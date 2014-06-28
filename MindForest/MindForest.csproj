@@ -202,6 +202,7 @@
     <Content Include="App\app.Debug.config.js" />
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
+    <Content Include="App\libraries\knockout-mapping.js" />
     <Content Include="App\libraries\knockout-sortable.min.js" />
     <Content Include="App\libraries\moment-with-langs.js" />
     <Content Include="App\libraries\moment-with-langs.min.js" />
@@ -212,6 +213,7 @@
     <Content Include="App\services\mind.js" />
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\platform.js" />
+    <Content Include="App\services\storage.js" />
     <Content Include="App\services\_globals.js" />
     <Content Include="App\services\_ko.bindingHandlers.js" />
     <Content Include="App\styles\_definitions.css">
@@ -523,15 +525,15 @@
     <Compile Include="Controllers\IdentityController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MindController.cs" />
-    <Compile Include="Models\IdentityControlerModels.cs" />
-    <Compile Include="Models\ChallengeResult.cs" />
     <Compile Include="Models\Connection.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConnectionExtensions.cs" />
     <Compile Include="Models\ConnectionText.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IdentityControlerModels.cs" />
+    <Compile Include="Models\ChallengeResult.cs" />
+    <Compile Include="Models\ConnectionExtensions.cs" />
     <Compile Include="Models\Forest.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -539,9 +541,6 @@
     </Compile>
     <Compile Include="Models\IdentityContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\Membership.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\MindResult.cs" />
     <Compile Include="Models\MindContext.cs" />
     <Compile Include="Models\MindContextProvider.cs" />
@@ -565,16 +564,22 @@
     <Compile Include="Models\NodeText.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OAuthMembership.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Permission.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserProfile.cs">
+    <Compile Include="Models\User.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserClaim.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserExternalLogin.cs">
+      <DependentUpon>Forest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRole.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

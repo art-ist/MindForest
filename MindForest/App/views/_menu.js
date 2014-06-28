@@ -42,7 +42,7 @@
 	function setMap(value) {
 		menu.app.settings.map(value);
 		//if (mind.currentTree()) {
-		//	var tree = mind.currentTree().Text().Title();
+		//	var tree = mind.currentTree().Local().Title();
 		//	router.navigate('#/' + tree + '/' + value);
 		//}
 	}

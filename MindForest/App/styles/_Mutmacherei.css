@@ -75,4 +75,10 @@ html, .page, #forestPage > .nav-bar {
 		margin-left: 26px;
 	}
 
+	#detailsPage {
+			-webkit-box-shadow: 0px 0px 10px #4f4f4f;
+	-moz-box-shadow: 0px 0px 10px #4f4f4f;
+	box-shadow: 0 0 10px #5c5c5c;
+	}
+
 /*#endregion Forest (content) specific classes*/

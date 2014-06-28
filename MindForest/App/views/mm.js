@@ -64,8 +64,8 @@
 				strokeStyle: "#999"
 			}
 		});
-		mm.app.map = mm;
 
+		mm.app.map = mm;
 		var rootNode = mind.currentTree();
 		mind.loadChildren(rootNode, true);
 	} //activate

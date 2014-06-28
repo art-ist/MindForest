@@ -31,8 +31,6 @@
 		//authServiceUri = authServiceUri.replace(/{forest}/, app.forest ? '/' + app.forest + '/' : '/');
 		authServiceUri = authServiceUri.replace(/{forest}/, '/');
 
-		//TODO: if available get from localstorage
-
 		// add auth header to breeze calls
 		var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
 		ajaxAdapter.defaultSettings = {
@@ -56,11 +54,6 @@
 			contentType: 'application/x-www-form-urlencoded',
 			data: 'grant_type=password&username=' + username + '&password=' + password,
 		}).done(function (result, textStatus, jqXHR) {
-			var user = auth.app.user;
-			user.name(result.userName);
-			user.access_token(result.access_token);
-			//TODO: get roles
-			user.roles(['Author']);
 
 			//function success(claims) {
 			//	$.each(claims, function (i, claim) {
@@ -76,7 +69,6 @@
 			//	console.log('[app.js - login] success', app.user);
 			//}
 
-			//TODO: save to local storage
 			logger.success(result.userName + ' logged in', 'auth - login', result);
 		}).fail(function (jqXHR, textStatus, errorThrown) {
 			logger.error('Login failed: ' + textStatus, 'auth - login', errorThrown);

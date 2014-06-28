@@ -42,13 +42,13 @@
 	<div class="page-region-content">
 		<form role="form">
 			<!--data-bind="event: { keypress: $root.app.keyset.form }"-->
-			<h2 data-bind="html: Text().Title"></h2>
+			<h2 data-bind="html: Local().Title"></h2>
 
 			<label data-localize="edit.parents">Gehört zu</label>
 			<div>
 				<!-- ko foreach: ParentConnections -->
-				<div class="item" data-bind="click: function() { $root.app.select($data.FromNode()) }, class: FromNode().Class">
-					<span class="item-title" data-bind="text: FromNode().Text().Title"></span>
+				<div class="item" data-bind="click: function() { $root.app.select($data.FromNode()) }, class: FromNode().CssClass">
+					<span class="item-title" data-bind="text: FromNode().Local().Title"></span>
 				</div>
 				<!-- /ko -->
 			</div>
@@ -88,7 +88,7 @@
 						</div>
 						<div class="form-group">
 							<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notizen (nur für Autoren)</label>
-							<textarea class="input-block-level" rows="2" data-bind="html: Text().Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
+							<textarea class="input-block-level" rows="2" data-bind="value: Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
 						</div>
 					</div>
 
@@ -110,23 +110,23 @@
 			</h3>
 			<ul class="edit-details-list" data-bind="sortable: { data: Details }">
 				<!--data-bind="foreach: Details"-->
-				<li data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
+				<li data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
 					<!-- ko if: Link && !MediaType -->
 					<div class="icon-link" />
 					<!-- /ko -->
 					<!-- ko if: MediaType == 'image' -->
-					<img style="width:90%" src="#" data-bind="attr: { src: Link, alt: Text().Title, title: Text().Title }" />
+					<img style="width:90%" src="#" data-bind="attr: { src: Link, alt: Texts()[0].Title, title: Texts()[0].Title }" />
 					<!-- /ko -->
 					<!-- ko if: Icon -->
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
 					<!-- ko if: Link -->
-					<input type="text" style="width:39%" data-bind="value: Text().Title" />
-					<input type="text" style="width:50%" data-bind="value: Link()" />
+					<input type="text" style="width:39%" data-bind="value: Texts()[0].Title" />
+					<input type="text" style="width:50%" data-bind="value: Link" />
 					<!-- /ko -->
-					<!-- ko ifnot: Link -->
-					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Text().Title"></textarea>
-					<!-- /ko -->
+					<!--// ko ifnot: Link
+					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
+					 /ko -->
 					<a style="width:5%" class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
 						<span class="win-commandicon win-commandring icon-delete"></span>
 					</a>
@@ -141,8 +141,8 @@
 			</h3>
 			<div class="form-group">
 				<label for="edit_class" data-localize="edit.class">Klasse</label>
-				<select id="edit_class" data-bind="value: Class">
-					<!-- TODO: Class binding needed -->
+				<!-- TODO: Class binding needed -->
+				<select id="edit_class" data-bind="value: CssClass">
 					<option></option>
 					<option>category</option>
 					<option>question</option>

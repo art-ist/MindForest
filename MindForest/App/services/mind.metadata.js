@@ -72,7 +72,7 @@
                     	"p1:StoreGeneratedPattern": "Identity"
                     },
                     {
-                    	"name": "Class",
+                    	"name": "CssClass",
                     	"type": "Edm.String",
                     	"maxLength": "200",
                     	"fixedLength": "false",

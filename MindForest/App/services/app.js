@@ -3,8 +3,9 @@
   'plugins/router',
   'services/logger',
   'services/auth',
-  'services/mind'
-], function (require, router, logger, auth, mind) {
+  'services/mind',
+  'services/storage'
+], function (require, router, logger, auth, mind, storage) {
 	"use strict";
 
 	var app = {
@@ -44,6 +45,7 @@
 		settings: {
 			map: ko.observable('mm'), // outline
 			animationDuration: ko.observable(500),
+			//throttleComputed: { throttle: 500 },
 			cycleNavigation: ko.observable(false),
 			autoScroll: ko.observable(true),
 			appBar: ko.observable('hide'),
@@ -113,6 +115,15 @@
 
 	function initialize() {
 		logger.log('app initializing', 'app - initialize');
+
+		storage.get('user', function (value) {
+			if (value) {
+				//{ name: user.name, access_token: user.access_token, roles: user.roles } );
+				app.user.name(value.name);
+				app.user.access_token(value.access_token);
+				app.user.roles(value.roles);
+			}
+		});
 
 		//TODO: get/store settings from localstorage
 		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
@@ -283,12 +294,14 @@
 				if ($btns.length > 0) {
 					$btns[0].click(); //run (first) default action
 				}
+				event.preventDefault();
 				return false;
 			case 27: //esc
 				var $btns = $(modalSelector + ' .action-cancel');
 				if ($btns.length > 0) {
 					$btns[0].click(); //run (first) cancel action (e.g. close dialog)
 				}
+				event.preventDefault();
 				return false;
 		} //switch
 
@@ -315,7 +328,17 @@
 	//#region security
 
 	function login(username, password) {
-		auth.login(username, password);
+		return auth
+			.login(username, password)
+			.done(function (result, textStatus, jqXHR) {
+				var user = auth.app.user;
+				user.name(result.userName);
+				user.access_token(result.access_token);
+				//TODO: get roles
+				user.roles(['Author']);
+
+				storage.set('user', { name: user.name(), access_token: user.access_token(), roles: user.roles() } );
+		});
 	} //login
 
 	function logout() {
@@ -323,7 +346,8 @@
 			//TODO: if editing save changes
 			app.state.edit(false);
 		}
-		auth.logout();
+		storage.remove('user');
+		return auth.logout();
 	} //logout
 
 	//#endregion security
@@ -332,9 +356,11 @@
 
 	function isSelected(connectionOrNode) {
 		if (connectionOrNode.ToNode) {	//it's a connection
+			if (!mind.currentConnection()) return false;
 			return (connectionOrNode.Id() === mind.currentConnection().Id());
 		}
 		else if (connectionOrNode.ConnectionsFrom) { //it's a node
+			if (!mind.currentNode()) return false;
 			return (connectionOrNode.Id() === mind.currentNode().Id());
 		}
 		else {
@@ -362,11 +388,11 @@
 			//	mind.loadChildren(connectionOrNode, true);
 			//}
 			//select
-			mind.currentConnection(null);
+			mind.currentConnection(connectionOrNode.ConnectionsFrom()[0] || null);
 			mind.currentNode(connectionOrNode);
 		}
 		else {
-			logger.log('!! select called with neither connection nor node', 'app - select', connectionOrNode);
+			logger.error('Neither connection nor node selected. Try again.', 'app - select', connectionOrNode);
 			mind.currentConnection(null);
 			mind.currentNode(null);
 		}
@@ -434,27 +460,24 @@
 			if (!TreeName) {	//no TreeName
 				return false;
 			}
+			//if no view provided->redirect to deafult view
+			ViewName = ViewName || app.settings.map();
+			//search for tree
 			return mind
 				.loadTrees()
 				.then(function () {
 					var trees = mind.trees();
+					var lang = null;
 					for (var i = 0; i < trees.length; i++) {
 						for (var n = 0; n < trees[i].Texts().length; n++) {
 							if (trees[i].Texts()[n].Title() === TreeName) {
+								lang = trees[i].Texts()[n].Lang() || trees[i].Lang()
 								mind.currentTree(trees[i]);
-								if (ViewName) {
-									//Tree loaded, ready to activate view
-									return true;
-								}
-								else {
-									//no view provided->redirect to deafult view
-									return { redirect: '#/' + TreeName + '/' + app.settings.map() };
-								}
-							} //if (trees[i].Texts[n].Title === TreeName)
+								return { redirect: '#/' + TreeName + '/' + ViewName };
+							} //if Title === TreeName)
 						} //for trees[i].Texts()
 					} //for trees
 					//TreeName not found
-					//return { redirect: '#/' };
 					return false;
 				});
 		} catch (e) {
@@ -464,7 +487,7 @@
 	}
 
 	function openTree(item, event) {
-		var tree = item.Text().Title();
+		var tree = item.Local().Title();
 		mind.currentTree(item);
 		router.navigate('#/' + (tree ? tree + '/' : '') + app.settings.map());
 	} //openTree
@@ -510,7 +533,7 @@
 		}
 		//#endregion exceptions
 		$('#webContent').attr('src', url);
-		$('#webPage-title').text(data.Text().Title());
+		$('#webPage-title').text(data.Local().Title());
 		$('#webPage').addClass('show');
 		return false;
 	} //showWebPage
@@ -534,14 +557,12 @@
 	//#region edit
 
 	function addChild() {
-
-		console.log("DATA-BIND: app.addChild");
-
+		logger.log("addChild", 'app - addChild');
 		if (!mind.currentConnection().entityAspect.entityState === breeze.EntityState.Added) { // Abfrage ob neues element
 			mind.loadChildren(mind.currentConnection().ToNode());
 		}
 		//addNode(parentNode, insertAfter, relation)
-		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Child);
+		var newConnection = mind.addNode(mind.currentNode(), null, Relation.Child);
 		mind.currentConnection().isExpanded(true);
 		app.select(newConnection);  //mind.currentConnection(newConnection);
 	} //addChild
@@ -564,10 +585,9 @@
 	} //addSibling 
 
 	function addText(lang) {
-		console.log("DATA-BIND: addText");
-		console.log(lang);
-		var currCon = mind.currentConnection();
-		mind.addNodeText(currCon, lang);
+		logger.log("addText", 'app - addText', lang);
+		var node = mind.currentNode();
+		mind.addNodeText(node, lang);
 	}
 
 	function cloneNode() {
@@ -594,7 +614,7 @@
 		newNode.Content(currentNode.Content());
 		newNode.Icon(currentNode.Icon());
 		newNode.IconStreamId(currentNode.IconStreamId());
-		newNode.Class(currentNode.Class());
+		newNode.CssClass(currentNode.CssClass());
 		newNode.Style(currentNode.Style());
 		newNode.Color(currentNode.Color());
 		newNode.BackColor(currentNode.BackColor());
@@ -630,7 +650,7 @@
 			var newConnection = mind.addNode(
 			  newNode,
 			  null,
-			  detail.ToNode().Class(),
+			  detail.ToNode().CssClass(),
 			  true
 			);
 			newConnection.ToNode().Title(detail.ToNode().Title());
@@ -658,14 +678,14 @@
 
 			console.log("DATA-BIND: app.addDetails - klasse === details_link");
 			
-			newConnection.ToNode().Text().Title("Link Title");
+			newConnection.ToNode().Local().Title("Link Title");
 			newConnection.ToNode().Link("http://");
 		}
 		else {
 
 			console.log("DATA-BIND: app.addDetails - klasse != details_link")
 
-			newConnection.ToNode().Text().Title("New Description");
+			newConnection.ToNode().Local().Title("New Description");
 		}
 		//mind.loadDetails(mind.currentConnection().ToNode());
 	} //addDetail
@@ -700,9 +720,7 @@
 	} //undo
 
 	function save() {
-
-		console.log("DATA-BIND: app.save()");
-
+		logger.log("binding called function", 'app - save');
 		return mind.saveChanges();
 	} //save
 

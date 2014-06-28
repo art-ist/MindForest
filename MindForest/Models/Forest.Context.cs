@@ -37,13 +37,14 @@ namespace MindForest.Models
     
         public DbSet<Node> Nodes { get; set; }
         public DbSet<Connection> Connections { get; set; }
-        public DbSet<Membership> Memberships { get; set; }
-        public DbSet<OAuthMembership> OAuthMemberships { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<NodeText> NodeTexts { get; set; }
         public DbSet<ConnectionText> ConnectionTexts { get; set; }
+        public DbSet<UserClaim> UserClaims { get; set; }
+        public DbSet<UserExternalLogin> UserExternalLogins { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
     
         [EdmFunction("ForestEntities", "GetNeighbourConnections")]
         public virtual IQueryable<Connection> GetNeighbourConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)

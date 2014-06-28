@@ -15,7 +15,7 @@ namespace MindForest.Models
     public partial class Permission
     {
         public long NodeId { get; set; }
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         public byte PermissionType { get; set; }
     
         public virtual Node Node { get; set; }

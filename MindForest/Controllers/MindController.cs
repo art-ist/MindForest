@@ -176,16 +176,16 @@ namespace MindForest.Controllers {
       };
     }
 
-		/// <summary>
-    /// Lookup security roles to set permissons 
-    /// </summary>
-    /// <returns>Roles</returns>
-    [Authorize]
-    [HttpGet]
-    public dynamic Roles(string Forest) {
-      var db = new MindContextProvider(Forest);
-      return db.Context.Roles;
-    }
+		///// <summary>
+		///// Lookup security roles to set permissons 
+		///// </summary>
+		///// <returns>Roles</returns>
+		//[Authorize]
+		//[HttpGet]
+		//public dynamic Roles(string Forest) {
+		//	var db = new MindContextProvider(Forest);
+		//	return db.Context.Roles;
+		//}
 
 
     //[MembershipHttpAuthorize(Roles="Owners, Authors")]

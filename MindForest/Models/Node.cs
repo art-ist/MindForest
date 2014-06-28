@@ -29,7 +29,7 @@ namespace MindForest.Models
         public string NodeType { get; set; }
         public bool IsTreeRoot { get; set; }
         public string Icon { get; set; }
-        public string Class { get; set; }
+        public string CssClass { get; set; }
         public string Style { get; set; }
         public string Color { get; set; }
         public string BackColor { get; set; }

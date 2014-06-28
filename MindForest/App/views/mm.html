@@ -35,13 +35,13 @@
 							<div class="mm-node-container" data-bind="with: ToNode,
 																											click: $root.nodeClick, clickBubble: false,
 																											dblClickBubble: false">
-								<div class="item" data-bind="class: Class
+								<div class="item" data-bind="class: CssClass
 																				 , css: { 'current': $parent.isCurrent }
 																				 , style: { backgroundColor: BackColor, color: Color }
 																				 , attr: { id : 'node-' + Id() }
 																				 ">
 									<!--<span data-bind="text: Id"></span>-->
-									<span class="item-title" data-bind="html: Text().Title"></span>
+									<span class="item-title" data-bind="html: Local().Title"></span>
 								</div> <!--item-->
 
 							</div> <!--mm-node-container-->
@@ -72,8 +72,8 @@
 						<div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
 																										, click: $root.nodeClick, clickBubble: false
 																										">
-							<img data-bind="attr: { src: Icon, alt: Text().Title }, visible: Icon" />
-							<h2 class="item-title" data-bind="html: Text().Title, visible: !Icon()"></h2>
+							<img data-bind="attr: { src: Icon, alt: Local().Title }, visible: Icon" />
+							<h2 class="item-title" data-bind="html: Local().Title, visible: !Icon()"></h2>
 						</div>
 
 					</div>

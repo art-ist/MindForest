@@ -25,27 +25,27 @@
 
 			<!--view-->
 			<div class="page-region-content">
-				<h2 class="text-title" data-bind="html: $data.Text().Title"></h2>
-				<p class="text-description" data-bind="html: $data.Text().Description"></p>
-				<p class="text-comment" data-bind="html: $data.Text().Comment"></p>
+				<h2 class="text-title" data-bind="html: $data.Local().Title"></h2>
+				<p class="text-description" data-bind="html: $data.Local().Description"></p>
+				<p class="text-comment" data-bind="html: $data.Local().Comment"></p>
 
 				<article data-bind="foreach: Details">
-					<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">
+					<p data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }">
 
-						<!--<article data-bind="foreach: Text().Details">
-						<p data-bind="class: Class, style: { backgroundColor: BackColor, color: Color }">-->
+						<!--<article data-bind="foreach: Local().Details">
+						<p data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }">-->
 						<!-- ko if: Link && !MediaType -->
 						<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 						<!-- ko if: MediaType == 'image' -->
-						<img src="#" data-bind="attr: { src: Link, alt: $data.Text().Title, title: $data.Text().Title }" /><!-- /ko -->
+						<img src="#" data-bind="attr: { src: Link, alt: $data.Local().Title, title: $data.Local().Title }" /><!-- /ko -->
 						<!-- ko if: Icon -->
 						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 						<!-- /ko -->
 						<!-- ko if: !Link() -->
-						<span class="item-title" data-bind="html: $data.Text().Title"></span>
+						<span class="item-title" data-bind="html: $data.Local().Title"></span>
 						<!-- /ko -->
 						<!-- ko if: Link -->
-						<a class="item-title" data-bind="text: $data.Text().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
+						<a class="item-title" data-bind="text: $data.Local().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
 						<!-- /ko -->
 					</p>
 				</article>

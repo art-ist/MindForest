@@ -6,7 +6,7 @@
 
   var outline = {
     //Properties
-    title: mind.currentTree().Text().Title,
+    title: mind.currentTree().Local().Title,
     app: app,
     mind: mind,
 
@@ -76,7 +76,7 @@
   } //expandNode
 
   function showDetails(item, event) {
-    if (item.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
+    if (item.ToNode() !== mind.currentNode() || !app.detailsVisible) {
       //mind.loadChildren(item.ToNode(), true);
       app.toggleDetails('show');
     }
