@@ -168,7 +168,8 @@ namespace MindForest.Controllers {
       //get nodes
       return new MindResult() {
         Connections = connections,
-        Nodes = db.Context.Nodes
+        Nodes = db.Context
+					.Nodes
           .Include("Permissions")
           .Include("Texts")
           .Where(n => ids.Contains(n.Id))
@@ -176,16 +177,35 @@ namespace MindForest.Controllers {
       };
     }
 
-		///// <summary>
-		///// Lookup security roles to set permissons 
-		///// </summary>
-		///// <returns>Roles</returns>
-		//[Authorize]
-		//[HttpGet]
-		//public dynamic Roles(string Forest) {
-		//	var db = new MindContextProvider(Forest);
-		//	return db.Context.Roles;
-		//}
+		[HttpGet]
+		public dynamic GetNodeLookup(string Forest, int? RootNodeId = null, string Lang = null) {
+			var db = new MindContextProvider(Forest);
+			//prepare parameters
+			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+			string lang = Lang ?? "%";
+			if (!RootNodeId.HasValue) {
+				//get the root
+				RootNodeId = (int?) db.Context
+					.GetChildConnections(null, user, 1, 0, lang)
+					.Select(c => c.FromId)
+					.FirstOrDefault();
+			}
+
+			return db.Context
+				.NodeLookup(RootNodeId, user, lang);
+		}
+
+		/// <summary>
+		/// Lookup security roles to set permissons 
+		/// </summary>
+		/// <returns>Roles</returns>
+		[Authorize]
+		[HttpGet]
+		public dynamic Roles(string Forest) {
+			var db = new MindContextProvider(Forest);
+			return db.Context
+				.Roles;
+		}
 
 
     //[MembershipHttpAuthorize(Roles="Owners, Authors")]

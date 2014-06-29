@@ -53,11 +53,8 @@
 		saveChanges: saveChanges
 	};
 
-	//#region Constructor
+	//#region Entity Extensions
 
-	////set computed properties that require context 
-
-	//// add basic auth header to breeze calls
 	//Connection
 	function Connection() {
 		//extensions in the constructor will be turned into observables by breeze and on export be serialized as unmapped
@@ -219,9 +216,7 @@
 	}; //NodeInitializer
 
 
-	//#endregion Constructor
-	return mind;
-	//-----------------------------------------------------------------------------
+	//#endregion Entity Extensions
 
 
 	function _extendEntities(context) {
@@ -273,12 +268,6 @@
 				}
 			} //for
 			mind.trees(trees);
-		}
-		for (var n = 0; n < result.Nodes.length; n++) {
-			NodeInitializer(result.Nodes[n]);
-		}
-		for (var c = 0; c < result.Connections.length; c++) {
-			ConnectionInitializer(ConnectionInitializer[c]);
 		}
 
 	} //_loadMindResult
@@ -599,7 +588,6 @@
 		mindContext.rejectChanges();
 	} //undoChanges
 
-
 	////obsolete
 	//function findNodeById(id) {
 	//	var custType = mindContext.metadataStore.getEntityType("Node");
@@ -619,4 +607,5 @@
 
 	//#endregion Methods
 
+	return mind;
 });

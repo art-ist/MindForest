@@ -423,6 +423,22 @@
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="NodeLookup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Mind">
+          <Parameter Name="RootNodeId" Type="int" Mode="In" />
+          <Parameter Name="User" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lang" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="bigint" Nullable="false" />
+                <Property Name="Title" Type="nvarchar" MaxLength="1000" />
+                <Property Name="CssClass" Type="nvarchar" MaxLength="200" />
+                <Property Name="Parent" Type="nvarchar" MaxLength="1000" />
+                <Property Name="Lang" Type="char" MaxLength="2" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="MindForestModelStoreContainer">
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="App" store:Type="Tables" />
           <EntitySet Name="UserClaims" EntityType="Self.UserClaims" Schema="App" store:Type="Tables" />
@@ -555,6 +571,11 @@
             <End Role="Role" EntitySet="Roles" />
             <End Role="Permission" EntitySet="Permissions" />
           </AssociationSet>
+          <FunctionImport Name="NodeLookup" IsComposable="true" ReturnType="Collection(MindForest.Models.NodeLookupInfo)">
+            <Parameter Name="RootNodeId" Mode="In" Type="Int32" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="Lang" Mode="In" Type="String" />
+          </FunctionImport>
 				</EntityContainer>
 				<EntityType Name="Node">
 					<Key>
@@ -857,6 +878,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="NodeLookupInfo">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="CssClass" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Parent" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="Lang" Nullable="true" MaxLength="2" />
+        </ComplexType>
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -1028,6 +1056,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="NodeLookup" FunctionName="MindForestModel.Store.NodeLookup">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MindForest.Models.NodeLookupInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CssClass" ColumnName="CssClass" />
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Lang" ColumnName="Lang" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
 				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

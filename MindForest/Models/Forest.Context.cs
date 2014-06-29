@@ -137,5 +137,23 @@ namespace MindForest.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Node>("[ForestEntities].[GetNodes](@User, @Lang)", userParameter, langParameter);
         }
+    
+        [EdmFunction("ForestEntities", "NodeLookup")]
+        public virtual IQueryable<NodeLookupInfo> NodeLookup(Nullable<int> rootNodeId, string user, string lang)
+        {
+            var rootNodeIdParameter = rootNodeId.HasValue ?
+                new ObjectParameter("RootNodeId", rootNodeId) :
+                new ObjectParameter("RootNodeId", typeof(int));
+    
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
+    
+            var langParameter = lang != null ?
+                new ObjectParameter("Lang", lang) :
+                new ObjectParameter("Lang", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<NodeLookupInfo>("[ForestEntities].[NodeLookup](@RootNodeId, @User, @Lang)", rootNodeIdParameter, userParameter, langParameter);
+        }
     }
 }
