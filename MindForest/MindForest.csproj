@@ -243,6 +243,7 @@
     <Content Include="App\views\forest.html" />
     <Content Include="App\views\mm.js" />
     <Content Include="App\views\forest.js" />
+    <Content Include="_sql\mind.pics Rename Class 2 CssClass.sql" />
     <None Include="App\views\details\lightbox.less" />
     <Content Include="App\views\details\lightbox.html" />
     <Content Include="App\views\mm.css" />
@@ -415,7 +416,7 @@
     <Content Include="Scripts\jquery.signalR-2.0.3.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />
     <Content Include="_sql\3 DB Update to Preview 2.sql" />
-    <Content Include="_sql\3a DB Update to Preview 2 - Rearrange Connection Properties.sql" />
+    <Content Include="3a DB Update to Preview 2 - Rearrange Connection Properties.sql" />
     <None Include="App\libraries\jquery-2.0.3.intellisense.js" />
     <Content Include="App\libraries\glimpse-knockout.js" />
     <Content Include="App\libraries\r.js" />
