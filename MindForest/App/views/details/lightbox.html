@@ -44,7 +44,7 @@
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
 					</div>
 					<div class="listview-item-body">
-						<h4 class="listview-item-heading" data-bind="text: Local().Title">Titles</h4>
+						<h4 class="listview-item-heading" data-bind="text: Texts()[0].Title">Titles</h4> <!-- Local() -> Texts()[0] -->
 						<a class="two-lines" data-bind="text: Link, attr: { href: Link }"></a>
 					</div>
 				</div>
@@ -59,7 +59,7 @@
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
 					</div>
 					<div class="listview-item-body">
-						<h4 class="listview-item-heading" data-bind="text: Local().Title">Titles</h4>
+						<h4 class="listview-item-heading" data-bind="text: Texts()[0].Title">Titles</h4>
 						<span class="two-lines" data-bind="text: Content"></span>
 					</div>
 				</div>

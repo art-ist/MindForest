@@ -445,13 +445,25 @@
 	}
 
 	function addNode(parentNode, insertAfter, relation) {
-		var toNode = mindContext.createEntity('Node', {
-			CreatedAt: new Date(),
-			CreatedBy: app.user.name(),
-			ModifiedAt: new Date(),
-			ModifiedBy: app.user.name(),
-			IsTreeRoot: false
-		});
+		if (relation === 0) {
+			var toNode = mindContext.createEntity('Node', {
+				CreatedAt: new Date(),
+				CreatedBy: app.user.name(),
+				ModifiedAt: new Date(),
+				ModifiedBy: app.user.name(),
+				IsTreeRoot: false,
+				CssClass: 'details_link'
+			});
+		}
+		else {
+			var toNode = mindContext.createEntity('Node', {
+				CreatedAt: new Date(),
+				CreatedBy: app.user.name(),
+				ModifiedAt: new Date(),
+				ModifiedBy: app.user.name(),
+				IsTreeRoot: false
+			});
+		}
 
 		//add neutral Texts
 		addNodeText(toNode, null);
