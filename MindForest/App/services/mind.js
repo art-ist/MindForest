@@ -491,21 +491,25 @@
 		}
 		var parent = curCon.FromNode();
 		var parentCons = curCon.ToNode().ConnectionsFrom(); // ParentConnections
-		if (parentCons && parentCons.length > 1) { // ÁBfrage ob es mehrere Eltern gibt
-			if (confirm('Do you want to delete this node from all other parents as well')) {
-				//delete node and all parent connections
-				deleteAllTexts(curCon.ToNode());
-				deleteAllDetails(curCon.ToNode());
-				curCon.ToNode().entityAspect.setDeleted();
-				for (var i = 0; i < parentCons.length; i++) {
-					parentCons[i].entityAspect.setDeleted();
-					parentCons[i].FromNode().ConnectionsTo.remove(parentCons[i]);
-				}
-			} else {
-				//delete current connection only
-				curCon.entityAspect.setDeleted();
-				parent.ConnectionsTo().remove(curCon);
-			}
+		if (parentCons && parentCons.length > 1) {	// Abfrage ob es mehrere Eltern gibt. Wenn ja nur die
+													// aktuelle Connection Löschen.
+			curCon.entityAspect.setDeleted();					// Setzt curCon für Breeze als Gelöscht
+			parent.ConnectionsTo().remove(curCon);				// Löscht curCon aus den Connections des Elternteils
+			curCon.ToNode().ConnectionsFrom().remove(curCon);	// Löscht curCon aus den ConnectionsFromm des Kindes
+			//if (confirm('Do you want to delete this node from all other parents as well')) {
+			//	//delete node and all parent connections
+			//	deleteAllTexts(curCon.ToNode());
+			//	deleteAllDetails(curCon.ToNode());
+			//	curCon.ToNode().entityAspect.setDeleted();
+			//	for (var i = 0; i < parentCons.length; i++) {
+			//		parentCons[i].entityAspect.setDeleted();
+			//		parentCons[i].FromNode().ConnectionsTo.remove(parentCons[i]);
+			//	}
+			//} else {
+			//	//delete current connection only
+			//	curCon.entityAspect.setDeleted();
+			//	parent.ConnectionsTo().remove(curCon);
+			//}
 		}
 		else { //only one parent connection -> delete node
 			deleteAllTexts(curCon.ToNode());
@@ -514,7 +518,7 @@
 			curCon.entityAspect.setDeleted();
 			parent.ConnectionsTo.remove(curCon);
 		}
-		parent.ConnectionsTo.valueHasMutated();
+		//parent.ConnectionsTo.valueHasMutated();
 		//parent.ChildConnections.valueHasMutated(); //tell ko that computed has changed
 	} //deleteNodeAndConnection
 
@@ -535,8 +539,14 @@
 		var cons = node.ConnectionsTo();
 		for (var i = 0; i < cons.length; i++) {
 			if (cons[i].Relation() === Relation.Detail) {
-				cons[i].ToNode().entityAspect.setDeleted();
+				var node = cons[i].ToNode();
 				cons[i].entityAspect.setDeleted();
+				logger.log("mind - deleteAllDetails", 'cons[i]', cons[i]);
+				//mind.saveChanges();
+				//node.ConnectionsFrom().remove(cons[i]);
+				node.entityAspect.setDeleted();
+				logger.log("mind - deleteAllDetails", 'node', node);
+				mind.saveChanges();
 				//elements are not removed from collection because this function is called only to delete parent node where the whole collection is deleted
 			}
 		}

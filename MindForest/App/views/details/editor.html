@@ -124,8 +124,17 @@
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
 					<!-- ko if: Link -->
-					<input type="text" style="width:39%" data-bind="value: Texts()[0].Title" />
-					<input type="text" style="width:50%" data-bind="value: Link" />
+					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
+					<input type="text" style="width:42%" data-bind="value: Link" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
+
+					<!-- dropdown Menu für sprachauswahl bei den Details -->
+						<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
+							<option value="">Neutral</option>
+							<option value="de">Deutsch</option>
+							<option value="en">Englisch</option>
+						</select>
+					<!-- Ende dropdown Menu für sprachauswahl bei den Details -->
+
 					<!-- /ko -->
 					<!--// ko ifnot: Link
 					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>

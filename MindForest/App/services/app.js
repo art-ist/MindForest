@@ -694,8 +694,12 @@
 	function deleteNode() {
 
 		console.log("DATA-BIND: app.deleteNode");
-		if (mind.currentConnection().isTreeRoot) {
+		if (mind.currentConnection().isTreeRoot) { // Abfrage ob der zu Löschende Knoten der TreeRoot ist und wenn ja verweigern
 			logger.error("You cant delete the TreeRoot!");
+			return null;
+		}
+		if (mind.currentNode().hasChildren()) { // Abfrage ob der zu Löschende Knoten "echte" Kinder hat und wenn ja verweigern
+			logger.error("First delete all Children befor deleting this Node!");
 			return null;
 		}
 
