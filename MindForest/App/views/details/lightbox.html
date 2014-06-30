@@ -15,26 +15,26 @@
 		<div class="page-region-content">
 			<!--data-bind="visible: $root.app.settings.edit() === false"-->
 
-			<h1 class="text-title" data-bind="html: Local().Title"></h1>
-			<p class="text-description" data-bind="html: Local().Description"></p>
+			<h1 class="text-title" data-bind="html: $data.Local().Title"></h1>
+			<p class="text-description" data-bind="html: $data.Local().Description"></p>
 
 			<article data-bind="foreach: Details">
 				<p data-bind="visible: CssClass()=='details_note', class: CssClass, style: { backgroundColor: BackColor, color: Color }">
 					<!-- ko if: Link && !MediaType -->
 					<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 					<!-- ko if: MediaType == 'image' -->
-					<img data-bind="attr: { src: Link, alt: Local().Title, title: Local().Title }" /><!-- /ko -->
+					<img data-bind="attr: { src: Link, alt: $data.Local().Title, title: $data.Local().Title }" /><!-- /ko -->
 					<!-- ko if: Icon -->
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
-					<span class="item-title" data-bind="html: Local().Title"></span>
+					<span class="item-title" data-bind="html: $data.Local().Title"></span>
 				</p>
 			</article>
 			<!--        <div style="font-family: Consolas, 'Lucida Console', 'DejaVu Sans Mono', monospace; background-color: #808080; color: #fff; overflow:auto;" data-bind="html: toString"></div>-->
 
 			<div class="listview grid-layout" data-bind="foreach: Details">
 
-				<!-- ko if: CssClass()=='details_link' && MediaType != 'video/youtube' -->
+				<!-- ko if: Link() && MediaType != 'video/youtube' -->
 				<div class="listview-item"
 						 data-bind="class: CssClass
 											, style: { backgroundColor: BackColor, color: Color }
@@ -44,7 +44,7 @@
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
 					</div>
 					<div class="listview-item-body">
-						<h4 class="listview-item-heading" data-bind="text: Texts()[0].Title">Titles</h4> <!-- Local() -> Texts()[0] -->
+						<h4 class="listview-item-heading" data-bind="text: $data.Local().Title">Titles</h4>
 						<a class="two-lines" data-bind="text: Link, attr: { href: Link }"></a>
 					</div>
 				</div>
@@ -59,7 +59,7 @@
 						<img class="listview-item-object" src="/media/Mutmacherei/preview/p10037.jpg" alt="Preview Image" /><!--data-bind="attr: { src: '/media/Mutmacherei/preview/p' + Id() + 'jpg''"-->
 					</div>
 					<div class="listview-item-body">
-						<h4 class="listview-item-heading" data-bind="text: Texts()[0].Title">Titles</h4>
+						<h4 class="listview-item-heading" data-bind="text: $data.Local().Title">Titles</h4>
 						<span class="two-lines" data-bind="text: Content"></span>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 											, style: { backgroundColor: BackColor, color: Color }
 											, click: $root.app.select, clickbubble: false
 					 ">
-					<h3 class="item-title" data-bind="text: Local().Title"></h3>
+					<h3 class="item-title" data-bind="text: $data.Local().Title"></h3>
 				</div>
 				<!-- /ko -->
 			</article>

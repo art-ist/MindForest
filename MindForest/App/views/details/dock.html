@@ -35,15 +35,15 @@
 						<!-- ko if: Link && !MediaType -->
 						<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 						<!-- ko if: MediaType == 'image' -->
-						<img src="#" data-bind="attr: { src: Link, alt: Texts()[0].Title, title: Texts()[0].Title }" /><!-- /ko -->
+						<img src="#" data-bind="attr: { src: Link, alt: $data.Local().Title, title: $data.Local().Title }" /><!-- /ko -->
 						<!-- ko if: Icon -->
 						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 						<!-- /ko -->
 						<!-- ko if: !Link() -->
-						<span class="item-title" data-bind="html: Texts()[0].Title"></span> <!-- $data.Local() für Texts()[0] -->
+						<span class="item-title" data-bind="html: $data.Local().Title"></span> <!-- $data.Local() für $data.Local() -->
 						<!-- /ko -->
 						<!-- ko if: Link() -->
-						<a class="item-title" data-bind="text: Texts()[0].Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
+						<a class="item-title" data-bind="text: $data.Local().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
 						<!-- /ko -->
 					</p>
 				</article>

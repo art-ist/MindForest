@@ -45,6 +45,8 @@
 		addConnection: addConnection,
 		addNode: addNode,
 		addNodeText: addNodeText,
+		deleteNodeText: deleteNodeText,
+
 		deleteNodeAndConnection: deleteNodeAndConnection,
 		deleteAllDetails: deleteAllDetails,
 		deleteChildNodes: deleteChildNodes,
@@ -444,25 +446,23 @@
 		return nodeText;
 	}
 
-	function addNode(parentNode, insertAfter, relation) {
-		if (relation === 0) {
-			var toNode = mindContext.createEntity('Node', {
-				CreatedAt: new Date(),
-				CreatedBy: app.user.name(),
-				ModifiedAt: new Date(),
-				ModifiedBy: app.user.name(),
-				IsTreeRoot: false,
-				CssClass: 'details_link'
-			});
-		}
-		else {
-			var toNode = mindContext.createEntity('Node', {
-				CreatedAt: new Date(),
-				CreatedBy: app.user.name(),
-				ModifiedAt: new Date(),
-				ModifiedBy: app.user.name(),
-				IsTreeRoot: false
-			});
+	function deleteNodeText(node, text) {
+		text.entityAspect.setDeleted();
+		node.Texts.remove(text);
+	}
+
+	function addNode(parentNode, insertAfter, relation, cssClass) {
+
+		var toNode = mindContext.createEntity('Node', {
+			CreatedAt: new Date(),
+			CreatedBy: app.user.name(),
+			ModifiedAt: new Date(),
+			ModifiedBy: app.user.name(),
+			IsTreeRoot: false
+		});
+
+		if (cssClass) { //if cssClass is passed assign
+			toNode.CssClass(cssClass);
 		}
 
 		//add neutral Texts
@@ -551,7 +551,6 @@
 			//elements are not removed from collection because this function is called only to delete parent node where the whole collection is deleted
 		}
 	} //deleteAllTexts
-
 
 	//recursiveley remove 
 	function deleteChildNodes(childNodes) {

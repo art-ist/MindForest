@@ -86,6 +86,7 @@
 		addChild: addChild,
 		addSibling: addSibling,
 		addText: addText,
+		deleteText: deleteText,
 		cloneNode: cloneNode,
 		moveNode: moveNode,
 		addDetail: addDetail,
@@ -590,6 +591,11 @@
 		mind.addNodeText(node, lang);
 	}
 
+	function deleteText(data) {
+		console.log('deleting Text', 'app - deleteText', data);
+		mind.deleteNodeText(mind.currentNode(), data);
+	}
+
 	function cloneNode() {
 
 		console.log("DATA-BIND: app.cloneNode");
@@ -672,22 +678,17 @@
 		}
 	} //moveNode
 
-	function addDetail(klasse) {
-		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Detail);
-		if (klasse === "details_link") {
+	function addDetail(detailsClass) {
+		console.log("adding Detail (class = " + detailsClass + ' )', 'app - addDetails');
 
-			console.log("DATA-BIND: app.addDetails - klasse === details_link");
-			
-			newConnection.ToNode().Local().Title("Link Title");
+		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Detail);
+		if (detailsClass === "details_link") {
+			newConnection.ToNode().Texts()[0].Title("Link Title");
 			newConnection.ToNode().Link("http://");
 		}
 		else {
-
-			console.log("DATA-BIND: app.addDetails - klasse != details_link")
-
-			newConnection.ToNode().Local().Title("New Description");
+			newConnection.ToNode().Texts()[0].Title("New Description");
 		}
-		//mind.loadDetails(mind.currentConnection().ToNode());
 	} //addDetail
 
 	function deleteNode() {

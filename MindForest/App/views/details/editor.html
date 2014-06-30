@@ -1,5 +1,4 @@
 ﻿<!--to be loaded in a details view (e.g. dock)-->
-
 <!--nav-bar-->
 <div class="nav-bar metro-navbar">
 	<div class="navbar-inner win-commandlayout">
@@ -22,7 +21,6 @@
 			<span class="win-label" data-localize="edit.delete">Delete</span>
 		</a>
 		<!--<a class="button" data-bind="click: app.moveNode">moveNode</a>-->
-
 		<!--Right-->
 		<a class="win-command pull-right" title="Close details" data-bind="click: app.hideDetails">
 			<span class="win-commandicon win-commandring icon-close"></span>
@@ -68,6 +66,11 @@
 			<div data-bind="foreach: Texts">
 				<div class="panel panel-default">
 					<div class="panel-heading">
+						<div class="form-group pull-right" data-bind="visible: $parent.Texts().length > 1">
+							<a style="width:5%" class="win-command win-command-small" data-bind="click: $root.app.deleteText" title="Delete translation">
+								<span class="win-commandicon win-commandring icon-delete"></span>
+							</a>
+						</div>
 						<div class="form-group pull-right">
 							<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
 								<!-- TODO: binding -->
