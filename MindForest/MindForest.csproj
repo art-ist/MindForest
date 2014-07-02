@@ -261,6 +261,11 @@
     <Content Include="App\services\storage.js" />
     <Content Include="App\services\_globals.js" />
     <Content Include="App\services\_ko.bindingHandlers.js" />
+    <Content Include="App\styles\images\select2-spinner.gif" />
+    <Content Include="App\styles\images\select2.png" />
+    <Content Include="App\styles\images\select2x2.png" />
+    <Content Include="App\styles\select2-bootstrap.css" />
+    <Content Include="App\styles\select2.css" />
     <Content Include="App\styles\_definitions.css">
       <DependentUpon>_definitions.less</DependentUpon>
     </Content>
