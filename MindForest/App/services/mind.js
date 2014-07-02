@@ -31,12 +31,16 @@
 		currentConnection: ko.observable(null),	//Connection
 		currentNode: ko.observable(null),		//Node
 
+		lookupNodes: ko.observableArray([]),	//infos about Nodes (Id, Title, Parent(Title), Lang, CssClass) for lookup
+		lookupRoles: ko.observableArray([]),	//user-roles that can be used to assign permissions
+
 		mapModel: ko.observable({ /*currentNode*/currentConnection: null }), //Used?
 
 		//Methods
 		loadTrees: loadTrees,
 		loadChildren: loadChildren,
 		//loadDetails: loadDetails,
+		loadLookups: loadLookups,
 
 		//getParentConnection: getParentConnection,
 		//getParentNode: getParentNode,
@@ -137,7 +141,7 @@
 				//return whatever you have
 				return self.Texts()[0];
 			}
-			,owner: self
+			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}, self); //Text
 		//self.Children = ko.computed({ //"ChildNodes"
@@ -165,7 +169,7 @@
 				}
 				return result;
 			}
-			,owner: self
+			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}); //.extend({ throttle: 500 }); //Details
 		self.ChildConnections = ko.computed({
@@ -180,7 +184,7 @@
 				}
 				return result;
 			}
-			,owner: self
+			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}); //.extend({ throttle: 500 }); //ChildConnections
 		self.ParentConnections = ko.computed({
@@ -197,7 +201,7 @@
 				//}
 				//return result;
 			}
-			,owner: self
+			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}); //.extend({ throttle: 500 }); //ParentConnections
 		self.hasChildren = ko.computed({ //"HasChildNodes"
@@ -211,7 +215,7 @@
 				}
 				return false;
 			}
-			,owner: self
+			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
 		}); //.extend({ throttle: 500 }); //HasChildren
 
@@ -359,6 +363,40 @@
 
 	} //loadChildren
 
+	function loadLookups(TreeRootNode) {
+
+		//GetNodeLookup
+		var query = new breeze.EntityQuery()
+			.from("GetNodeLookup")
+			.withParameters({ Lang: app.lang, Forest: app.forest, RootNodeId: TreeRootNode });
+		mindContext.executeQuery(query)
+		  .then(function (response) {
+		  	var result = response.results;
+		  	mind.lookupNodes(result);
+		  	logger.log('Node-lookups loaded', 'mind - loadLookups', mind.lookupNodes());
+		  })
+		  .fail(function (ex) {
+		  	logger.error('Could not load node-lookups. ' + ex, 'mind - loadLookups');
+		  })
+		; //mindContext.executeQuery(query)
+
+		//GetRoles (requires Authentication)
+		var query = new breeze.EntityQuery()
+			.from("Roles")
+			.withParameters({ Forest: app.forest });
+		mindContext.executeQuery(query)
+		  .then(function (response) {
+		  	var result = response.results;
+		  	mind.lookupRoles(result);
+		  	logger.log('Roles loaded', 'mind - loadLookups', mind.lookupRoles());
+		  })
+		  .fail(function (ex) {
+		  	logger.error('Could not load roles. ' + ex, 'mind - loadLookups');
+		  })
+		; //mindContext.executeQuery(query)
+
+	} //loadLookups
+
 	function addConnection(fromNode, toNode, insertAfter, relation) {
 
 		//get position
@@ -481,18 +519,18 @@
 
 		//tell mindContext to delete entity from db on SaveChanges
 
-		if (curCon.ToNode().hasChildren()) {
-			//if (confirm('Do you also want to delete all child nodes (recursive)')) {
-			//	deletChildNodes(curCon.ToNode().ChildConnections);
-			//} else {
-			//	// Do nothing!
-			//}
-			throw "Delete children before deleting this element.";
-		}
+		//if (curCon.ToNode().hasChildren()) {
+		//	//if (confirm('Do you also want to delete all child nodes (recursive)')) {
+		//	//	deletChildNodes(curCon.ToNode().ChildConnections);
+		//	//} else {
+		//	//	// Do nothing!
+		//	//}
+		//	throw "Delete children before deleting this element.";
+		//}
 		var parent = curCon.FromNode();
 		var parentCons = curCon.ToNode().ConnectionsFrom(); // ParentConnections
 		if (parentCons && parentCons.length > 1) {	// Abfrage ob es mehrere Eltern gibt. Wenn ja nur die
-													// aktuelle Connection Löschen.
+			// aktuelle Connection Löschen.
 			curCon.entityAspect.setDeleted();					// Setzt curCon für Breeze als Gelöscht
 			parent.ConnectionsTo().remove(curCon);				// Löscht curCon aus den Connections des Elternteils
 			curCon.ToNode().ConnectionsFrom().remove(curCon);	// Löscht curCon aus den ConnectionsFromm des Kindes
@@ -539,14 +577,14 @@
 		var cons = node.ConnectionsTo();
 		for (var i = 0; i < cons.length; i++) {
 			if (cons[i].Relation() === Relation.Detail) {
-				var node = cons[i].ToNode();
+				var conTo = cons[i].ToNode(); //keep reference after deleting con
 				cons[i].entityAspect.setDeleted();
 				logger.log("mind - deleteAllDetails", 'cons[i]', cons[i]);
 				//mind.saveChanges();
 				//node.ConnectionsFrom().remove(cons[i]);
-				node.entityAspect.setDeleted();
-				logger.log("mind - deleteAllDetails", 'node', node);
-				mind.saveChanges();
+				conTo.entityAspect.setDeleted();
+				logger.log("mind - deleteAllDetails", 'node', conTo);
+				//mind.saveChanges();
 				//elements are not removed from collection because this function is called only to delete parent node where the whole collection is deleted
 			}
 		}
@@ -588,6 +626,9 @@
 				//var savedEntities = saveResult.entities;
 				//var keyMappings = saveResult.keyMappings;
 				logger.success("Saved successfully", 'mind - saveChanges');
+
+				//reload lookups for edit (TODO: load only on demand)
+				mind.loadLookups(mind.currentTree().Id()); //Id of rootNode
 			})
 			.fail(function (e) {
 				try {

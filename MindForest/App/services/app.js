@@ -117,6 +117,14 @@
 	function initialize() {
 		logger.log('app initializing', 'app - initialize');
 
+		//TODO: get/store app.settings from localstorage
+		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+		app.lang(QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]); //'%'
+
+		//to prevent circular dependency
+		mind.initialize(app); //
+		auth.initialize(app);
+
 		storage.get('user', function (value) {
 			if (value) {
 				//{ name: user.name, access_token: user.access_token, roles: user.roles } );
@@ -126,30 +134,11 @@
 			}
 		});
 
-		//TODO: get/store settings from localstorage
-		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
-		app.lang(QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]); //'%'
-
-		//to prevent circular dependency
-		auth.initialize(app);
-		mind.initialize(app);
-
 		//hook global up keyboard functions
 		document.onkeypress = document_onkeypress;
 
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
-
-	////obsolete
-	//function findNodeById(collection, nodeId) {
-	//	if (typeof (collection) === ko.observableArray)
-	//		collection = collection();
-	//	for (var i = 0; i < collection.length; i++) {
-	//		if (collection[i].Id === nodeId)
-	//			return collection[i];
-	//	}
-	//	return null;
-	//}
 
 	//#endregion Private Functions
 
@@ -315,17 +304,6 @@
 
 	//#region Methods
 
-	//app.keyset = {
-	//  form: function formKeyset(item, event) {
-	//    var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
-	//   //-console.log('app formKeyset keypress: key ' + key);
-
-	//    //prevent bubble
-	//    event.cancelBubble();
-	//    return true;
-	//  }
-	//};
-
 	//#region security
 
 	function login(username, password) {
@@ -335,10 +313,10 @@
 				var user = auth.app.user;
 				user.name(result.userName);
 				user.access_token(result.access_token);
-				//TODO: get roles
+				//TODO: get roles for user
 				user.roles(['Author']);
 
-				storage.set('user', { name: user.name(), access_token: user.access_token(), roles: user.roles() } );
+				storage.set('user', { name: user.name(), access_token: user.access_token(), roles: user.roles() });
 		});
 	} //login
 
@@ -551,6 +529,9 @@
 		}
 		else {
 			app.state.edit(true);
+
+			//get lookups for edit (TODO: load only on demand)
+			app.mind.loadLookups(mind.currentTree().Id()); //Id of rootNode
 		}
 		//-console.log(app.settings.edit());
 	} //toggleEdit
@@ -693,18 +674,19 @@
 
 	function deleteNode() {
 
-		console.log("DATA-BIND: app.deleteNode");
+		logger.log("DATA-BIND: app.deleteNode");
 		if (mind.currentConnection().isTreeRoot) { // Abfrage ob der zu Löschende Knoten der TreeRoot ist und wenn ja verweigern
-			logger.error("You cant delete the TreeRoot!");
+			logger.error("You cant delete the TreeRoot.");
 			return null;
 		}
 		if (mind.currentNode().hasChildren()) { // Abfrage ob der zu Löschende Knoten "echte" Kinder hat und wenn ja verweigern
-			logger.error("First delete all Children befor deleting this Node!");
+			logger.error("Delete all Children befor deleting this Node.");
 			return null;
 		}
-
+		//select first parent
 		var NodeToDelete = mind.currentConnection();
-		app.select(NodeToDelete.FromNode().ConnectionsFrom()[0]);  //mind.currentConnection(NodeToDelete.FromNode().ConnectionsFrom()[0]);
+		app.select(NodeToDelete.FromNode().ConnectionsFrom()[0]);  
+
 		mind.deleteNodeAndConnection(NodeToDelete);
 		//mind.saveChanges();
 		//only marked as Deleted not realy deleted in DB (saveChanges required)

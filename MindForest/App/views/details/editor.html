@@ -114,34 +114,40 @@
 			<ul class="edit-details-list" data-bind="sortable: { data: Details }">
 				<!--data-bind="foreach: Details"-->
 				<li data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
+
+					<a style="width:5%" class="win-command win-command-small pull-right" data-bind="click: $root.app.deleteDetail" title="Delete detail">
+						<span class="win-commandicon win-commandring icon-delete"></span>
+					</a>
+
 					<!-- ko if: Link && !MediaType -->
 					<div class="icon-link" />
 					<!-- /ko -->
+
 					<!-- ko if: MediaType == 'image' -->
 					<img style="width:90%" src="#" data-bind="attr: { src: Link, alt: Texts()[0].Title, title: Texts()[0].Title }" />
 					<!-- /ko -->
+
 					<!-- ko if: Icon -->
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
+
 					<!-- ko if: Link -->
 					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
 					<input type="text" style="width:42%" data-bind="value: Link" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
+					<!-- /ko -->
+
+					<!-- ko ifnot: Link -->
+					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
+					<!-- /ko -->
 
 					<!-- dropdown Menu für sprachauswahl bei den Details -->
-						<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
-							<option value="">Neutral</option>
-							<option value="de">Deutsch</option>
-							<option value="en">Englisch</option>
-						</select>
+					<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
+						<option value="">Neutral</option>
+						<option value="de">Deutsch</option>
+						<option value="en">Englisch</option>
+					</select>
 					<!-- Ende dropdown Menu für sprachauswahl bei den Details -->
 
-					<!-- /ko -->
-					<!--// ko ifnot: Link
-					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
-					 /ko -->
-					<a style="width:5%" class="win-command win-command-small" data-bind="click: $root.app.deleteDetail" title="Delete detail">
-						<span class="win-commandicon win-commandring icon-delete"></span>
-					</a>
 				</li>
 			</ul>
 		</form>
