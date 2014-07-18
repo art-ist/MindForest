@@ -22,7 +22,13 @@
 			<i class="icon-ok" data-bind="visible: $root.app.settings.detailViewIndex() === $index()">●</i>
 		</a>
 	</li>
-	<!-- /ko -->
+    <!-- /ko -->
+    <li data-bind="visible: app.user.mayEdit()">
+        <a tabindex="-1" data-bind="click: function() { $root.setDetailsStyle(0);
+                                                        app.state.edit(true); }">
+            <span>Edit</span>
+        </a>
+    </li>
 
 	<!--language-->
 	<li class="nav-header" data-localize="app.settings.language">Language</li>
