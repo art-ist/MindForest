@@ -58,7 +58,7 @@
 				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right', edit: false },
 				{ name: 'Editor (Dock Right)', view: 'views/details/dock', css: 'dock right', edit: true }
 			],
-			detailViewIndex: ko.observable(1)
+			detailViewIndex: ko.observable(0)
 		}, //settings
 
 		//Methods
