@@ -116,7 +116,8 @@
 		}
 		else { //collapse
 			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
-			con.isExpanded(false);
+		    con.isExpanded(false);
+		    mm.plumb.repaintEverything();  // TODO: optimize performence
 		} //if
 	} //expandNode
 

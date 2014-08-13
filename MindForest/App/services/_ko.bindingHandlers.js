@@ -270,17 +270,11 @@ ko.bindingHandlers.plumb = {
             } //if (connections.length)
             
             try {
-                //plumb.repaintEverything();
-                setTimeout(function () { plumb.repaintEverything(); }, 500);
-                /*  1.) Mit dem setTimeout wurde das Aktualisierungsproblem der Linien sowie die Linien beim erstmaligen öffnen des Baums gelöst 
-                 *      (ist nur leider noch keine entgültige Lösung da mit dem TimeOut von 500ms die Visualisierung nicht sehr flüssig läuft).
-                 *  2.) Die 500ms als TiemOut sind leider auch nicht stark zu reduzieren, da die Fehler bei geringerer Wartezeit zurückkehren.
-                 *  4.) TypeError: "o is Undefined" tritt erst beim Schliesen von Knoten auf, da durch das knockout Binding die Div mit den Linien
-                 *      gelöscht werden und das Plumb nicht mitbekommt das diese nicht mehr vorhanden sind. Jedoch beim Aktualisieren alle (auch
-                 *      die nicht mehr vorhandenen Linien) aktualisieren möchte. (o ist in diesem falle ein Objekt welches in der internen 
-                 *      Datenstrucktur vom Plump die Linien Symbolisiert und nach den Lageparametern gefragt wird, welche nicht mehr definiert sind
-                 *      nachdem Löschen der Linien innerhalb der geschlossenen Div).
-                 */
+                plumb.repaintEverything(); // TODO: optimize performenc
+
+                // SET TIME OUT //
+                //setTimeout(function () { plumb.repaintEverything(); }, 500);
+                // not nessesery: delayed bindingHandler in mein.js
             }
             catch (err) { //hier taucht der "o is undefined" Error auf.
                 console.warn("[plumb-binding] Catch von plumb.repaintEverything() in update -- " + err.message);

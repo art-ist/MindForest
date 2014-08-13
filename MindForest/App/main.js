@@ -30,12 +30,13 @@ define([
   'durandal/system',
   'durandal/app',
   'durandal/viewLocator',
+  'durandal/composition',
   'plugins/router',   //Achtung Aufruf über durandal/plugins/router löst wegen nicht eindeutigem pfad timeout fehler aus
 
   'services/app',
   'services/platform',
   'services/logger'
-], function (system, durandal, viewLocator, router, app, platform, logger) {
+], function (system, durandal, viewLocator, composition, router, app, platform, logger) {
 
     //specify which plugins to install and their configuration
     durandal.configurePlugins({
@@ -47,6 +48,9 @@ define([
       //    kinds: ['expander']
       //  }
     });
+
+    // execute bindingHandler after DOM elements are added
+    composition.addBindingHandler('plumb');
 
     window.onerror = function globalErrorHandler(msg, file, line) {
         if (msg == "TypeError: o is undefined") {
