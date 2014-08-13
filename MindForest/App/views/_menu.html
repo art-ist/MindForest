@@ -16,19 +16,15 @@
 	<!--details-->
 	<li class="nav-header" data-localize="app.settings.showDetails">Show details</li>
 	<!-- ko foreach: app.settings.detailViews -->
+	<!-- ko if: !edit || $root.app.user.mayEdit() -->
 	<li>
 		<a tabindex="-1" data-bind="click: function() { $root.setDetailsStyle($index()); }">
 			<span data-bind="text: name"></span>
 			<i class="icon-ok" data-bind="visible: $root.app.settings.detailViewIndex() === $index()">●</i>
 		</a>
 	</li>
-    <!-- /ko -->
-    <li data-bind="visible: app.user.mayEdit()">
-        <a tabindex="-1" data-bind="click: function() { $root.setDetailsStyle(0);
-                                                        app.state.edit(true); }">
-            <span>Edit</span>
-        </a>
-    </li>
+	<!-- /ko -->
+	<!-- /ko -->
 
 	<!--language-->
 	<li class="nav-header" data-localize="app.settings.language">Language</li>
@@ -42,6 +38,7 @@
 	<!-- /ko -->
 
 	<!--map-->
+	<!--
 	<li class="nav-header" data-localize="app.settings.visualization">Visualization</li>
 	<li>
 		<a tabindex="-1" data-bind="click: function() { setMap('outline'); }">
@@ -55,5 +52,6 @@
 			<i class="icon-ok" data-bind="visible: app.settings.map() === 'mm'">●</i>
 		</a>
 	</li>
+	-->
 
 </ul>

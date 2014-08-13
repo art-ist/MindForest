@@ -54,8 +54,9 @@
 				//wrapItems: new ko.observable(false)
 			},
 			detailViews: [
-				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right' },
-				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox' }
+				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox', edit: false },
+				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right', edit: false },
+				{ name: 'Editor (Dock Right)', view: 'views/details/dock', css: 'dock right', edit: true }
 			],
 			detailViewIndex: ko.observable(1)
 		}, //settings
@@ -494,6 +495,7 @@
 			if (mind.currentConnection()) {
 				$('#mapPage').scrollTo('#container-c' + mind.currentConnection().Id(), { duration: app.settings.animationDuration });
 			}
+			app.state.edit(view.edit);
 			app.detailsVisible = true;
 		}
 	} //toggleDetails
