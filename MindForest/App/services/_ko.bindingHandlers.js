@@ -173,11 +173,8 @@ ko.bindingHandlers.plumb = {
                     //subscribe expanding and collapsing nodes
                     var subscription = c.isExpanded.subscribe(function (newValue) {
                     	try {
-							//console.log("--> subscription called c" + c.Id() + " with value " + newValue);
-							//console.log({ newValue: newValue, element: element, valueAccessor: valueAccessor(), allBindingsAccessor: allBindingsAccessor(), viewModel: viewModel, bindingContext: bindingContext });
-							ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
-                    		//this.$root.plumb.repaintEverything();
+							ko.bindingHandlers.plumb.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);							//setTimeout(this.$root.plumb.repaintEverything(),2000); // Alternative ^^
+                    		this.$root.plumb.repaintEverything();
                     	} catch (e) {
                     		console.warn("[plumb-binding] Catch von subscription !!! -- " + e.message);
                     	}
