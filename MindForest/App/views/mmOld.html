@@ -1,0 +1,117 @@
+﻿<div id="mapPage" class="page mm">
+
+	<!--using
+		https://github.com/rniemeyer/knockout-sortable
+		http://api.jqueryui.com/sortable/
+	-->
+	<link rel="stylesheet" type="text/css" href="App/views/mm.css" />
+
+	<div id="mm" class="">
+		<div class="page-region">
+
+			<!--settings menu-->
+			<div id="mm-menu-container" class="command-overlay">
+				<div class="dropdown">
+					<a class="win-command win-command-small dropdown-toggle" data-toggle="dropdown">
+						<span class="win-commandicon win-commandring icon-cog"></span>
+					</a>
+					<!-- ko compose: 'views/_menu' -->
+					<!-- /ko-->
+				</div>
+			</div>
+
+			<div id="mm-container" class="page-region-content">
+
+				<!--tree node template-->
+				<script type="text/html" id="NodeTemplate">
+					<li>
+						<div class="mm-item-container" data-bind="attr: { id: 'container-c' + Id() }">
+
+							<div class="mm-cloud" data-bind="attr: { id: 'cloud-c' + Id() },
+																						 style: { backgroundColor: ToNode().CloudColor, boxShadow: '0 0 10px ' + ToNode().CloudColor() },
+																						 visible: ToNode().CloudColor
+																						 ">
+							</div>
+							<div class="mm-node-container" data-bind="with: ToNode,
+																											click: $root.nodeClick, clickBubble: false,
+																											dblClickBubble: false">
+								<div class="item" data-bind="class: CssClass
+																				 , css: { 'current': $parent.isCurrent }
+																				 , style: { backgroundColor: BackColor, color: Color }
+																				 , attr: { id : 'node-' + Id() }
+																				 ">
+									<!-- <span data-bind="text: Id"></span> anzeige der node id in der darstellung -->
+									<span class="item-title" data-bind="html: Local().Title"></span>
+								</div> <!--item-->
+
+							</div> <!--mm-node-container-->
+							<div class="mm-children-container" data-bind="if: isExpanded">
+								<ul class="" data-bind="attr: {
+                                                            id : 'childrenOf-c' + $parent.Id()
+													},
+													sortable: {
+															data:         ChildConnections,
+															template:     'NodeTemplate',
+															isEnabled:		$root.app.state.edit,
+															options:			{ placeholder: 'sortable-placeholder', revert: false }
+													},
+													plumb: {
+															data: ChildConnections
+													}
+													"></ul>
+							</div>
+						</div>
+					</li>
+				</script>
+
+				<!--tree root-->
+				<div class="mm-item-container" id="mm-root-item-container" data-bind="with: data.currentTree()">
+
+					<div class="mm-node-container">
+
+						<div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
+																										, click: $root.nodeClick, clickBubble: false
+																										">
+							<img data-bind="attr: { src: Icon, alt: Local().Title }, visible: Icon" />
+							<h2 class="item-title" data-bind="html: Local().Title, visible: !Icon()"></h2>
+						</div>
+
+					</div>
+					<div class="mm-children-container">
+						<ul data-bind="sortable: {
+															data: ChildConnections,
+															template: 'NodeTemplate',
+															isEnabled:		$root.app.state.edit,
+															options:			{ placeholder: 'sortable-placeholder', revert: false }
+													},
+													plumb: {
+															data: ChildConnections,
+															fromId: 'node-' + Id(),
+															containerId: 'mm-root-item-container'
+													}
+												"></ul>
+					</div>
+				</div>
+
+			</div> <!--page-region-content-->
+
+			<div id="mm-zoom-container" class="command-overlay">
+				<button class="win-command  win-command-small" title="Zoom: -10%" data-bind="click: zoomOut">
+					<span class="win-commandicon win-commandring icon-minus"></span>
+				</button>
+				<!--<div id="mm-zoom-slider">zoom slider</div>-->
+				<span id="mm-zoom-value" data-bind="text: (app.settings.mm.zoom() * 100) + '%'">100%</span>
+				<button class="win-command win-command-small" title="Zoom: +10%" data-bind="click: zoomIn">
+					<span class="win-commandicon win-commandring icon-plus"></span>
+				</button>
+				<!--
+				<button class="win-command win-command-small" rel="tootlip" title="Fit">
+					<span class="win-commandicon win-commandring  icon-expand-2"></span>
+				</button>
+				-->
+			</div> <!--mm-zoom-container-->
+
+		</div> <!--page-region-->
+
+	</div>
+</div> <!--page-->

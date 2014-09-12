@@ -56,7 +56,9 @@
 		deleteChildNodes: deleteChildNodes,
 
 		undoChanges: undoChanges,
-		saveChanges: saveChanges
+		saveChanges: saveChanges,
+
+		manager: null // <-- redundent to mindContext
 	};
 
 	//#region Entity Extensions
@@ -247,6 +249,9 @@
 		}
 
 		mindContext = new breeze.EntityManager(mindServiceUri);
+
+		mind.manager = mindContext;
+
 		//mindMetadata = mindContext.metadataStore;//see: http://www.breezejs.com/documentation/naming-convention
 		mindContext
 			.fetchMetadata()

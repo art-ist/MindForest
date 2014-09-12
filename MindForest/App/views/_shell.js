@@ -16,9 +16,10 @@
 
   function onActivate() {
     var routes = [
-        { route: ['', 'home', 'forest']				, moduleId: 'forest'   , title: ''            , nav: false }
-      , { route: ['(:tree/)mm', '(:tree/)mindmap']  , moduleId: 'mm'       , title: 'MindMap'     , nav: false }
-      , { route: ['(:tree/)outline']				, moduleId: 'outline'  , title: 'Outline'     , nav: false }
+        { route: ['', 'home', 'forest']				, moduleId: 'forest'	, title: ''             , nav: false }
+      , { route: ['(:tree/)mm', '(:tree/)mindmap']	, moduleId: 'mm'		, title: 'MindMap'		, nav: false }
+      , { route: '(:tree/)mmOld'					, moduleId: 'mmOld'		, title: 'MindMapOld'	, nav: false }
+      , { route: ['(:tree/)outline']				, moduleId: 'outline'	, title: 'Outline'      , nav: false }
 
       //, { route: 'my/login'         , moduleId: 'my/login'         , title: 'Anmelden'      , nav: false }
       //, { route: 'my/registration'  , moduleId: 'my/registration'  , title: 'Registrieren'  , nav: false }

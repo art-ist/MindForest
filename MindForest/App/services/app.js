@@ -95,7 +95,9 @@
 		deleteDetail: deleteDetail,
 
 		undo: undo,
-		save: save
+		save: save,
+
+		mmAPI: null
 
 	}
 	//#region constructor
@@ -549,6 +551,13 @@
 		var newConnection = mind.addNode(mind.currentNode(), null, Relation.Child);
 		mind.currentConnection().isExpanded(true);
 		app.select(newConnection);  //mind.currentConnection(newConnection);
+
+		if (app.mmAPI) {
+			app.mmAPI.addChild(newConnection.ToNode().entityAspect._entityKey._keyInGroup);
+		} else {
+			console.error('[ app | addChild ] mmAPI property of app in app.js not defind!');
+		}
+
 	} //addChild
 
 	function addSibling() {

@@ -28,6 +28,10 @@
 	z-index: 1;
 }
 
+.mm-item-Canvas {
+	display: inline-block;
+}
+
 .mm-cloud {
 	position: absolute;
 	width: 100%;
@@ -50,10 +54,11 @@
 
 .mm-node-container {
 	margin: 3px 3px 3px 3px;
+	cursor: pointer;
 }
 
 .mm-children-container {
-	margin: 0 3px 0 3px;
+	margin: 0 13px 0 30px;
 }
 
 #mm .item {

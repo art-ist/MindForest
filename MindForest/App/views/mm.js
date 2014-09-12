@@ -18,12 +18,13 @@
 		canActivate: canActivate,
 		activate: activate,
 		attached: attached,
+		compositionComplete: compositionComplete,
 
 		//Methods
-		nodeClick: nodeClick,
-		expandNode: expandNode,
-		showDetails: showDetails,
-		afterNodeMove: afterNodeMove,
+		//nodeClick: nodeClick,
+		//expandNode: expandNode,
+		//showDetails: showDetails,
+		//afterNodeMove: afterNodeMove,
 
 		zoomIn: zoomIn,
 		zoomOut: zoomOut,
@@ -53,21 +54,21 @@
 	} //canActivate
 
 	function activate(treeName, queryString) {
-		//initialize plumb
-		mm.plumb = jsPlumb.getInstance({
-			//Container: 'mm-container',
-			Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
-			Anchors: ["Right", "Left"],
-			Endpoint: ["Blank", {}],
-			PaintStyle: {
-				lineWidth: 2,
-				strokeStyle: "#999"
-			}
-		});
+		////initialize plumb
+		//mm.plumb = jsPlumb.getInstance({
+		//	//Container: 'mm-container',
+		//	Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
+		//	Anchors: ["Right", "Left"],
+		//	Endpoint: ["Blank", {}],
+		//	PaintStyle: {
+		//		lineWidth: 2,
+		//		strokeStyle: "#999"
+		//	}
+		//});
 
 		mm.app.map = mm;
-		var rootNode = mind.currentTree();
-		mind.loadChildren(rootNode, true);
+		//var rootNode = mind.currentTree();
+		//mind.loadChildren(rootNode, true);
 	} //activate
 
 	function attached() {
@@ -80,6 +81,10 @@
 		}
 
 	}; //attached
+
+	function compositionComplete() {
+		initGraphVisual(app.mind.manager);
+	}
 
 	//#region Methods
 
@@ -116,7 +121,7 @@
 		}
 		else { //collapse
 			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
-		    con.isExpanded(false);
+			con.isExpanded(false);
 		} //if
 	} //expandNode
 
@@ -169,5 +174,340 @@
 		mm.plumb.setZoom(factor);
 		app.settings.mm.zoom(factor);
 	} //setZoom
+
+	function initGraphVisual(entityManager) {
+
+		// "global" variables
+		var manager = entityManager,
+			schema = { node: null, connection: null },
+			treeRoot = null,
+			selectedNode = null,
+			selectedNodeData = null;
+
+		// initialise visualisation
+		(function getTreeRoot() {
+
+			treeRoot = manager.getEntityByKey('Node', 1);
+
+			console.log('[ mm | getTreeRoot ] treeRoot ', treeRoot);
+			console.log('[ mm | getTreeRoot ] manager ', manager);
+
+			if (!treeRoot.IsTreeRoot()) {
+				var nodes = manager.getEntities('Node');
+				for (var i = 0; i < nodes.length; i++) {
+					if (nodes[i].IsTreeRoot()) {
+						treeRoot = nodes[i];
+						break;
+					}
+				}
+			}
+
+		})();
+
+		(function initTree() {
+
+			var $mm = $('#mm-container'),
+				cloudColor = treeRoot.CloudColor() ? treeRoot.CloudColor() : 'none';
+			var root = '<div class="mm-item-container">'
+					+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
+					+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
+					+ '<div class="mm-node-container" data-key="' + treeRoot.entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
+						+ '<div>'
+							+ '<div class="item">'
+								+ '<span class="item-title">'
+									+ treeRoot.Texts()[0].Title()
+								+ '</span>'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+					+ '<div class="mm-children-container">'
+						+ '<ul class="mm-children-list">'
+			;
+
+			var conTo = treeRoot.ChildConnections();
+
+			console.log('[ gv | initTree ] conTo: ', conTo);
+
+			for (var i = 0; i < conTo.length; i++) {
+				cloudColor = conTo[i].ToNode().CloudColor() ? conTo[i].ToNode().CloudColor() : 'none';
+				root += '<li>'
+						+ '<div class="mm-item-container">'
+							+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
+							+ '<canvas class="mm-item-Canvas" style="position: absolute;"></canvas>'
+							+ '<div class="mm-node-container" data-id="' + conTo[i].ToNode().Id() + '" data-key="' + conTo[i].ToNode().entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
+								+ '<div class="item">'
+									+ '<span class="item-title">'
+										+ conTo[i].ToNode().Texts()[0].Title()
+									+ '</span>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+					 + '</li>';
+			}
+
+			root += '</ul></div></div>';
+
+			$mm.append(root);
+
+		})();
+
+		drawLines($('#mm-container > .mm-item-container > .mm-node-container'));
+
+		$('.mm-node-container').click(function (event) { nodeClick(event); });
+
+		mm.app.mmAPI = {
+			deleteNode: deleteNode,
+			addChild: addChild
+		};
+		// end - initialise visualisation
+
+		// inside functions
+		function drawLines(currentTarget, isDiggingUp) {
+
+			//console.log('currentTarget', currentTarget);
+
+			if (currentTarget.attr('class') === 'mm-node-container') {
+
+				//console.log('currentTarget', currentTarget);
+
+				var $item = currentTarget.parent(),
+					$node = currentTarget,
+					$ul = $item.children('.mm-children-container').children('.mm-children-list'),
+					$lis = $ul.children('li'),
+					canvas = $item.children('canvas')[0];
+
+				var canvasContext = canvas.getContext("2d");
+
+				canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+				$(canvas).attr('height', $item.height());
+				$(canvas).attr('width', $item.width());
+				canvasContext.lineWidth = 2;
+				canvasContext.strokeStyle = "#999";
+
+				var posUl = $ul.position();
+				var nodeX = Math.floor($node.position().left + $node.width());
+				var nodeY = Math.floor($node.position().top + $node.height() / 2);
+
+				for (var i = 0; i < $lis.length; i++) {
+
+					var schwung = 30;
+
+					var $li = $($lis[i]);
+					var pos = $li.position();
+					var X = pos.left + posUl.left + 30;
+					var Y = pos.top + posUl.top + $li.children('.mm-item-container').height() / 2;
+
+					canvasContext.beginPath();
+					canvasContext.moveTo(nodeX + 3, nodeY + 4);
+
+					canvasContext.bezierCurveTo(nodeX + 3 + schwung, nodeY + 4, X - schwung, Y, X, Y);
+					canvasContext.stroke();
+
+				}
+
+			}
+
+			if (!isDiggingUp) {
+
+				var nextTargets = currentTarget.parents();
+
+				for (var j = 0; j < nextTargets.length; j++) {
+
+					if ($(nextTargets[j]).attr('class') === 'mm-item-container') {
+						drawLines($(nextTargets[j]).children('.mm-node-container'), true);
+					}
+
+				}
+
+			}
+
+		}
+		function appendDOMChildren(domNode, node) {
+
+			// create children HTML
+			domNode.attr('"data-isopen"', "true");
+
+			var nodeId = domNode.attr('data-key'),
+				childrenContainer = '<div class="mm-children-container">'
+					+ '<ul class="mm-children-list">';
+
+			var conTo = node.ChildConnections()
+				, currentNode = null
+				, cloudColor = 'none'
+			;
+
+			for (var i = 0; i < conTo.length; i++) {
+				currentNode = conTo[i].ToNode();
+				cloudColor = currentNode.CloudColor() ? conTo[i].ToNode().CloudColor() : 'none';
+				childrenContainer += '<li>'
+					+ '<div class="mm-item-container">'
+						+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
+						+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
+						+ '<div class="mm-node-container" data-key="' + currentNode.entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
+							+ '<div class="item">'
+								+ '<span class="item-title">'
+									+ currentNode.Texts()[0].Title()
+								+ '</span>'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+				 + '</li>';
+			}
+
+			childrenContainer += '</ul></div></div>';
+			// end - create children HTML
+
+			// append children HTML
+			domNode.parent().append(childrenContainer);
+
+			// draw lines to child nodes
+			drawLines(domNode);
+
+			// initialise eventhandler at new nodes
+			domNode.parent().children('.mm-children-container').find('.mm-node-container').click(function (e) { nodeClick(e); });
+
+			// get grandChildren
+			var query = new breeze.EntityQuery()
+				.from("GetChildren")
+				.withParameters({
+					Lang: 'de',
+					Forest: 'Mutmacherei',
+					NodeId: nodeId,
+					Levels: "2"
+				});
+
+			manager.executeQuery(query)
+				.then(function () {
+					//console.log('[ mm | click ] executeQuery succeded', { manager: manager });
+				})
+				.fail(function (e) {
+					//console.log('[ mm | click ] executeQuery failed', e);
+				});
+			// end - get grandChildren
+
+		}
+		function deleteDOMChildren(domNode) {
+
+			domNode.attr('"data-isopen"', "false");
+
+			domNode.parent().children('.mm-children-container').remove();
+
+			drawLines(domNode);
+
+		}
+		function select($currentTarget, node) {
+
+			$(selectedNode).children('.item').removeClass('current');
+			selectedNode = $currentTarget[0];
+			$(selectedNode).children('.item').addClass('current');
+			selectedNodeData = node;
+			app.select(node);
+
+		}
+
+		// UI functions
+		function nodeClick(event) {
+
+			var currentTarget = $(event.currentTarget),
+				isClosed = currentTarget.attr('"data-isopen"') === "true" ? false : true,
+				node = manager.getEntityByKey('Node', currentTarget.attr('data-key'));
+
+			select(currentTarget, node);
+
+			if (isClosed) {
+				appendDOMChildren(currentTarget, node);
+			} else {
+				deleteDOMChildren(currentTarget);
+			}
+
+		}
+		function deleteNode() {
+
+			if (selectedNode) {
+				var nodeToDelete = $(selectedNode).parent().parent();
+				var currentTarget = nodeToDelete.parent().parent().parent().children('.mm-node-container');
+				nodeToDelete.remove();
+				drawLines(currentTarget);
+				currentTarget.children('.item').addClass('current');
+				selectedNode = currentTarget[0];
+
+				console.log(selectedNode);
+			} else {
+				console.log('[ gv | deleteNode ] there is no selected Node');
+			}
+
+		}
+		function addChild(key) {
+
+			//console.log(key);
+			if (!key) key = 1;
+
+			if (selectedNode) {
+
+				var $domNode = $(selectedNode);
+				if ($domNode.attr('"data-isopen"') === "true") {
+					var newChild = '<li>'
+									+ '<div class="mm-item-container">'
+										+ '<div class="mm-cloud" style="background-color: none;"></div>'
+										+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
+										+ '<div class="mm-node-container" data-key="' + key + '" "data-isopen"="false">'
+											+ '<div class="item">'
+												+ '<span class="item-title">'
+													+ 'new Node'
+												+ '</span>'
+											+ '</div>'
+										+ '</div>'
+									+ '</div>'
+								 + '</li>';
+					var target = $domNode.parent().children('.mm-children-container').children('.mm-children-list');
+					target.append(newChild);
+					target.children('.mm-node-container').click(function (e) { nodeClick(e); });
+				} else {
+					$domNode.attr('"data-isopen"', "true");
+					var childrenContainer = '<div class="mm-children-container">'
+							+ '<ul class="mm-children-list">'
+								+ '<li>'
+									+ '<div class="mm-item-container">'
+										+ '<div class="mm-cloud" style="background-color: none;"></div>'
+										+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
+										+ '<div class="mm-node-container" data-key="' + key + '" "data-isopen"="false">'
+											+ '<div class="item">'
+												+ '<span class="item-title">'
+													+ 'new Node'
+												+ '</span>'
+											+ '</div>'
+										+ '</div>'
+									+ '</div>'
+								 + '</li>'
+							+ '</ul></div>';
+
+					$domNode.parent().append(childrenContainer);
+
+					$domNode.parent().children('.mm-children-container').find('.mm-node-container').click(function (e) { nodeClick(e); });
+
+				}
+				// end - create and append children HTML
+
+				// draw lines to child node
+				drawLines($domNode);
+
+				// initialise eventhandler at new node
+				selectedNode = $domNode
+					.parent()
+					.children('.mm-children-container')
+					.find('[data-key="' + key + '"]')[0];
+				$(selectedNode).click(function (e) { nodeClick(e); });
+
+				$domNode.children('.item').removeClass('current');
+				$(selectedNode).children('.item').addClass('current');
+
+			} else {
+				console.log('there is no selected Node');
+			}
+
+		}
+
+	} //initGraphVisual
 
 }); //define

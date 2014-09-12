@@ -291,6 +291,8 @@
       <DependentUpon>lightbox.css</DependentUpon>
     </Content>
     <Content Include="App\views\forest.html" />
+    <Content Include="App\views\mmOld.html" />
+    <Content Include="App\views\mmOld.js" />
     <Content Include="App\views\mm.js" />
     <Content Include="App\views\forest.js" />
     <Content Include="_sql\mind.pics Rename Class 2 CssClass.sql" />
