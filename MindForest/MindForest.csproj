@@ -279,6 +279,7 @@
       <DependentUpon>app.css</DependentUpon>
     </Content>
     <Content Include="App\styles\toastr.css" />
+    <Content Include="App\themes\Transformap.css" />
     <Content Include="App\views\details\lightbox.css">
       <DependentUpon>lightbox.less</DependentUpon>
     </Content>
@@ -295,6 +296,7 @@
     <Content Include="App\views\mmOld.js" />
     <Content Include="App\views\mm.js" />
     <Content Include="App\views\forest.js" />
+    <Content Include="media\Transformap\Transformap-logo.png" />
     <Content Include="_sql\mind.pics Rename Class 2 CssClass.sql" />
     <Content Include="App\libraries\select2\bower.json" />
     <Content Include="App\libraries\select2\component.json" />
@@ -555,8 +557,8 @@
     <Content Include="App\styles\themes\modern\modern-responsive.css" />
     <Content Include="App\styles\themes\modern\modern.css" />
     <Content Include="App\views\outline.css" />
-    <Content Include="App\styles\_MartialArts.css" />
-    <Content Include="App\styles\_Mutmacherei.css" />
+    <Content Include="App\themes\MartialArts.css" />
+    <Content Include="App\themes\Mutmacherei.css" />
     <Content Include="App\views\outline.html" />
     <Content Include="App\views\outline.js" />
     <None Include="Views\Home\Index.cshtml" />

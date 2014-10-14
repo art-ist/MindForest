@@ -1,0 +1,92 @@
+﻿/*#region App theming TODO: move to themes*/
+
+html, .page, #forestPage > .nav-bar {
+	background-color: #f4f4f4;
+	color: #476998;
+}
+
+.btn-primary, .tile.app {
+	background-color: #476998;
+	border-color: #476998;
+}
+
+	#detailsPage.dock .nav-bar, .modal .nav-bar {
+		background-color: #476998;
+	}
+
+	.win-command .win-commandicon {
+		background-color: #476998;
+		border-color: #476998;
+		color: #fafafa;
+	}
+
+	.win-command:hover .win-commandicon {
+		background-color: #4c7cab;
+		border-color: #4c7cab;
+		color: #fafafa;
+	}
+
+	#details-command-close .win-commandring {
+		border-color: #476998;
+	}
+
+	#web-command-close .win-commandicon {
+		background-color: #476998;
+		color: #fff;
+	}
+
+	#web-command-close .win-commandring {
+		background-color: #476998;
+	}
+
+#mm-container {
+	/*background-color: #fff;*/
+	color: #4c4b4e;
+	padding: 40px;
+	margin-right: 0; /*TODO: find a way to overwrite with width */
+
+	/*border-color: #476998;
+	border-style: solid;
+	border-width: 1px 1px 5px 1px;
+	-webkit-box-shadow: 0px 0px 10px #4f4f4f;
+	-moz-box-shadow: 0px 0px 10px #4f4f4f;
+	box-shadow: 0 0 10px #5c5c5c;*/
+}
+
+/*#endregion App theming TODO: move to themes*/
+
+
+/*#region Forest (content) specific classes*/
+/*TODO: move to forest config*/
+
+.category {
+	/*background-color: #525252;*/
+	color: #476998;
+	font-weight: 400;
+}
+
+.question {
+	background: url('/Images/question.png') no-repeat left top;
+	background-color: #e6e7e8;
+}
+
+	.question .item-title {
+		margin-left: 24px;
+	}
+
+.project {
+	background: url('/Images/checkmark.png') no-repeat left top;
+	background-color: #e6e7e8;
+}
+
+	.project .item-title {
+		margin-left: 26px;
+	}
+
+	#detailsPage {
+			-webkit-box-shadow: 0px 0px 10px #4f4f4f;
+	-moz-box-shadow: 0px 0px 10px #4f4f4f;
+	box-shadow: 0 0 10px #5c5c5c;
+	}
+
+/*#endregion Forest (content) specific classes*/

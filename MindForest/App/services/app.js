@@ -43,7 +43,7 @@
 		detailsVisible: false,
 
 		settings: {
-			map: ko.observable('mm'), // outline
+			map: ko.observable('outline'), // mm
 			animationDuration: ko.observable(500),
 			//throttleComputed: { throttle: 500 },
 			cycleNavigation: ko.observable(false),
@@ -58,7 +58,7 @@
 				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right', edit: false },
 				{ name: 'Editor (Dock Right)', view: 'views/details/dock', css: 'dock right', edit: true }
 			],
-			detailViewIndex: ko.observable(0)
+			detailViewIndex: ko.observable(1)
 		}, //settings
 
 		//Methods
@@ -122,6 +122,11 @@
 
 		//TODO: get/store app.settings from localstorage
 		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+		if (app.forest.toLowerCase() == 'mutmacherei') {
+			app.settings.map = ko.observable('mm');
+			app.settings.detailViewIndex(0);
+		}
+
 		app.lang(QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]); //'%'
 
 		//to prevent circular dependency

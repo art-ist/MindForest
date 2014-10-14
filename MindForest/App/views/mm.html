@@ -6,40 +6,58 @@
 	-->
 	<link rel="stylesheet" type="text/css" href="App/views/mm.css" />
 
-	<div id="mm" class="">
-		<div class="page-region">
+	<script type="text/html" id="ItemTemplate"> <!--possible knockout item template (not used yet)-->
+		<div class="mm-children-container">
+			<ul class="mm-children-list">
+				<li>
+					<div class="mm-item-container">
+						<div class="mm-cloud" data-add-back-btn="" data-bind="style: { backgroundColor: CloudColor, boxShadow: '0 0 10px ' + CloudColor() }, visible: cloudcolor"></div>
+						<canvas class="mm-item-Canvas" style="position: absolute;"></canvas>
+						<div class="mm-node-container" data-bind="attr: { 'data-key' :  currentNode.entityAspect._entityKey._keyInGroup }" data-isopen="false">
+							<div class="item">
+								<span class="item-title" data-bind="text: currentNode.Texts()[0].Title()"></span>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</script>
 
-			<!--settings menu-->
-			<div id="mm-menu-container" class="command-overlay">
-				<div class="dropdown">
-					<a class="win-command win-command-small dropdown-toggle" data-toggle="dropdown">
-						<span class="win-commandicon win-commandring icon-cog"></span>
-					</a>
-					<!-- ko compose: 'views/_menu' -->
-					<!-- /ko-->
-				</div>
+<div id="mm" class="">
+	<div class="page-region">
+
+		<!--settings menu-->
+		<div id="mm-menu-container" class="command-overlay">
+			<div class="dropdown">
+				<a class="win-command win-command-small dropdown-toggle" data-toggle="dropdown">
+					<span class="win-commandicon win-commandring icon-cog"></span>
+				</a>
+				<!-- ko compose: 'views/_menu' -->
+				<!-- /ko-->
 			</div>
+		</div>
 
-			<div id="mm-container" class="page-region-content">
-			</div> <!--page-region-content-->
+		<div id="mm-container" class="page-region-content">
+		</div> <!--page-region-content-->
 
-			<div id="mm-zoom-container" class="command-overlay">
-				<button class="win-command  win-command-small" title="Zoom: -10%" data-bind="click: zoomOut">
-					<span class="win-commandicon win-commandring icon-minus"></span>
-				</button>
-				<!--<div id="mm-zoom-slider">zoom slider</div>-->
-				<span id="mm-zoom-value" data-bind="text: (app.settings.mm.zoom() * 100) + '%'">100%</span>
-				<button class="win-command win-command-small" title="Zoom: +10%" data-bind="click: zoomIn">
-					<span class="win-commandicon win-commandring icon-plus"></span>
-				</button>
-				<!--
-				<button class="win-command win-command-small" rel="tootlip" title="Fit">
-					<span class="win-commandicon win-commandring  icon-expand-2"></span>
-				</button>
-				-->
-			</div> <!--mm-zoom-container-->
+		<div id="mm-zoom-container" class="command-overlay">
+			<button class="win-command  win-command-small" title="Zoom: -10%" data-bind="click: zoomOut">
+				<span class="win-commandicon win-commandring icon-minus"></span>
+			</button>
+			<!--<div id="mm-zoom-slider">zoom slider</div>-->
+			<span id="mm-zoom-value" data-bind="text: (app.settings.mm.zoom() * 100) + '%'">100%</span>
+			<button class="win-command win-command-small" title="Zoom: +10%" data-bind="click: zoomIn">
+				<span class="win-commandicon win-commandring icon-plus"></span>
+			</button>
+			<!--
+			<button class="win-command win-command-small" rel="tootlip" title="Fit">
+				<span class="win-commandicon win-commandring  icon-expand-2"></span>
+			</button>
+			-->
+		</div> <!--mm-zoom-container-->
 
-		</div> <!--page-region-->
+	</div> <!--page-region-->
 
-	</div>
+</div>
 </div> <!--page-->

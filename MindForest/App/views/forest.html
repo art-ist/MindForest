@@ -2,7 +2,7 @@
 		<div class="nav-bar navbar-fixed-top metro-navbar">
 			<div class="navbar-inner win-commandlayout">
 				<div class="header-container">
-					<h1>Start</h1>
+					<h1><span data-bind="text: app.forest">Start</span> <small data-bind="visible: app.forest == 'transformap'"></small></h1>
 				</div>
 				<!--
 				<a  class="win-command" rel="tootlip" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
@@ -19,12 +19,10 @@
 				<div class="btn-group pull-right dropdown">
 					<a class="win-command dropdown-toggle" data-toggle="dropdown">
 						<span class="win-commandicon win-commandring icon-cog"></span>
-						<!--<span class="win-label">Settings</span>-->
 					</a>
 					<!-- ko compose: 'views/_menu' -->
 					<!-- /ko-->
 				</div>
-
 			</div>
 		</div>
 		<div id="alerts-container"></div>

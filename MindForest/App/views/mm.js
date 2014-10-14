@@ -72,7 +72,7 @@
 	} //activate
 
 	function attached() {
-		var container = document.getElementById('mm');
+		//var container = document.getElementById('mm');
 		//-logger.log('mm init', container);
 
 		//set zoom
@@ -83,7 +83,7 @@
 	}; //attached
 
 	function compositionComplete() {
-		initGraphVisual(app.mind.manager);
+		initGraphVisual(app.mind.currentTree(), app.mind.manager);
 	}
 
 	//#region Methods
@@ -171,38 +171,39 @@
 		for (var i = 0; i < prefix.length; i++) {
 			container.css(prefix[i] + "transform", scale);
 		}
-		mm.plumb.setZoom(factor);
+		//mm.plumb.setZoom(factor);
 		app.settings.mm.zoom(factor);
 	} //setZoom
 
-	function initGraphVisual(entityManager) {
+	function initGraphVisual(treeRoot, entityManager) {
 
 		// "global" variables
 		var manager = entityManager,
 			schema = { node: null, connection: null },
-			treeRoot = null,
+			//treeRoot = null,
 			selectedNode = null,
 			selectedNodeData = null;
 
 		// initialise visualisation
-		(function getTreeRoot() {
+		//(function getTreeRoot() {
 
-			treeRoot = manager.getEntityByKey('Node', 1);
+		//	treeRoot = manager.getEntityByKey('Node', 1);
 
-			console.log('[ mm | getTreeRoot ] treeRoot ', treeRoot);
-			console.log('[ mm | getTreeRoot ] manager ', manager);
+		//	console.log('[ mm | getTreeRoot ] treeRoot ', treeRoot);
+		//	console.log('[ mm | getTreeRoot ] manager ', manager);
 
-			if (!treeRoot.IsTreeRoot()) {
-				var nodes = manager.getEntities('Node');
-				for (var i = 0; i < nodes.length; i++) {
-					if (nodes[i].IsTreeRoot()) {
-						treeRoot = nodes[i];
-						break;
-					}
-				}
-			}
+		//	if (!treeRoot.IsTreeRoot()) {
+		//		var nodes = manager.getEntities('Node');
+		//		for (var i = 0; i < nodes.length; i++) {
+		//			if (nodes[i].IsTreeRoot()) {
+		//				treeRoot = nodes[i];
+		//				break;
+		//			}
+		//		}
+		//	}
 
-		})();
+
+		//})();
 
 		(function initTree() {
 
@@ -291,7 +292,7 @@
 
 				for (var i = 0; i < $lis.length; i++) {
 
-					var schwung = 30;
+					var schwung = 35;
 
 					var $li = $($lis[i]);
 					var pos = $li.position();
@@ -324,6 +325,10 @@
 
 		}
 		function appendDOMChildren(domNode, node) {
+			//for templating see:
+			// http://stephenwalther.com/archive/2010/11/30/an-introduction-to-jquery-templates
+			// http://www.strathweb.com/2012/08/knockout-js-pro-tips-working-with-templates/
+			// http://aboutcode.net/2012/11/15/twitter-bootstrap-modals-and-knockoutjs.html
 
 			// create children HTML
 			domNode.attr('"data-isopen"', "true");
@@ -371,8 +376,8 @@
 			var query = new breeze.EntityQuery()
 				.from("GetChildren")
 				.withParameters({
-					Lang: 'de',
-					Forest: 'Mutmacherei',
+					Lang: app.lang,
+					Forest: app.forest,
 					NodeId: nodeId,
 					Levels: "2"
 				});
