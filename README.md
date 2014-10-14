@@ -1,7 +1,7 @@
 MindForest
 ==========
 
-Building a web-based tool to visually disply and edit multi lingual
+Building a web-based tool to create, edit and visualize connected multi lingual
 - Mind Maps
 - Taxonomies
 - Ontologies
