@@ -6,14 +6,14 @@
   margin: 15px 15px 15px 20px;
 }
 
-#outline ul, #outline ol {
+#outline-container ul, #outline ol {
   position: relative;
   float: none;
   list-style: none;
   margin: 5px 0 0 15px;
 }
 
-#outline li {
+#outline-container li {
   position: relative;
   clear: both;
   display: block;
