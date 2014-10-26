@@ -34,6 +34,7 @@
 				<div class="item" data-bind="class: ToNode().CssClass
 											 , style: { backgroundColor: ToNode().BackColor, color: ToNode().Color }
 											 , click: $root.nodeClick, clickBubble: false
+											, css: { current: isCurrent() }
                     ">
 					<!--<img width="30" height="30" data-bind="attr: { src: ToNode().Icon }, visible: ToNode().Icon" style="position: absolute; left: 0px; top: 0px;" />, visible: !HasChildren()-->
 					<button class="details-button  icon-untitled-2" data-bind="click: $root.showDetails, clickBubble: false "></button>

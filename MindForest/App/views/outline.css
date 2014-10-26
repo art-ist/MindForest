@@ -30,7 +30,7 @@
   border: 1px solid ActiveBorder;
 }
 
-  #outline .item:hover {  /*siehe moden.css,2974: .tile:hover*/
+  #outline .item:hover, #outline .item.current {  /*siehe moden.css,2974: .tile:hover*/
     outline: 3px #3a3a3a solid;
   }
 
