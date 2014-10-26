@@ -15,7 +15,11 @@
 		mind: mind,
 
 		forest: null,
-		lang: ko.observable('%'),
+		lang: ko.observable('en'),
+		langs: [
+			{ id: 'de', name: 'Deutsch' },
+			{ id: 'en', name: 'English' },
+		],
 		map: null,
 
 		user: {
@@ -127,7 +131,7 @@
 			app.settings.detailViewIndex(0);
 		}
 
-		app.lang(QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0]); //'%'
+		app.lang((QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0] || app.lang()).toLowerCase());
 
 		//to prevent circular dependency
 		mind.initialize(app); //

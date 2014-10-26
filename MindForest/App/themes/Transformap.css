@@ -2,10 +2,17 @@
 
 html, .page, #forestPage > .nav-bar {
 	background-color: #f4f4f4;
+}
+
+h1, h2, h3, h4, h5, h6 {
 	color: #476998;
 }
 
-.btn-primary, .tile.app {
+h3 {
+	margin-top: 10px;
+}
+
+.btn-primary, .tile.app, .win-backbutton {
 	background-color: #476998;
 	border-color: #476998;
 }
@@ -14,28 +21,32 @@ html, .page, #forestPage > .nav-bar {
 		background-color: #476998;
 	}
 
-	.win-command .win-commandicon {
+	#detailsPage.dock .win-command .win-label {
+		color: #fafafa;
+	}
+
+	.win-command .win-commandicon, .win-backbutton {
 		background-color: #476998;
 		border-color: #476998;
 		color: #fafafa;
 	}
 
-	.win-command:hover .win-commandicon {
+	.win-command:hover .win-commandicon, .win-backbutton:hover {
 		background-color: #4c7cab;
 		border-color: #4c7cab;
 		color: #fafafa;
 	}
 
-	#details-command-close .win-commandring {
+	#details-command-close .win-commandring, .win-backbutton {
 		border-color: #476998;
 	}
 
-	#web-command-close .win-commandicon {
+	#web-command-close .win-commandicon, .win-backbutton {
 		background-color: #476998;
 		color: #fff;
 	}
 
-	#web-command-close .win-commandring {
+	#web-command-close .win-commandring, .win-backbutton {
 		background-color: #476998;
 	}
 
@@ -84,7 +95,7 @@ html, .page, #forestPage > .nav-bar {
 	}
 
 	#detailsPage {
-			-webkit-box-shadow: 0px 0px 10px #4f4f4f;
+	-webkit-box-shadow: 0px 0px 10px #4f4f4f;
 	-moz-box-shadow: 0px 0px 10px #4f4f4f;
 	box-shadow: 0 0 10px #5c5c5c;
 	}

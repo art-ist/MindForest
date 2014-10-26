@@ -118,23 +118,18 @@
 
 		self.Local = ko.computed({
 			read: function () {
-				//return self.Texts()[0];
 				//nothing there
-				if (!self.Texts) { return null; }
-				////single entity
-				//if (self.Texts.Title) {
-				//	return self.Text;
-				//}
+				if (!self.Texts) { return ' '; }
 				//empty array 
-				if (!self.Texts().length) { return null; }
-				//find localized text
+				if (!self.Texts().length) { return ' '; }
+				//find and return first localized text
 				var i = 0;
 				for (i = 0; i < self.Texts().length; i++) {
 					if (self.Texts()[i].Lang() === app.lang) {
 						return self.Texts()[i];
 					}
 				}
-				//return neutral text
+				//return first neutral text
 				for (i = 0; i < self.Texts().length; i++) {
 					if (!self.Texts()[i].Lang || !self.Texts()[i].Lang()) {
 						return self.Texts()[i];
@@ -178,13 +173,17 @@
 			read: function () {
 				var result = [];
 				if (!self.ConnectionsTo || !self.ConnectionsTo()) { return result; }
+				//iterate outgoing connections and get children
 				var connections = self.ConnectionsTo();
 				for (var i = 0; i < connections.length; i++) {
 					if (connections[i].Relation() === Relation.Child) {
 						result.push(connections[i]);
 					}
 				}
-				return result;
+				//return children sorted by Position
+				return result.sort(function (a, b) {
+					return a.Position() > b.Position();
+				});
 			}
 			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
@@ -630,7 +629,7 @@
 			.then(function (saveResult) {
 				//var savedEntities = saveResult.entities;
 				//var keyMappings = saveResult.keyMappings;
-				logger.success("Saved successfully", 'mind - saveChanges');
+				logger.success("Changes saved successfully", 'mind - saveChanges');
 
 				//reload lookups for edit (TODO: load only on demand)
 				mind.loadLookups(mind.currentTree().Id()); //Id of rootNode

@@ -1,5 +1,7 @@
 ﻿<!--to be loaded in a details view (e.g. dock)-->
 <!--nav-bar-->
+<link rel="stylesheet" type="text/css" href="App/views/details/editor.css" /><!--everything relative to index.(cs)html-->
+
 <div class="nav-bar metro-navbar">
 	<div class="navbar-inner win-commandlayout">
 
@@ -26,10 +28,10 @@
 			<span class="win-commandicon win-commandring icon-close"></span>
 			<span class="win-label">Close</span>
 		</a>
-		<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="visible: app.user.mayEdit(), click: app.toggleEdit">
+		<!--<a class="win-command pull-right" title="Toggle between edit and view modes" data-bind="visible: app.user.mayEdit(), click: app.toggleEdit">
 			<span class="win-commandicon win-commandring" data-bind="class: app.state.edit() ? 'icon-eye' : 'icon-pencil'"></span>
 			<span class="win-label" data-bind="text: app.state.edit() ? 'View' : 'Edit'"></span>
-		</a>
+		</a>-->
 
 	</div>
 </div>
@@ -42,7 +44,7 @@
 			<!--data-bind="event: { keypress: $root.app.keyset.form }"-->
 			<h2 data-bind="html: Local().Title"></h2>
 
-			<label data-localize="edit.parents">Gehört zu</label>
+			<label data-localize="edit.parents">Parent</label>
 			<div>
 				<!-- ko foreach: ParentConnections -->
 				<div class="item" data-bind="click: function() { $root.app.select($data.FromNode()) }, class: FromNode().CssClass">
@@ -53,7 +55,7 @@
 
 			<!--Texte-->
 			<h3 data-localize="edit.text">
-				Texte
+				Texts
 				<span class="btn-group">
 					<a class="win-command win-command-small" data-toggle="dropdown" href="#">
 						<span class="win-commandicon win-commandring icon-plus"></span>
@@ -64,7 +66,7 @@
 				</span>
 			</h3>
 			<div data-bind="foreach: Texts">
-				<div class="panel panel-default">
+				<div class="panel detail-area">
 					<div class="panel-heading">
 						<div class="form-group pull-right" data-bind="visible: $parent.Texts().length > 1">
 							<a style="width:5%" class="win-command win-command-small" data-bind="click: $root.app.deleteText" title="Delete translation">
@@ -73,24 +75,24 @@
 						</div>
 						<div class="form-group pull-right">
 							<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
-								<!-- TODO: binding -->
 								<option value="">Neutral</option>
-								<option value="de">Deutsch</option>
-								<option value="en">Englisch</option>
+								<!-- ko foreach: $root.app.langs -->
+								<option data-bind="value: id, text: name"></option>
+								<!-- /ko -->
 							</select>
 						</div>
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-							<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Titel</label>
+							<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Title</label>
 							<input class="input-block-level" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
 						</div>
 						<div class="form-group">
-							<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Beschreibung</label>
+							<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Description</label>
 							<textarea class="input-block-level" rows="2" type="text" data-bind="value: Description, attr: { id: 'Texts_Description_'+$index() }" />
 						</div>
 						<div class="form-group">
-							<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notizen (nur für Autoren)</label>
+							<label data-localize="edit.notes" data-bind="attr: { for: 'Texts_Comment_'+$index() }">Notes (for authors only)</label>
 							<textarea class="input-block-level" rows="2" data-bind="value: Comment, attr: { id: 'Texts_Comment_'+$index() }"></textarea>
 						</div>
 					</div>
@@ -113,7 +115,7 @@
 			</h3>
 			<ul class="edit-details-list" data-bind="sortable: { data: Details }">
 				<!--data-bind="foreach: Details"-->
-				<li data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
+				<li class="detail-area" data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
 
 					<a style="width:5%" class="win-command win-command-small pull-right" data-bind="click: $root.app.deleteDetail" title="Delete detail">
 						<span class="win-commandicon win-commandring icon-delete"></span>
@@ -122,62 +124,70 @@
 					<!-- ko if: Link && !MediaType -->
 					<div class="icon-link" />
 					<!-- /ko -->
-
 					<!-- ko if: MediaType == 'image' -->
 					<img style="width:90%" src="#" data-bind="attr: { src: Link, alt: Texts()[0].Title, title: Texts()[0].Title }" />
 					<!-- /ko -->
-
 					<!-- ko if: Icon -->
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
-
 					<!-- ko if: Link -->
 					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
 					<input type="text" style="width:42%" data-bind="value: Link" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
 					<!-- /ko -->
-
 					<!-- ko ifnot: Link -->
 					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
 					<!-- /ko -->
-
 					<!-- dropdown Menu für sprachauswahl bei den Details -->
 					<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
 						<option value="">Neutral</option>
-						<option value="de">Deutsch</option>
-						<option value="en">Englisch</option>
+						<!-- ko foreach: $root.app.langs -->
+						<option data-bind="value: id, text: name"></option>
+						<!-- /ko -->
 					</select>
 					<!-- Ende dropdown Menu für sprachauswahl bei den Details -->
 
 				</li>
 			</ul>
-		</form>
 
-		<!--Style-->
-		<form role="form" class="form-horizontal">
 			<h3 data-localize="edit.style">
 				Stil
 			</h3>
 			<div class="form-group">
-				<label for="edit_class" data-localize="edit.class">Klasse</label>
+				<label for="edit_class" data-localize="edit.class">Class</label>
 				<!-- TODO: Class binding needed -->
-				<select id="edit_class" data-bind="value: CssClass">
+				<select id="edit_class" class="input-block-level" data-bind="value: CssClass">
 					<option></option>
 					<option>category</option>
 					<option>question</option>
 					<option>project</option>
+					<option>tag</option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="BackColor_picker" data-localize="edit.nodeColor">Knotenfarbe</label>
-				<input id="BackColor_picker" type="text" class="colorpicker" data-bind="value: BackColor" />
+				<label for="BackColor_picker" data-localize="edit.nodeColor">Node Color</label>
+				<input id="BackColor_picker" class="input-block-level colorpicker" type="text" data-bind="value: BackColor" />
 			</div>
 			<div class="form-group">
-				<label for="Color_picker" data-localize="edit.textColor">Textfarbe</label>
-				<input id="Color_picker" type="text" class="colorpicker" data-bind="value: Color" />
+				<label for="Color_picker" data-localize="edit.textColor">Text Color</label>
+				<input id="Color_picker" class="input-block-level colorpicker" type="text" data-bind="value: Color" />
 			</div>
 			<div class="form-group">
-				<label for="CloudColor_picker" data-localize="edit.cloudColor">Gruppenfarbe</label>
-				<input id="CloudColor_picker" type="text" class="colorpicker" data-bind="value: CloudColor" />
+				<label for="CloudColor_picker" data-localize="edit.cloudColor">Group Color</label>
+				<input id="CloudColor_picker" class="input-block-level colorpicker" type="text" data-bind="value: CloudColor" />
+			</div>
+
+			<h3>External Systems</h3>
+			<div class="form-group" style="position: relative;">
+				<label for="ForeignOrigin">Source</label>
+				<input name="ForeignOrigin" class="input-block-level" type="text" data-bind="value: ForeignOrigin" />
+			</div>
+			<div class="form-group">
+				<label for="ForeignId">Key</label>
+				<input name="ForeignId" class="input-block-level" type="text" data-bind="value: ForeignId" />
+			</div>
+			<div class="form-group">
+				<label for="Hook">Hook</label>
+				<input name="Hook" class="input-block-level" type="text" data-bind="value: Hook" />
 			</div>
 
 			<!--Info-->

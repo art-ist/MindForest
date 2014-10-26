@@ -38,7 +38,6 @@
 	var self = this;
 
 	var pars = $.requestParameters();
-	var lang = pars['lang'] ? '&Lang=' + pars['lang'] : '';
 	var forest = pars['forest'] ? '&Forest=' + pars['forest'] : '';
 
 	//handle doubleclick
@@ -67,8 +66,6 @@
 		//});
 
 		mm.app.map = mm;
-		//var rootNode = mind.currentTree();
-		//mind.loadChildren(rootNode, true);
 	} //activate
 
 	function attached() {
