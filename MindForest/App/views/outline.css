@@ -6,6 +6,10 @@
   margin: 15px 15px 15px 20px;
 }
 
+#outline-container {
+	margin-left: -15px;
+}
+
 #outline-container ul, #outline ol {
   position: relative;
   float: none;

@@ -23,9 +23,9 @@
 
 			<!--view-->
 			<div class="page-region-content">
-				<h2 class="text-title" data-bind="html: $data.Local().Title"></h2>
-				<p class="text-description" data-bind="html: $data.Local().Description"></p>
-				<p class="text-comment" data-bind="html: $data.Local().Comment"></p>
+				<h2 class="text-title" data-bind="html: $data.LTitle"></h2>
+				<p class="text-description" data-bind="html: $data.LDescription"></p>
+				<p class="text-comment" data-bind="html: $data.LComment"></p>
 
 				<article data-bind="foreach: Details">
 					<p style="display: inline-block" data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
@@ -33,15 +33,15 @@
 						<!-- ko if: Link && !MediaType -->
 						<img width="30" height="30" src="Images/linkexternal.png" /><!-- /ko -->
 						<!-- ko if: MediaType == 'image' -->
-						<img src="#" data-bind="attr: { src: Link, alt: $data.Local().Title, title: $data.Local().Title }" /><!-- /ko -->
+						<img src="#" data-bind="attr: { src: Link, alt: $data.LTitle, title: $data.LTitle }" /><!-- /ko -->
 						<!-- ko if: Icon -->
 						<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 						<!-- /ko -->
 						<!-- ko if: !Link() -->
-						<span class="item-title" data-bind="html: $data.Local().Title"></span> <!-- $data.Local() für $data.Local() -->
+						<span class="item-title" data-bind="html: $data.LTitle"></span>
 						<!-- /ko -->
 						<!-- ko if: Link() -->
-						<a class="item-title" data-bind="text: $data.Local().Title, attr: { href: Link }, click: $root.app.showWebPage"></a>
+						<a class="item-title" data-bind="text: $data.LTitle, attr: { href: Link }, click: $root.app.showWebPage"></a>
 						<!-- /ko -->
 					</p>
 				</article>

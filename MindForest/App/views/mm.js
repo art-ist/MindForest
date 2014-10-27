@@ -213,7 +213,7 @@
 						+ '<div>'
 							+ '<div class="item">'
 								+ '<span class="item-title">'
-									+ treeRoot.Texts()[0].Title()
+									+ treeRoot.LTitle()
 								+ '</span>'
 							+ '</div>'
 						+ '</div>'
@@ -235,7 +235,7 @@
 							+ '<div class="mm-node-container" data-id="' + conTo[i].ToNode().Id() + '" data-key="' + conTo[i].ToNode().entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
 								+ '<div class="item">'
 									+ '<span class="item-title">'
-										+ conTo[i].ToNode().Texts()[0].Title()
+										+ conTo[i].ToNode().LTitle()
 									+ '</span>'
 								+ '</div>'
 							+ '</div>'
@@ -349,7 +349,7 @@
 						+ '<div class="mm-node-container" data-key="' + currentNode.entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
 							+ '<div class="item">'
 								+ '<span class="item-title">'
-									+ currentNode.Texts()[0].Title()
+									+ currentNode.LTitle()
 								+ '</span>'
 							+ '</div>'
 						+ '</div>'

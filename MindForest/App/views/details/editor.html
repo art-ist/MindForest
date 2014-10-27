@@ -37,18 +37,18 @@
 </div>
 <!--/nav-bar-->
 
-<div class="page-region" data-bind="with: node">
+<div class="page-region" data-bind="with: node, event: { keypress: $root.app.onkeypress_modal }">
 
 	<div class="page-region-content">
 		<form role="form">
 			<!--data-bind="event: { keypress: $root.app.keyset.form }"-->
-			<h2 data-bind="html: Local().Title"></h2>
+			<h2 data-bind="html: LTitle"></h2>
 
 			<label data-localize="edit.parents">Parent</label>
 			<div>
 				<!-- ko foreach: ParentConnections -->
 				<div class="item" data-bind="click: function() { $root.app.select($data.FromNode()) }, class: FromNode().CssClass">
-					<span class="item-title" data-bind="text: FromNode().Local().Title"></span>
+					<span class="item-title" data-bind="text: FromNode().LTitle"></span>
 				</div>
 				<!-- /ko -->
 			</div>

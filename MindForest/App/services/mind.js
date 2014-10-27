@@ -118,6 +118,8 @@
 
 		self.Local = ko.computed({
 			read: function () {
+				//logger.log('Local', 'mind - Node', { node: self, texts: self.Texts(), lang: app.lang() });
+
 				//nothing there
 				if (!self.Texts) { return ' '; }
 				//empty array 
@@ -125,7 +127,7 @@
 				//find and return first localized text
 				var i = 0;
 				for (i = 0; i < self.Texts().length; i++) {
-					if (self.Texts()[i].Lang() === app.lang) {
+					if (self.Texts()[i].Lang() === app.lang()) {
 						return self.Texts()[i];
 					}
 				}
@@ -140,7 +142,12 @@
 			}
 			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
-		}, self); //Text
+		}, self); //.extend({ notify: 'always' }); //Local
+		self.LTitle = ko.computed(function () { return self.Local().Title(); }, self);
+		self.LRichTitle = ko.computed(function () { return self.Local().RichTitle(); }, self);
+		self.LSynopsis = ko.computed(function () { return self.Local().Synopsis(); }, self);
+		self.LDescription = ko.computed(function () { return self.Local().Description(); }, self);
+		self.LComment = ko.computed(function () { return self.Local().Comment(); }, self);
 		//self.Children = ko.computed({ //"ChildNodes"
 		//	read: function () {
 		//		var result = [];

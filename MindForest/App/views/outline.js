@@ -37,7 +37,7 @@
 
 	function activate(treeName, queryString) {
 		outline.app.map = outline;
-		outline.title(app.mind.currentTree().Local().Title());
+		outline.title(app.mind.currentTree().LTitle());
 	} //activate
 
 	//#region Methods

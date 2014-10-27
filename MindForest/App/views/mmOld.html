@@ -41,7 +41,7 @@
 																				 , attr: { id : 'node-' + Id() }
 																				 ">
 									<!-- <span data-bind="text: Id"></span> anzeige der node id in der darstellung -->
-									<span class="item-title" data-bind="html: Local().Title"></span>
+									<span class="item-title" data-bind="html: LTitle"></span>
 								</div> <!--item-->
 
 							</div> <!--mm-node-container-->
@@ -72,8 +72,8 @@
 						<div class="item mm-root-item" data-bind="attr: { id: 'node-' + Id() }
 																										, click: $root.nodeClick, clickBubble: false
 																										">
-							<img data-bind="attr: { src: Icon, alt: Local().Title }, visible: Icon" />
-							<h2 class="item-title" data-bind="html: Local().Title, visible: !Icon()"></h2>
+							<img data-bind="attr: { src: Icon, alt: LTitle }, visible: Icon" />
+							<h2 class="item-title" data-bind="html: LTitle, visible: !Icon()"></h2>
 						</div>
 
 					</div>

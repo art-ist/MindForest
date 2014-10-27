@@ -2,7 +2,7 @@
 		<div class="nav-bar navbar-fixed-top metro-navbar">
 			<div class="navbar-inner win-commandlayout">
 				<div class="header-container">
-					<h1><span data-bind="text: app.forest">Start</span> <small data-bind="visible: app.forest == 'transformap'"></small></h1>
+					<h1><span data-bind="text: app.forest">Start</span> <small data-bind="visible: app.forest.toLowerCase() == 'transformap'">Taxonomies</small></h1>
 				</div>
 				<!--
 				<a  class="win-command" rel="tootlip" title="Toggle between edit and view modes" data-bind="click: $root.toggleEdit">
@@ -33,7 +33,7 @@
 				<ul id="tree-list" class="list_view grid-layout" data-bind="template: { foreach: trees }">
 					<li class="tile app" data-bind="click: $parent.openTree, clickBubble: false">
 						<div class="app-label">
-							<div class="name" data-bind="text: Local().Title"></div>
+							<div class="name" data-bind="text: LTitle"></div>
 						</div>
 					</li>
 				</ul>

@@ -59,8 +59,8 @@
 			},
 			detailViews: [
 				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox', edit: false },
-				{ name: 'Dock Right', view: 'views/details/dock', css: 'dock right', edit: false },
-				{ name: 'Editor (Dock Right)', view: 'views/details/dock', css: 'dock right', edit: true }
+				{ name: 'Right', view: 'views/details/dock', css: 'dock right', edit: false },
+				{ name: 'Edit (Right)', view: 'views/details/dock', css: 'dock right', edit: true }
 			],
 			detailViewIndex: ko.observable(1)
 		}, //settings
@@ -69,7 +69,7 @@
 		login: login,
 		logout: logout,
 
-		modal_onkeypress: modal_onkeypress,
+		onkeypress_modal: onkeypress_modal,
 
 		isSelected: isSelected,
 		select: select,
@@ -147,7 +147,7 @@
 		});
 
 		//hook global up keyboard functions
-		document.onkeypress = document_onkeypress;
+		document.onkeypress = onkeypress_document;
 
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
@@ -157,7 +157,7 @@
 
 	//#region Event Handlers
 
-	function document_onkeypress(event) {
+	function onkeypress_document(event) {
 		//see http://javascript.info/tutorial/keyboard-events
 
 		if (event.isDefaultPrevented) {
@@ -260,9 +260,9 @@
 
 		//pass on all other keys
 		return true;
-	}; //document_onkeypress
+	}; //onkeypress_document
 
-	function modal_onkeypress(data, event) {
+	function onkeypress_modal(data, event) {
 		//see http://javascript.info/tutorial/keyboard-events
 
 		var modalSelector = '#' + event.delegateTarget.getAttribute('id');
@@ -284,11 +284,8 @@
 		//navigation
 		switch (key) {
 			case 37: //up
-				return false;
 			case 38: //left
-				return false;
 			case 39: //right
-				return false;
 			case 40: //down
 				return false;
 			case 13: //enter
@@ -478,7 +475,7 @@
 	}
 
 	function openTree(item, event) {
-		var tree = item.Local().Title();
+		var tree = item.LTitle();
 		mind.currentTree(item);
 		router.navigate('#/' + (tree ? tree + '/' : '') + app.settings.map());
 	} //openTree
@@ -525,7 +522,7 @@
 		}
 		//#endregion exceptions
 		$('#webContent').attr('src', url);
-		$('#webPage-title').text(data.Local().Title());
+		$('#webPage-title').text(data.LTitle());
 		$('#webPage').addClass('show');
 		return false;
 	} //showWebPage
