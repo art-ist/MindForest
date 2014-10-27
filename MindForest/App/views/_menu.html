@@ -2,6 +2,7 @@
 
 	<!--login-->
 	<li class="nav-header" data-bind="visible: app.user.isAuthenticated, text: app.user.name"></li>
+
 	<li data-bind="visible: !app.user.isAuthenticated()">
 		<a tabindex="-1" href="#login" data-toggle="modal">
 			<span data-localize="app.login">Login</span>
@@ -25,7 +26,6 @@
 	</li>
 	<!-- /ko -->
 	<!-- /ko -->
-
 	<!--language-->
 	<li class="nav-header" data-localize="app.settings.language">Language</li>
 	<!-- ko foreach: langs -->
@@ -36,7 +36,6 @@
 		</a>
 	</li>
 	<!-- /ko -->
-
 	<!--map-->
 	<!--
 	<li class="nav-header" data-localize="app.settings.visualization">Visualization</li>
@@ -53,5 +52,14 @@
 		</a>
 	</li>
 	-->
+
+	<!-- ko if: app.user.isInRole('Admin') -->
+	<li class="nav-header">Administration</li>
+	<li>
+		<a tabindex="-1" href="#register" data-toggle="modal">
+			<span data-localize="app.login">Register</span>
+		</a>
+	</li>
+	<!-- /ko -->
 
 </ul>

@@ -18,7 +18,8 @@
 
 		//Methods
 		login: login,
-		logout: logout
+		logout: logout,
+		register: register
 	};
 
 	//#region Constructor
@@ -92,6 +93,19 @@
 			logger.info('Logged out');
 		});
 	} //logout
+
+	function register(username, email, password, confirm) {
+		return $.ajax({
+			type: "POST",
+			url: authServiceUri + "/Register",
+			contentType: 'application/x-www-form-urlencoded',
+			data: 'username=' + username + '&email=' + email + '&password=' + password + '&confirm=' + confirm,
+		}).done(function (result, textStatus, jqXHR) {
+			logger.success(username + ' registered successfullly', 'auth - register', result);
+		}).fail(function (jqXHR, textStatus, errorThrown) {
+			logger.error('Registration failed: ' + textStatus, 'auth - register', errorThrown);
+		});
+	} //register
 
 	//#endregion Methods
 

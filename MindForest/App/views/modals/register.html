@@ -1,0 +1,25 @@
+﻿<div id="register" role="dialog" class="modal hide fade" data-bind="event: { keypress: app.onkeypress_modal }">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 data-localize="register.title">Register New User</h3>
+	</div>
+	<div class="modal-body">
+
+		<label for="register-username" data-localize="register.username">Login name</label>
+		<input id="register-username" type="text" placeholder="Name" class="action-select">
+
+		<label for="register-email" data-localize="register.email">Email</label>
+		<input id="register-email" type="text" placeholder="Name" class="action-select">
+
+		<label for="register-password" data-localize="register.password">Password</label>
+		<input id="register-password" type="password" placeholder="Password">
+
+		<label for="register-confirm" data-localize="register.confirm">Confirm Password</label>
+		<input id="register-confirm" type="password" placeholder="Confirm">
+
+	</div>
+	<div class="modal-footer">
+		<a href="#" data-dismiss="modal" class="btn action-cancel" tabindex="-1" data-localize="app.cancel">Cancel</a>
+		<a id="register-btn" href="#" class="btn btn-primary action-ok" data-localize="register.action" data-bind="click: register">Register</a>
+	</div>
+</div>

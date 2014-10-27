@@ -35,6 +35,10 @@ namespace MindForest.Models {
 
 	public class RegisterRequest {
 		[Required]
+		[Display(Name = "Username")]
+		public string UserName { get; set; }
+
+		[Required]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
@@ -47,7 +51,7 @@ namespace MindForest.Models {
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-		public string ConfirmPassword { get; set; }
+		public string Confirm { get; set; }
 	}
 
 	public class RegisterExternalRequest {

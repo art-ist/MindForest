@@ -68,6 +68,7 @@
 		//Methods
 		login: login,
 		logout: logout,
+		register: auth.register,
 
 		onkeypress_modal: onkeypress_modal,
 
