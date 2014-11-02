@@ -26,7 +26,7 @@
   } //activate
 
   function register() {
-  	app.register($('#register-username').val(), $('#register-email').val(), $('#register-password'), $('#register-confirm'));
+  	app.register($('#register-username').val(), $('#register-email').val(), $('#register-password').val(), $('#register-confirm').val());
   	$('#register').modal('hide');
   }
 

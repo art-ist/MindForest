@@ -3,6 +3,11 @@
 html, .page, #forestPage > .nav-bar {
 	background-color: #f4f4f4;
 }
+.nav-bar.navbar-fixed-top.metro-navbar {
+	background-color: rgba(244, 244, 244, 0.5);
+	box-shadow: 0 0 10px rgba(244, 244, 244, 0.5);
+}
+
 
 h1, h2, h3, h4, h5, h6 {
 	color: #476998;

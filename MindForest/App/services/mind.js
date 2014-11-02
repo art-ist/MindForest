@@ -116,14 +116,14 @@
 	var NodeInitializer = function (self) {
 		//extensions in the post-construction initializer will be NOT made observable by breeze will NOT be exported
 
-		self.Local = ko.computed({
+		var local = ko.computed({
 			read: function () {
 				//logger.log('Local', 'mind - Node', { node: self, texts: self.Texts(), lang: app.lang() });
 
 				//nothing there
-				if (!self.Texts) { return ' '; }
+				if (!self.Texts) { return null; }
 				//empty array 
-				if (!self.Texts().length) { return ' '; }
+				if (!self.Texts().length) { return null; }
 				//find and return first localized text
 				var i = 0;
 				for (i = 0; i < self.Texts().length; i++) {
@@ -142,26 +142,15 @@
 			}
 			, owner: self
 			//,deferEvaluation: true //required because Entity properties are not yet defined
-		}, self); //.extend({ notify: 'always' }); //Local
-		self.LTitle = ko.computed(function () { return self.Local().Title(); }, self);
-		self.LRichTitle = ko.computed(function () { return self.Local().RichTitle(); }, self);
-		self.LSynopsis = ko.computed(function () { return self.Local().Synopsis(); }, self);
-		self.LDescription = ko.computed(function () { return self.Local().Description(); }, self);
-		self.LComment = ko.computed(function () { return self.Local().Comment(); }, self);
-		//self.Children = ko.computed({ //"ChildNodes"
-		//	read: function () {
-		//		var result = [];
-		//		var connections = self.ConnectionsTo();
-		//		for (var i = 0; i < connections.length; i++) {
-		//			if (connections[i].Relation() === Relation.Child) {
-		//				result.push(connections[i].ToNode);
-		//			}
-		//		}
-		//		return result;
-		//	},
-		//	owner: self,
-		//	deferEvaluation: true //required because Entity properties are not yet defined
-		//}); //.extend({ throttle: 500 }); //Children
+		}, self); //.extend({ notify: 'always' });
+
+		//self.Local = local;
+		self.LTitle = ko.computed(function () { var l = local(); if (l) return l.Title(); }, self);
+		self.LRichTitle = ko.computed(function () { var l = local(); if (l) return l.RichTitle(); }, self);
+		self.LSynopsis = ko.computed(function () { var l = local(); if (l) return l.Synopsis(); }, self);
+		self.LDescription = ko.computed(function () { var l = local(); if (l) return l.Description(); }, self);
+		self.LComment = ko.computed(function () { var l = local(); if (l) return l.Comment(); }, self);
+
 		self.Details = ko.computed({
 			read: function () {
 				var result = [];

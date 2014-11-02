@@ -53,11 +53,12 @@
 	</li>
 	-->
 
-	<!-- ko if: app.user.isInRole('Admin') -->
+	<!-- ko if: app.user.isAuthenticated -->
+	<!-- ##ko if: app.user.isInRole('Admin') -->
 	<li class="nav-header">Administration</li>
 	<li>
 		<a tabindex="-1" href="#register" data-toggle="modal">
-			<span data-localize="app.login">Register</span>
+			<span data-localize="app.admin.user.add">Add User</span>
 		</a>
 	</li>
 	<!-- /ko -->

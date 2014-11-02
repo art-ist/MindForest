@@ -279,7 +279,7 @@ namespace MindForest.Controllers {
 				return BadRequest(ModelState);
 			}
 
-			var user = new AppUser() { UserName = model.Email, Email = model.Email };
+			var user = new AppUser() { UserName = model.UserName, Email = model.Email };
 
 			IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
