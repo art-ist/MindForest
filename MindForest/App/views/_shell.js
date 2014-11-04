@@ -3,45 +3,41 @@
   'services/app'
 ], function (router, app) {
 
-  var shell = {
-    router: router,
-    app: app,
+	var shell = {
+		router: router,
+		app: app,
 
-    activate: onActivate,
-    //,bind: onBind
-  };
-  return shell;
+		activate: onActivate
 
-  //#region lifecycle events
+	};
+	return shell;
 
-  function onActivate() {
-    var routes = [
-        { route: ['', 'home', 'forest']				, moduleId: 'forest'	, title: ''             , nav: false }
-      , { route: ['(:tree/)mm', '(:tree/)mindmap']	, moduleId: 'mm'		, title: 'MindMap'		, nav: false }
-      , { route: '(:tree/)mmOld'					, moduleId: 'mmOld'		, title: 'MindMapOld'	, nav: false }
-      , { route: ['(:tree/)outline']				, moduleId: 'outline'	, title: 'Outline'      , nav: false }
+	//#region lifecycle events
 
-      //, { route: 'my/login'         , moduleId: 'my/login'         , title: 'Anmelden'      , nav: false }
-      //, { route: 'my/registration'  , moduleId: 'my/registration'  , title: 'Registrieren'  , nav: false }
-      //, { route: 'my/registrationExt',moduleId: 'my/registrationExt',title: 'Registrieren'  , nav: false }
-      //, { route: 'my/profile'       , moduleId: 'my/profile'       , title: 'Profil'        , nav: false }
+	function onActivate() {
+		var routes = [
+			{ route: ['', 'home', 'forest'], moduleId: 'forest', title: '', nav: false }
+		  , { route: ['(:tree/)mm', '(:tree/)mindmap'], moduleId: 'mm', title: 'MindMap', nav: false }
+		  , { route: '(:tree/)mmOld', moduleId: 'mmOld', title: 'MindMapOld', nav: false }
+		  , { route: ['(:tree/)outline'], moduleId: 'outline', title: 'Outline', nav: false }
 
-      //, { route: 'about/privacy'    , moduleId: 'about/privacy'    , title: 'Privatsphäre'  , nav: false }
-      //, { route: 'about/impress'    , moduleId: 'about/impress'    , title: 'Impressum'     , nav: false }
-    ];
-    router.map(routes);
-    return router
-      //.buildNavigationModel()
-      .mapUnknownRoutes('forest', 'not-found') //TODO: create error message
-      .activate('forest')
-    ;
-  }
+		  //, { route: 'my/login'         , moduleId: 'my/login'         , title: 'Anmelden'      , nav: false }
+		  //, { route: 'my/registration'  , moduleId: 'my/registration'  , title: 'Registrieren'  , nav: false }
+		  //, { route: 'my/registrationExt',moduleId: 'my/registrationExt',title: 'Registrieren'  , nav: false }
+		  //, { route: 'my/profile'       , moduleId: 'my/profile'       , title: 'Profil'        , nav: false }
 
-  //function onBind() {
-  //  //logger.log('map initialized', 'shell', $('#map').html())
-  //}
+		  //, { route: 'about/privacy'    , moduleId: 'about/privacy'    , title: 'Privatsphäre'  , nav: false }
+		  //, { route: 'about/impress'    , moduleId: 'about/impress'    , title: 'Impressum'     , nav: false }
+		];
+		router.map(routes);
+		return router
+		  //.buildNavigationModel()
+		  .mapUnknownRoutes('forest', 'not-found') //TODO: create error message
+		  .activate('forest')
+		;
+	}
 
-  //#endregion lifecycle events
+	//#endregion lifecycle events
 
 
 

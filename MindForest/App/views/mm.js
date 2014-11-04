@@ -69,6 +69,7 @@
 	} //activate
 
 	function attached() {
+		document.getElementById('mapPage').onkeypress = app.onkeypress_mapPage;
 		//var container = document.getElementById('mm');
 		//-logger.log('mm init', container);
 

@@ -13,6 +13,7 @@
 		//Lifecycle Events
 		canActivate: canActivate,
 		activate: activate,
+		attached: attached,
 
 		//Methods
 		nodeClick: nodeClick,
@@ -39,6 +40,10 @@
 		outline.app.map = outline;
 		outline.title(app.mind.currentTree().LTitle());
 	} //activate
+
+	function attached() {
+		document.getElementById('mapPage').onkeypress = app.onkeypress_mapPage;
+	} //attached
 
 	//#region Methods
 

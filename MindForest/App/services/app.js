@@ -71,6 +71,7 @@
 		register: auth.register,
 
 		onkeypress_modal: onkeypress_modal,
+		onkeypress_mapPage: onkeypress_mapPage,
 
 		isSelected: isSelected,
 		select: select,
@@ -152,7 +153,7 @@
 
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
-
+	
 	//#endregion Private Functions
 
 
@@ -181,6 +182,52 @@
 
 		// get app specific values
 		var edit = app.state.edit();
+
+		//commands
+		var char = getChar(event || window.event);
+		if (!char) return;
+		char = char.toUpperCase();
+		if (event.ctrlKey) {
+			if (char === 'E') { // ctrl+E ... toggle edit mode
+				event.preventDefault(); //prevent default behaviour
+				app.toggleEdit();
+				return false;
+			}
+			if (char === 'D') { // ctrl+D ... toggle view details
+				event.preventDefault(); //prevent default behaviour
+				app.toggleDetails();
+				return false;
+			}
+			//Test
+			if (char === 'T') { // ctrl+Z ... undo (unsaved) changes
+				event.preventDefault(); //prevent default behaviour
+				alert('Ctrl-T detected')
+				return false;
+			}
+		} //if (event.ctrlKey)
+
+		//pass on all other keys
+		return true;
+	}; //onkeypress_document
+
+	function onkeypress_picture(data, event) {
+		//see http://javascript.info/tutorial/keyboard-events
+
+		var modalSelector = '#' + event.delegateTarget.getAttribute('id');
+
+		// get the key event.type must be keypress
+		var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
+		function getChar(event) {
+			if (event.which === null) {
+				return String.fromCharCode(event.keyCode); // IE
+			}
+			else if (event.which !== 0 && event.charCode !== 0) {
+				return String.fromCharCode(event.which);   // the rest
+			}
+			else {
+				return null; // special key
+			}
+		}
 
 		//navigation
 		switch (key) {
@@ -211,21 +258,39 @@
 				return false;
 		} //switch
 
+		//pass on all other keys
+		return true;
+	} //dialogs_onkeypress
+
+	function onkeypress_mapPage(event) {
+		//see http://javascript.info/tutorial/keyboard-events
+
+		if (event.isDefaultPrevented) {
+			return false;
+		}
+
+		// get the key event.type must be keypress
+		var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
+		function getChar(event) {
+			if (event.which === null) {
+				return String.fromCharCode(event.keyCode); // IE
+			}
+			else if (event.which !== 0 && event.charCode !== 0) {
+				return String.fromCharCode(event.which);   // the rest
+			}
+			else {
+				return null; // special key
+			}
+		}
+
+		// get app specific values
+		var edit = app.state.edit();
+
 		//commands
 		var char = getChar(event || window.event);
 		if (!char) return;
 		char = char.toUpperCase();
 		if (event.ctrlKey) {
-			if (char === 'E') { // ctrl+E ... toggle edit mode
-				event.preventDefault(); //prevent default behaviour
-				app.toggleEdit();
-				return false;
-			}
-			if (char === 'D') { // ctrl+D ... toggle view details
-				event.preventDefault(); //prevent default behaviour
-				app.toggleDetails();
-				return false;
-			}
 			if (char === 'M') { // ctrl+M ... new child
 				event.preventDefault(); //prevent default behaviour
 				if (edit) app.addChild();
@@ -284,11 +349,6 @@
 
 		//navigation
 		switch (key) {
-			case 37: //up
-			case 38: //left
-			case 39: //right
-			case 40: //down
-				return false;
 			case 13: //enter
 				var $btns = $(modalSelector + ' .action-ok');
 				if ($btns.length > 0) {
