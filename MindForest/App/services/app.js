@@ -625,6 +625,7 @@
 			console.error('[ app | addChild ] mmAPI property of app in app.js not defind!');
 		}
 
+		$('#editor-texts .editor-title-input:first').select();
 	} //addChild
 
 	function addSibling() {
@@ -642,6 +643,8 @@
 		//var parent = mind.currentConnection().FromNode();
 		var newConnection = mind.addNode(mind.currentConnection().FromNode(), mind.currentConnection().Position(), Relation.Child);
 		app.select(newConnection);  //mind.currentConnection(newConnection);
+
+		$('#editor-texts .editor-title-input:first').select();
 	} //addSibling 
 
 	function addText(lang) {

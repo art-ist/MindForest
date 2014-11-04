@@ -65,7 +65,7 @@
 					</ul>
 				</span>
 			</h3>
-			<div data-bind="foreach: Texts">
+			<div id="editor-texts" data-bind="foreach: Texts">
 				<div class="panel detail-area">
 					<div class="panel-heading">
 						<div class="form-group pull-right" data-bind="visible: $parent.Texts().length > 1">
@@ -84,7 +84,7 @@
 					<div class="panel-body">
 						<div class="form-group">
 							<label data-localize="edit.title" data-bind="attr: { for: 'Texts_Title_'+$index() }">Title</label>
-							<input class="input-block-level" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
+							<input class="editor-title-input input-block-level" type="text" data-bind="value: Title, attr: { id: 'Texts_Title_'+$index() }" />
 						</div>
 						<div class="form-group">
 							<label data-localize="edit.description" data-bind="attr: { for: 'Texts_Description_'+$index() }">Description</label>
@@ -112,7 +112,7 @@
 					</ul>
 				</span>
 			</h3>
-			<ul class="edit-details-list" data-bind="sortable: { data: Details }">
+			<ul id="editor-details" class="edit-details-list" data-bind="sortable: { data: Details }">
 				<!--data-bind="foreach: Details"-->
 				<li class="detail-area" data-bind="class: CssClass, style: { backgroundColor: BackColor, color: Color }, visible: isDeleted() === false">
 
