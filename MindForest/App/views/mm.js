@@ -124,14 +124,11 @@
 	//} //expandNode
 
 	function showDetails(node) {
-		if (node !== mind.currentNode() || !app.detailsVisible) {
-			app.select(node);
+		if (node !== mind.currentNode()) {
 			mind.loadChildren(node, true);
-			app.showDetails();
 		}
-		else {
-			app.hideDetails();
-		}
+		app.select(node);
+		app.showDetails();
 	} //showDetails
 
 	function afterNodeMove(arg) {

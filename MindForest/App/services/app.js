@@ -558,6 +558,10 @@
 			app.detailsVisible = false;
 		}
 		else { //show
+			if (!mind.currentNode()) {
+				logger.warn('No item selected.', 'app - toggleDetails');
+				return;
+			}
 			$('#detailsPage').addClass('show');
 			$(detailsSelector).addClass('show');
 			$('#mapPage').addClass(view.css);
