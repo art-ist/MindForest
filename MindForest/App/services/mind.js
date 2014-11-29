@@ -639,9 +639,9 @@
 							message += '\n ' + error.mindContext + ' - ' + error.propertyName + ': ' + error.errorMessage;
 						});
 					});
-					logger.error("Saving failed! " + message, 'mind - saveChanges', e);
+					logger.error("Saving failed! " + message, 'mind - saveChanges');
 				} catch (ex) {
-					logger.error("Saving failed! " + e, 'mind - saveChanges', e);
+					logger.error("Saving failed! " + e, 'mind - saveChanges');
 				}
 			});
 	} //saveChanges

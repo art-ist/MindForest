@@ -74,10 +74,14 @@
 							</a>
 						</div>
 						<div class="form-group pull-right">
-							<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
-								<!-- ko foreach: $root.langs -->
-								<option data-bind="value: id, text: name"></option>
-								<!-- /ko -->
+							<select class="input-small"
+									data-bind="value: Lang,
+											   options: $root.app.langs,
+											   optionsCaption: 'Neutral',
+											   optionsText: 'name',
+											   optionsValue: 'id',
+											   valueAllowUnset: true,
+											   attr: { id: 'Texts_Lang_'+$index() }">
 							</select>
 						</div>
 					</div>
@@ -137,11 +141,14 @@
 					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
 					<!-- /ko -->
 					<!-- dropdown Menu für sprachauswahl bei den Details -->
-					<select class="input-small" data-bind="value: Lang, attr: { id: 'Texts_Lang_'+$index() }">
-						<option value="">Neutral</option>
-						<!-- ko foreach: $root.app.langs -->
-						<option data-bind="value: id, text: name"></option>
-						<!-- /ko -->
+					<select class="input-small"
+							data-bind="value: Lang,
+											   options: $root.app.langs,
+											   optionsCaption: 'Neutral',
+											   optionsText: 'name',
+											   optionsValue: 'id',
+											   valueAllowUnset: true,
+											   attr: { id: 'Texts_Lang_'+$index() }">
 					</select>
 					<!-- Ende dropdown Menu für sprachauswahl bei den Details -->
 

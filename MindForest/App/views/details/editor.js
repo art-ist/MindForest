@@ -11,11 +11,9 @@
 		connection: app.mind.currentConnection,
 		node: app.mind.currentNode,
 
-		langs: [{ id: '', name: 'Neutral' }],
-
 		//Lifecycle Events
 		canActivate: canActivate,
-		activate: activate,
+		//activate: activate,
 		compositionComplete: compositionComplete
 
 	};
@@ -25,13 +23,8 @@
 		return app.user.mayEdit();
 	}
 
-	function activate() {
-		if (vm.langs.length === 1) {
-			for (var i = 0; i < app.langs.length; i++) {
-				vm.langs.push(app.langs[i]);
-			}
-		}
-	}
+	//function activate() {
+	//}
 
 	function compositionComplete(view, parent) {
 		//logger.log('Composition complete', 'dock', view);
