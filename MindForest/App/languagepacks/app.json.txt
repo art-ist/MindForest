@@ -1,6 +1,6 @@
 ﻿{
   "app": {
-		"ok"							: "OK",
+		"ok"						: "OK",
 		"cancel"					: "Cancel",
 		"loading"					: "Loading...",
 		"loadingExternal"	: "Loading external resources...",		 

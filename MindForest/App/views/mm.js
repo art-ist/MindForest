@@ -86,47 +86,47 @@
 
 	//#region Methods
 
-	function nodeClick(connectionOrNode) {
-		if (connectionOrNode.ToNode) {
-			if (connectionOrNode.ToNode().ChildConnections().length === 0) { //node has no ChildConnections
-				showDetails(connectionOrNode);
-			}
-			else {
-				expandNode(connectionOrNode);
-			}
-		}
-		else { //root
-			app.select(connectionOrNode);
-		}
-	} //nodeClick
+	//function nodeClick(connectionOrNode) {
+	//	if (connectionOrNode.ToNode) {
+	//		if (connectionOrNode.ToNode().ChildConnections().length === 0) { //node has no ChildConnections
+	//			showDetails(connectionOrNode);
+	//		}
+	//		else {
+	//			expandNode(connectionOrNode);
+	//		}
+	//	}
+	//	else { //root
+	//		app.select(connectionOrNode);
+	//	}
+	//} //nodeClick
 
-	function nodeDblClick(con) {
-		showDetails(con);
-	} //nodeDblClick
+	//function nodeDblClick(con) {
+	//	showDetails(con);
+	//} //nodeDblClick
 
-	function expandNode(con, selectChild) {
-		//logger.log("mm expandNode: " + con.Id(), 'mm - expandNode', { con: con, selectChild: selectChild });
-		if (!(selectChild >= 0)) {
-			app.select(con);  //mind.currentConnection(con);
-		}
-		if (!con.isExpanded() || selectChild >= 0) { //expand
-			//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
-			con.isExpanded(true);
-			if (selectChild >= 0) {
-				app.select(con.ChildConnections()[selectChild]);  //mind.currentConnection(con.ChildConnections()[selectChild]);
-			}
-			mind.loadChildren(con.ToNode(), selectChild);
-		}
-		else { //collapse
-			//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
-			con.isExpanded(false);
-		} //if
-	} //expandNode
+	//function expandNode(con, selectChild) {
+	//	//logger.log("mm expandNode: " + con.Id(), 'mm - expandNode', { con: con, selectChild: selectChild });
+	//	if (!(selectChild >= 0)) {
+	//		app.select(con);  //mind.currentConnection(con);
+	//	}
+	//	if (!con.isExpanded() || selectChild >= 0) { //expand
+	//		//logger.log("mm expandNode expand before: " + con.isExpanded(), con);
+	//		con.isExpanded(true);
+	//		if (selectChild >= 0) {
+	//			app.select(con.ChildConnections()[selectChild]);  //mind.currentConnection(con.ChildConnections()[selectChild]);
+	//		}
+	//		mind.loadChildren(con.ToNode(), selectChild);
+	//	}
+	//	else { //collapse
+	//		//-logger.log("mm expandNode collapse " + con.isExpanded(), con);
+	//		con.isExpanded(false);
+	//	} //if
+	//} //expandNode
 
-	function showDetails(con) {
-		if (con.ToNode() !== mind.currentConnection().ToNode() || !app.detailsVisible) {
-			app.select(con);  //mind.currentConnection(con);
-			mind.loadChildren(con.ToNode(), true);
+	function showDetails(node) {
+		if (node !== mind.currentNode() || !app.detailsVisible) {
+			app.select(node);
+			mind.loadChildren(node, true);
 			app.showDetails();
 		}
 		else {
@@ -207,16 +207,25 @@
 
 			var $mm = $('#mm-container'),
 				cloudColor = treeRoot.CloudColor() ? treeRoot.CloudColor() : 'none';
-			var root = '<div class="mm-item-container">'
-					+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
-					+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
-					+ '<div class="mm-node-container" data-key="' + treeRoot.entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
-						+ '<div>'
-							+ '<div class="item">'
+			var rootItem = '<div class="item">'
 								+ '<span class="item-title">'
 									+ treeRoot.LTitle()
 								+ '</span>'
-							+ '</div>'
+							+ '</div>';
+			if (treeRoot.Icon()) {
+				rootItem = '<div style="width: 280px;"><img src="' + treeRoot.Icon() + '", alt="' + treeRoot.LTitle() + '"/></div>'; //TODO: get image widt after loading
+				//redraw lines when image is loaded
+				//$.get(treeRoot.Icon(), function () {
+				//	//console.log('[ mm | initTree ] imageLoaded');
+				//	drawLines($('#mm-container > .mm-item-container > .mm-node-container'));
+				//});
+			}
+			var root = '<div class="mm-item-container">'
+					+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
+					+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
+					+ '<div class="mm-node-container" data-key="' + treeRoot.entityAspect._entityKey._keyInGroup + '" data-isOpen="false">'
+						+ '<div>'
+							+ rootItem
 						+ '</div>'
 					+ '</div>'
 					+ '<div class="mm-children-container">'
@@ -233,7 +242,7 @@
 						+ '<div class="mm-item-container">'
 							+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
 							+ '<canvas class="mm-item-Canvas" style="position: absolute;"></canvas>'
-							+ '<div class="mm-node-container" data-id="' + conTo[i].ToNode().Id() + '" data-key="' + conTo[i].ToNode().entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
+							+ '<div class="mm-node-container" data-id="' + conTo[i].ToNode().Id() + '" data-key="' + conTo[i].ToNode().entityAspect._entityKey._keyInGroup + '" data-isOpen="false">'
 								+ '<div class="item">'
 									+ '<span class="item-title">'
 										+ conTo[i].ToNode().LTitle()
@@ -253,6 +262,15 @@
 		drawLines($('#mm-container > .mm-item-container > .mm-node-container'));
 
 		$('.mm-node-container').click(function (event) { nodeClick(event); });
+		app.lang.subscribe(function (newValue) {
+			//$('.mm-node-container').each(function (index, element) {
+			//	var $element = $(element);
+			//	var node = manager.getEntityByKey('Node', $element.attr('data-key'));
+			//	if (node) {
+			//		$element.children('span.item-title').text(node.LTitle());
+			//	}
+			//});
+		});
 
 		mm.app.mmAPI = {
 			deleteNode: deleteNode,
@@ -260,7 +278,7 @@
 		};
 		// end - initialise visualisation
 
-		// inside functions
+		// private functions
 		function drawLines(currentTarget, isDiggingUp) {
 
 			//console.log('currentTarget', currentTarget);
@@ -329,7 +347,7 @@
 			// http://aboutcode.net/2012/11/15/twitter-bootstrap-modals-and-knockoutjs.html
 
 			// create children HTML
-			domNode.attr('"data-isopen"', "true");
+			domNode.attr('data-isOpen', "true");
 
 			var nodeId = domNode.attr('data-key'),
 				childrenContainer = '<div class="mm-children-container">'
@@ -347,8 +365,8 @@
 					+ '<div class="mm-item-container">'
 						+ '<div class="mm-cloud" style="background-color: ' + cloudColor + ';"></div>'
 						+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
-						+ '<div class="mm-node-container" data-key="' + currentNode.entityAspect._entityKey._keyInGroup + '" "data-isopen"="false">'
-							+ '<div class="item">'
+						+ '<div class="mm-node-container" data-key="' + currentNode.entityAspect._entityKey._keyInGroup + '" data-isOpen="false">'
+							+ '<div class="item ' + currentNode.CssClass() + '">'
 								+ '<span class="item-title">'
 									+ currentNode.LTitle()
 								+ '</span>'
@@ -392,7 +410,7 @@
 		}
 		function deleteDOMChildren(domNode) {
 
-			domNode.attr('"data-isopen"', "false");
+			domNode.attr('data-isOpen', "false");
 
 			domNode.parent().children('.mm-children-container').remove();
 
@@ -413,13 +431,17 @@
 		function nodeClick(event) {
 
 			var currentTarget = $(event.currentTarget),
-				isClosed = currentTarget.attr('"data-isopen"') === "true" ? false : true,
+				isClosed = currentTarget.attr('data-isOpen') === "true" ? false : true,
 				node = manager.getEntityByKey('Node', currentTarget.attr('data-key'));
 
 			select(currentTarget, node);
 
 			if (isClosed) {
 				appendDOMChildren(currentTarget, node);
+				//node has no ChildConnections -> open details
+				if (node.ChildConnections().length === 0) {
+					showDetails(node);
+				}
 			} else {
 				deleteDOMChildren(currentTarget);
 			}
@@ -449,12 +471,12 @@
 			if (selectedNode) {
 
 				var $domNode = $(selectedNode);
-				if ($domNode.attr('"data-isopen"') === "true") {
+				if ($domNode.attr('data-isOpen') === "true") {
 					var newChild = '<li>'
 									+ '<div class="mm-item-container">'
 										+ '<div class="mm-cloud" style="background-color: none;"></div>'
 										+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
-										+ '<div class="mm-node-container" data-key="' + key + '" "data-isopen"="false">'
+										+ '<div class="mm-node-container" data-key="' + key + '" data-isOpen="false">'
 											+ '<div class="item">'
 												+ '<span class="item-title">'
 													+ 'new Node'
@@ -467,14 +489,14 @@
 					target.append(newChild);
 					target.children('.mm-node-container').click(function (e) { nodeClick(e); });
 				} else {
-					$domNode.attr('"data-isopen"', "true");
+					$domNode.attr('data-isOpen', "true");
 					var childrenContainer = '<div class="mm-children-container">'
 							+ '<ul class="mm-children-list">'
 								+ '<li>'
 									+ '<div class="mm-item-container">'
 										+ '<div class="mm-cloud" style="background-color: none;"></div>'
 										+ '<canvas class="mm-item-Canvas" left="0" top="0" right="0" bottom="0" style="position: absolute;"></canvas>'
-										+ '<div class="mm-node-container" data-key="' + key + '" "data-isopen"="false">'
+										+ '<div class="mm-node-container" data-key="' + key + '" data-isOpen="false">'
 											+ '<div class="item">'
 												+ '<span class="item-title">'
 													+ 'new Node'
