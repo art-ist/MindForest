@@ -199,8 +199,7 @@ namespace MindForest.Controllers {
 		/// Lookup security roles to set permissons 
 		/// </summary>
 		/// <returns>Roles</returns>
-		[Authorize]
-		[HttpGet]
+		[HttpGet, Authorize]
 		public dynamic Roles(string Forest) {
 			var db = new MindContextProvider(Forest);
 			return db.Context
@@ -208,14 +207,12 @@ namespace MindForest.Controllers {
 		}
 
 
-		//[MembershipHttpAuthorize(Roles="Owners, Authors")]
 		/// <summary>
 		/// Save Chenges to Forest (Database)
 		/// </summary>
 		/// <param name="saveBundle"></param>
 		/// <returns>SaveBundle with updated entities</returns>    
-		[Authorize(Roles = "Admin, Author")]
-		[HttpPost]
+		[HttpPost, Authorize(Roles = "Admin, Author")]
 		public SaveResult SaveChanges(string Forest, JObject saveBundle) {
 			var db = new MindContextProvider(Forest);
 

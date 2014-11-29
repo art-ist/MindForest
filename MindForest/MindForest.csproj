@@ -205,6 +205,13 @@
     <Content Include="App\app.Debug.config.js" />
     <Content Include="App\app.Release.config.js" />
     <Content Include="App\appConfig.base.js" />
+    <Content Include="App\bindingHandlers\class-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\datepicker-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\fadeVisible-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\nullableValue-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\select2-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\textDate-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\_instance.bindingProvider.js" />
     <Content Include="App\libraries\knockout-mapping.js" />
     <Content Include="App\libraries\knockout-sortable.min.js" />
     <Content Include="App\libraries\moment-with-langs.js" />
@@ -263,7 +270,7 @@
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\storage.js" />
     <Content Include="App\services\_globals.js" />
-    <Content Include="App\services\_ko.bindingHandlers.js" />
+    <Content Include="App\bindingHandlers\plumb.bindingHandlers.js" />
     <Content Include="App\styles\images\select2-spinner.gif" />
     <Content Include="App\styles\images\select2.png" />
     <Content Include="App\styles\images\select2x2.png" />
@@ -596,6 +603,7 @@
     <Compile Include="Models\ConnectionText.cs">
       <DependentUpon>Forest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Forest.Views.cs" />
     <Compile Include="Models\IdentityControlerModels.cs" />
     <Compile Include="Models\ChallengeResult.cs" />
     <Compile Include="Models\ConnectionExtensions.cs" />

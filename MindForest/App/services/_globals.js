@@ -1,22 +1,51 @@
-﻿//extend jQuery with function to get QueryStrig
-$.extend({
-  requestParameters: function () {
-    var vars = [], hash, hashes;
-    hashes = window.location.href.slice(window.location.href.indexOf('?') + 1);
-    if (hashes.indexOf('#') >= 0) hashes = hashes.slice(0, hashes.indexOf('#'));
-    hashes = hashes.split('&');
+﻿
 
-    for (var i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split('=');
-      vars.push(decodeURIComponent(hash[0]));
-      vars[hash[0]] = decodeURIComponent(hash[1]);
-    }
-    return vars;
-  }
-  //,requestParameters: function (name) {
-  //  return $.requestParameters()[name];
-  //}
+//#region Global Extensions
+
+//extend jQuery with function to get QueryStrig
+$.extend({
+	requestParameters: function () {
+		var vars = [], hash, hashes;
+		hashes = window.location.href.slice(window.location.href.indexOf('?') + 1);
+		if (hashes.indexOf('#') >= 0) hashes = hashes.slice(0, hashes.indexOf('#'));
+		hashes = hashes.split('&');
+
+		for (var i = 0; i < hashes.length; i++) {
+			hash = hashes[i].split('=');
+			vars.push(decodeURIComponent(hash[0]));
+			vars[hash[0]] = decodeURIComponent(hash[1]);
+		}
+		return vars;
+	}
+	//,requestParameters: function (name) {
+	//  return $.requestParameters()[name];
+	//}
 });
+
+//Extension for moment to understand MS DateTime (actually time only) format
+moment.fromPT = function (time) {
+	if (!time) return null;
+	var h = 0, m = 0, s = 0;
+	var parts = time.replace(/PT/, '');
+	if (parts.indexOf("H") > -1) {
+		parts = parts.split("H");
+		h = parseInt(parts[0], 10);
+		parts = parts[1];
+	}
+	if (parts.indexOf("M") > -1) {
+		parts = parts.split("M");
+		m = parseInt(parts[0], 10);
+		parts = parts[1];
+	}
+	if (parts.indexOf("S") > -1) {
+		parts = parts.split("S");
+		s = parseInt(parts[0], 10);
+	}
+	return moment().year(0).month(0).date(0).hour(h).minute(m).second(s);
+};
+
+//#endregion Global Extensions
+
 
 //Parse QueryStrig and offer it as a global variable
 var QueryString = function () {
@@ -41,6 +70,9 @@ var QueryString = function () {
 	}
 	return query_string;
 }();
+
+
+
 
 //TODO: choose one (jQuery extension or global variable), currently prefering variable
 
