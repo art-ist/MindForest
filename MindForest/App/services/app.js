@@ -19,6 +19,9 @@
 		langs: [
 			{ id: 'de', name: 'Deutsch' },
 			{ id: 'en', name: 'English' },
+			{ id: 'fr', name: 'Français' },
+			{ id: 'it', name: 'Italiano' },
+			{ id: 'es', name: 'Español' },
 		],
 		map: null,
 
@@ -748,12 +751,17 @@
 		console.log("adding Detail (class = " + detailsClass + ' )', 'app - addDetails');
 
 		var newConnection = mind.addNode(mind.currentConnection().ToNode(), null, Relation.Detail);
+		var newNode = newConnection.ToNode();
 		if (detailsClass === "details_link") {
-			newConnection.ToNode().Texts()[0].Title("Link Title");
-			newConnection.ToNode().Link("http://");
+			newNode.Texts()[0].Title("Link Title");
+			newNode.Link("http://");
+		}
+		else if (detailsClass === "details_attribute") {
+			newNode.Texts()[0].Title("Key");
+			newNode.Hook("Value");
 		}
 		else {
-			newConnection.ToNode().Texts()[0].Title("New Description");
+			newNode.Texts()[0].Title("New Description");
 		}
 	} //addDetail
 

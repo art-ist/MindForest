@@ -34,7 +34,8 @@
 			"child"		:	"Unterknoten hinzufügen",
 			"sibling"	:	"Nachbarknoten hinzufügen",
 			"description" : "Beschreibung hinzufügen",
-			"link"		: "Link hinzufügen"
+			"link"		: "Link hinzufügen",
+			"attribute"		: "Eigenschaft hinzufügen"
 		},
 		"delete"	:	"Löschen",
 		"save"		:	"Speichern",

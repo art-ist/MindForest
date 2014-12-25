@@ -10,6 +10,10 @@
 			<span class="win-commandicon win-commandring icon-disk"></span>
 			<span class="win-label" data-localize="edit.save">Save</span>
 		</a>
+		<a class="win-command" title="Discard chenges since last save" data-bind="click: app.undo">
+			<span class="win-commandicon win-commandring icon-undo"></span>
+			<span class="win-label" data-localize="edit.save">Undo</span>
+		</a>
 		<a class="win-command" title="Add Child" data-bind="click: app.addChild">
 			<span class="win-commandicon win-commandring icon-plus"></span>
 			<span class="win-label" data-localize="edit.add.child">Add Child</span>
@@ -81,8 +85,7 @@
 											   optionsText: 'name',
 											   optionsValue: 'id',
 											   valueAllowUnset: true,
-											   attr: { id: 'Texts_Lang_'+$index() }">
-							</select>
+											   attr: { id: 'Texts_Lang_'+$index() }"></select>
 						</div>
 					</div>
 					<div class="panel-body">
@@ -112,6 +115,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><a data-localize="edit.add.link" data-bind="click: function() { $root.app.addDetail('details_link'); }">Add Link</a></li>
+						<li><a data-localize="edit.add.attribute" data-bind="click: function() { $root.app.addDetail('details_attribute'); }">Add Attribute</a></li>
 						<!--<li><a data-localize="edit.add.description" data-bind="click: function() { $root.app.addDetail('detail_note'); }">Add Description</a></li>-->
 					</ul>
 				</span>
@@ -134,10 +138,16 @@
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
 					<!-- ko if: Link -->
+					<i class="icon-link"></i>
 					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
 					<input type="text" style="width:42%" data-bind="value: Link" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
 					<!-- /ko -->
-					<!-- ko ifnot: Link -->
+					<!-- ko if: Hook -->
+					<i class="icon-tag"></i>
+					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
+					<input type="text" style="width:42%" data-bind="value: Hook" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
+					<!-- /ko -->
+					<!-- ko if: !Link & !Hook -->
 					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
 					<!-- /ko -->
 					<!-- dropdown Menu für sprachauswahl bei den Details -->
@@ -148,8 +158,7 @@
 											   optionsText: 'name',
 											   optionsValue: 'id',
 											   valueAllowUnset: true,
-											   attr: { id: 'Texts_Lang_'+$index() }">
-					</select>
+											   attr: { id: 'Texts_Lang_'+$index() }"></select>
 					<!-- Ende dropdown Menu für sprachauswahl bei den Details -->
 
 				</li>
@@ -202,6 +211,8 @@
 				<span data-localize="edit.modifiedAt">Modified</span> <span data-bind="textDate: ModifiedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: ModifiedBy"></span>.
 				<br />
 				<span data-localize="edit.createdAt">Created</span> <span data-bind="textDate: CreatedAt"></span> <span data-localize="edit.by">by</span> <span data-bind="  text: CreatedBy"></span>.
+				<br />
+				Node ID: <span data-bind="text: Id"></span> Connection ID: <span data-bind="  text: $root.connection.Id"></span>.
 			</p>
 
 		</form>

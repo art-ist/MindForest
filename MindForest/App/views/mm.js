@@ -126,8 +126,8 @@
 	function showDetails(node) {
 		if (node !== mind.currentNode()) {
 			mind.loadChildren(node, true);
+			app.select(node);
 		}
-		app.select(node);
 		app.showDetails();
 	} //showDetails
 

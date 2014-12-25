@@ -34,7 +34,8 @@
 			"child"		:	"Add Child",
 			"sibling"	:	"Add Sibling",
 			"description" : "Add Description",
-			"link"		: "Add Link"
+			"link"		: "Add Link",
+			"attribute"		: "Add Attribute"
 		},
 		"delete"	:	"Delete",
 		"save"		:	"Save",

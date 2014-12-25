@@ -556,8 +556,10 @@
 			curCon.entityAspect.setDeleted();
 			parent.ConnectionsTo.remove(curCon);
 		}
+		//tell ko that computed has changed
 		//parent.ConnectionsTo.valueHasMutated();
-		//parent.ChildConnections.valueHasMutated(); //tell ko that computed has changed
+		//parent.ChildConnections.valueHasMutated();
+		//parent.Details.valueHasMutated();
 	} //deleteNodeAndConnection
 
 	function deleteConnection(curCon) {
