@@ -24,6 +24,7 @@
 	<script src="App/libraries/jquery-2.0.3.js"></script>
 	<script src="App/libraries/jquery-ui-1.10.3.js"></script>
 	<script src="App/libraries/knockout-2.2.1.debug.js"></script>
+	<script src="App/libraries/knockout-mapping.js"></script>
 	<script src="App/libraries/knockout-sortable.js"></script>
 	<script src="App/libraries/breeze.debug.js"></script>
 	<script src="App/libraries/toastr.js"></script>
@@ -43,7 +44,14 @@
 	<script src="App/libraries/select2/select2.js"></script> <!--select2 multiselect-->
 
 	<script src="App/services/_globals.js"></script>
-	<script src="App/services/_ko.bindingHandlers.js"></script>
+
+	<script src="App/bindingHandlers/_instance-bindingProvider.js"></script>
+	<script src="App/bindingHandlers/class-bindingHandler.js"></script>
+	<script src="App/bindingHandlers/datepicker-bindingHandler.js"></script>
+	<script src="App/bindingHandlers/fadeVisible-bindingHandler.js"></script>
+	<script src="App/bindingHandlers/plumb-bindingHandler.js"></script>
+	<script src="App/bindingHandlers/select2-bindingHandler.js"></script>
+	<script src="App/bindingHandlers/textDate-bindingHandler.js"></script>
 
 	<!-- STYLES -->
 
@@ -66,12 +74,17 @@
 	<script src="App/styles/themes/bootmetro/js/bootstrap.js"></script>
 	<link rel="stylesheet" type="text/css" href="App/styles/toastr.css" />
 
+
 	<!-- CONTROLS -->
 	<link rel="stylesheet" type="text/css" href="App/styles/colorpicker/pick-a-color-1.1.7.min.css" />
 	<link rel="stylesheet" type="text/css" href="App/styles/select2.css" />
 	<link rel="stylesheet" type="text/css" href="App/styles/select2-bootstrap.css" />
 
 	<link rel="stylesheet" type="text/css" href="App/styles/app.css" />
+
+	@*
+	<link rel="stylesheet" type="text/css" href="App/styles/_Mutmacherei.css" />
+	<link rel="stylesheet" type="text/css" href="App/styles/_MartialArts.css" />*@
 
 </head>
 <body>

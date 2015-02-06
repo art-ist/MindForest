@@ -4,18 +4,17 @@ using System.Web.Routing;
 //using System.Web.Optimization;
 
 namespace MindForest {
-  // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-  // visit http://go.microsoft.com/?LinkId=9394801
+	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
+	// visit http://go.microsoft.com/?LinkId=9394801
 
 	public class WebApiApplication : System.Web.HttpApplication {
-    protected void Application_Start() {
+		protected void Application_Start() {
 			//AreaRegistration.RegisterAllAreas();
 
-      GlobalConfiguration.Configure(WebApiConfig.Register); //App_Start/WebApiConfig
-      RouteConfig.RegisterRoutes(RouteTable.Routes);  //App_Start/RouteConfig
+			GlobalConfiguration.Configure(WebApiConfig.Register); //App_Start/WebApiConfig
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
 			//other startup configs see //App_Start/Startup.cs
-    }
-  }
+		}
+	}
 }

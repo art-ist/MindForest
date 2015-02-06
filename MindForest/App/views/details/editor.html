@@ -138,17 +138,17 @@
 					<!--<img width="30" height="30" data-bind="attr: { src: Icon }" src="#" style="position: absolute; left: 0px; top: 0px;" />-->
 					<!-- /ko -->
 					<!-- ko if: Link -->
-					<i class="icon-link"></i>
-					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
-					<input type="text" style="width:42%" data-bind="value: Link" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
+					<a data-bind="attr: { href: Link }" target="_blank" title="klick to open link in new window"><i class="icon-link"></i></a>
+					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" placeholder="Link Title" />
+					<input type="text" style="width:42%" data-bind="value: Link" placeholder="http://complete.link.to/yourpage" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
 					<!-- /ko -->
 					<!-- ko if: Hook -->
 					<i class="icon-tag"></i>
-					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" />
-					<input type="text" style="width:42%" data-bind="value: Hook" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
+					<input type="text" style="width:33%" data-bind="value: Texts()[0].Title" placeholder="Name or Key" />
+					<input type="text" style="width:42%" data-bind="value: Hook" placeholder="Value" /> <!-- Text width zufor 39% und Link width 50% zum erinnern ^^ -->
 					<!-- /ko -->
 					<!-- ko if: !Link & !Hook -->
-					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title"></textarea>
+					<textarea rows="3" style="width:90%" class="input-block-level" data-bind="value: Texts()[0].Title" placeholder="Detailed Description"></textarea>
 					<!-- /ko -->
 					<!-- dropdown Menu für sprachauswahl bei den Details -->
 					<select class="input-small"

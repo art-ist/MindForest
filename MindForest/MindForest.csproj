@@ -572,10 +572,6 @@
     <Content Include="App\themes\Mutmacherei.css" />
     <Content Include="App\views\outline.html" />
     <Content Include="App\views\outline.js" />
-    <None Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <None Include="WebConfig.base.config">
       <SubType>Designer</SubType>
     </None>
@@ -592,9 +588,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MindController.cs" />
     <Compile Include="Models\Connection.cs">
       <DependentUpon>Forest.tt</DependentUpon>
