@@ -6,7 +6,10 @@ html, body {
 	position: absolute;
 	padding: 0;
 	margin: 0;
-	top: 0; right: 0; bottom: 0; left: 0; 
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	width: 100%;
 	overflow: hidden;
 }
@@ -14,6 +17,7 @@ html, body {
 .en *[lang=de] {
 	display: none;
 }
+
 .de *[lang=en] {
 	display: none;
 }
@@ -39,50 +43,61 @@ a.two-lines { /*tile second line*/
 	position: absolute;
 	padding: 0;
 	margin: 0;
-	top: 0; /*right: 0;*/ bottom: 0; left: 0; 
+	top: 0; /*right: 0;*/
+	bottom: 0;
+	left: 0;
 	width: 100%;
 	z-index: 0;
 	overflow: auto;
 	background-color: #fff;
 }
+
 .dock {
 	-mox-transition: all 0.3s;
 	-webkit-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
 }
+
 .dock.right {
 	width: @dockWidth;
 	left: 105%;
 }
+
 .dock.right.show {
 	left: @mapWidth;
 }
+
 .dock.left {
 	width: @dockWidth;
 	left: -@dockWidth;
 }
+
 .dock.left.show {
 	left: 0;
 }
 
 .page.modal {
 	position: fixed;
-	left: 5%; right: 5%; width: 90%;
-	top: 5%; bottom: 5%;
+	left: 5%;
+	right: 5%;
+	width: 90%;
+	top: 5%;
+	bottom: 5%;
 	box-shadow: @modalBoxShadow;
 	overflow: visible;
 	display: none;
 }
+
 .page.modal.show {
 	display: block;
 }
 
-.page.modal #details-command-close, 
+.page.modal #details-command-close,
 .page.modal #web-command-close {
-  position: absolute;
-  right: -20px;
-  top: 15px;
+	position: absolute;
+	right: -20px;
+	top: 15px;
 }
 
 /*#region forestPage*/
@@ -97,16 +112,18 @@ ul#tree-list {
 /*#region mapPage*/
 
 #mapPage {
-
 }
 
 #mapPage.dock.right {
 	width: @mapWidth;
-	left: 0; right: @dockWidth;
+	left: 0;
+	right: @dockWidth;
 }
+
 #mapPage.dock.left {
 	width: @mapWidth;
-	left: @dockWidth; right: 0;
+	left: @dockWidth;
+	right: 0;
 }
 
 /*#endregion mapPage*/
@@ -135,12 +152,44 @@ ul#tree-list {
 
 /*#region webPage*/
 
+#webPage.lightBox {
+	/*box-shadow: none;
+	border: 100px solid rgba(0,0,0,0.4);*/
+}
+
+#webPage-title {
+	position: absolute;
+	color: #e1a31c;
+	top: -32px;
+	right: 0;
+}
+
 /*#endregion webPage*/
 
-	.page.tool {
-		display: none;
-	}
-	/*.page.dock-right {
+/*#region splash */
+
+.page-splash {
+	position: absolute;
+	position: fixed;
+	width: 240px;
+	left: 50%;
+	margin-left: -120px;
+	height: 160px;
+	top: 50%;
+	margin-top: -80px;
+	text-align: center;
+}
+
+#page-splash-indicator {
+	margin-top: 10px;
+}
+
+/*#endregion splash */
+
+.page.tool {
+	display: none;
+}
+/*.page.dock-right {
 		z-index: 1;
 		right: 0;
 		width: @dockWidth; 
@@ -150,19 +199,21 @@ ul#tree-list {
 
 
 .header-container {
-		display: inline-block;
-		margin-left: 3%;
-		margin-top: 20px;
+	display: inline-block;
+	margin-left: 3%;
+	margin-top: 20px;
 }
 
 .page-region {
 	width: 100%;
 	height: 100%;
-	margin-top: 100px; margin-bottom: -100px;
+	margin-top: 100px;
+	margin-bottom: -100px;
 }
 
 #detailsPage .page-region {
-	margin-top: 0; margin-bottom: 0;
+	margin-top: 0;
+	margin-bottom: 0;
 	overflow: auto;
 }
 
@@ -207,15 +258,7 @@ ul#tree-list {
 	z-index: 1000;
 }
 
-#webPage.lightBox {
-	/*box-shadow: none;
-	border: 100px solid rgba(0,0,0,0.4);*/ 
-}
-#webPage-title {
-	position: absolute;
-	color: #e1a31c;
-	top: -32px; right: 0;
-}
+
 
 .sortable-placeholder {
 	background-color: #ebebeb;

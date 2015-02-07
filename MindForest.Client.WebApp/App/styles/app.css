@@ -118,7 +118,33 @@ ul#tree-list {
 }
 /*#endregion detailsPage*/
 /*#region webPage*/
+#webPage.lightBox {
+  /*box-shadow: none;
+	border: 100px solid rgba(0,0,0,0.4);*/
+}
+#webPage-title {
+  position: absolute;
+  color: #e1a31c;
+  top: -32px;
+  right: 0;
+}
 /*#endregion webPage*/
+/*#region splash */
+.page-splash {
+  position: absolute;
+  position: fixed;
+  width: 240px;
+  left: 50%;
+  margin-left: -120px;
+  height: 160px;
+  top: 50%;
+  margin-top: -80px;
+  text-align: center;
+}
+#page-splash-indicator {
+  margin-top: 10px;
+}
+/*#endregion splash */
 .page.tool {
   display: none;
 }
@@ -178,16 +204,6 @@ ul#tree-list {
   left: 20px;
   bottom: 10px;
   z-index: 1000;
-}
-#webPage.lightBox {
-  /*box-shadow: none;
-	border: 100px solid rgba(0,0,0,0.4);*/
-}
-#webPage-title {
-  position: absolute;
-  color: #e1a31c;
-  top: -32px;
-  right: 0;
 }
 .sortable-placeholder {
   background-color: #ebebeb;
