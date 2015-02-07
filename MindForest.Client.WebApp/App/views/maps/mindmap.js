@@ -48,23 +48,11 @@
 	//#endregion Private Fields
 	return mm;
 
-	function canActivate(treeName, queryString) {
+	function canActivate(forestName, treeName, queryString) {
 		return app.canOpenTreeByName(treeName, 'mm');
 	} //canActivate
 
-	function activate(treeName, queryString) {
-		////initialize plumb
-		//mm.plumb = jsPlumb.getInstance({
-		//	//Container: 'mm-container',
-		//	Connector: ["Bezier", { curviness: 30, cssClass: 'mm-connector' }],
-		//	Anchors: ["Right", "Left"],
-		//	Endpoint: ["Blank", {}],
-		//	PaintStyle: {
-		//		lineWidth: 2,
-		//		strokeStyle: "#999"
-		//	}
-		//});
-
+	function activate(forestName, treeName, queryString) {
 		mm.app.map = mm;
 	} //activate
 

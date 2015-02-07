@@ -1,5 +1,10 @@
 ﻿var config = {
-	host: 'http://localhost:42202', //use local api. Change to 'http://mind.pics' to use production host
-  apiKey: {
-  }
+	host: 'http://localhost:42202', //use local api
+	//host: 'http://mind.pics', //production host
+	defaults: {
+		forest: 'Mutmacherei',
+		map: 'mindmap'
+	},
+	apiKey: {
+	}
 }

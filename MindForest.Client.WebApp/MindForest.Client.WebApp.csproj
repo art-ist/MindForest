@@ -49,9 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="App\app.config.js" />
-    <Content Include="App\app.Debug.config.js" />
-    <Content Include="App\app.Release.config.js" />
-    <Content Include="App\appConfig.base.js" />
+    <Content Include="App\app.config.template.js" />
     <Content Include="App\bindingHandlers\class-bindingHandler.js" />
     <Content Include="App\bindingHandlers\datepicker-bindingHandler.js" />
     <Content Include="App\bindingHandlers\fadeVisible-bindingHandler.js" />
@@ -148,9 +146,9 @@
       <DependentUpon>lightbox.css</DependentUpon>
     </Content>
     <Content Include="App\views\forest.html" />
-    <Content Include="App\views\mmOld.html" />
-    <Content Include="App\views\mmOld.js" />
-    <Content Include="App\views\mm.js" />
+    <Content Include="App\views\maps\mmOld.html" />
+    <Content Include="App\views\maps\mmOld.js" />
+    <Content Include="App\views\maps\mindmap.js" />
     <Content Include="App\views\forest.js" />
     <Content Include="App\views\modals\register.html" />
     <Content Include="App\views\modals\register.js" />
@@ -161,8 +159,8 @@
     <Content Include="App\libraries\select2\select2.jquery.json" />
     <None Include="App\views\details\lightbox.less" />
     <Content Include="App\views\details\lightbox.html" />
-    <Content Include="App\views\mm.css" />
-    <Content Include="App\views\mm.html" />
+    <Content Include="App\views\maps\mindmap.css" />
+    <Content Include="App\views\maps\mindmap.html" />
     <Content Include="App\views\details\dock.html" />
     <Content Include="App\views\modals\login.js" />
     <Content Include="App\views\modals\login.html" />
@@ -344,11 +342,11 @@
     <Content Include="App\views\details\dock.css" />
     <Content Include="App\styles\themes\modern\modern-responsive.css" />
     <Content Include="App\styles\themes\modern\modern.css" />
-    <Content Include="App\views\outline.css" />
+    <Content Include="App\views\maps\outline.css" />
     <Content Include="App\themes\MartialArts.css" />
     <Content Include="App\themes\Mutmacherei.css" />
-    <Content Include="App\views\outline.html" />
-    <Content Include="App\views\outline.js" />
+    <Content Include="App\views\maps\outline.html" />
+    <Content Include="App\views\maps\outline.js" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

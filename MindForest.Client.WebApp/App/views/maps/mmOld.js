@@ -48,11 +48,11 @@
 	//#endregion Private Fields
 	return mm;
 
-	function canActivate(treeName, queryString) {
+	function canActivate(forestName, treeName, queryString) {
 		return app.canOpenTreeByName(treeName, 'mm');
 	} //canActivate
 
-	function activate(treeName, queryString) {
+	function activate(forestName, treeName, queryString) {
 		//initialize plumb
 		mm.plumb = jsPlumb.getInstance({
 			//Container: 'mm-container',
@@ -141,7 +141,6 @@
 	} //afterNodeMove
 
 	//#endregion Methods
-
 
 	function zoomIn() {
 		//var zoom = app.settings.mm.zoom();

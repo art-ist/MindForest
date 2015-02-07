@@ -119,9 +119,12 @@
 	function _getForestFromPath() {
 		var forest = null;
 		//parse Url and get name of firstlevel directory
-		var parts = window.location.href.split('#')[0].split('?')[0].split('/');
-		if (parts.length > 3) {
-			forest = parts[3];
+		var parts = window.location.hash	//get hash
+			.replace(/^#\/?/, '')			//remove hash-sign and leading /
+			.replace(/\?.*/, '')			//strip parameters
+			.split('/');					//finally split virtual path
+		if (parts.length > 0) {
+			forest = parts[0];				//get first level
 		}
 		return forest;
 	}
@@ -131,6 +134,9 @@
 
 		//TODO: get/store app.settings from localstorage
 		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+
+		//override defaults
+		//TODO: get to config somewhere
 		if (app.forest.toLowerCase() == 'mutmacherei') {
 			app.settings.map = ko.observable('mm');
 			app.settings.detailViewIndex(0);
@@ -156,7 +162,7 @@
 
 		logger.log('app initialized', 'app - initialize'/*, app*/);
 	} //initialize
-	
+
 	//#endregion Private Functions
 
 
@@ -390,7 +396,7 @@
 				user.roles(['Author']);
 
 				storage.set('user', { name: user.name(), access_token: user.access_token(), roles: user.roles() });
-		});
+			});
 	} //login
 
 	function logout() {
@@ -514,6 +520,7 @@
 			}
 			//if no view provided->redirect to deafult view
 			ViewName = ViewName || app.settings.map();
+			var forest = app.forest;
 			//search for tree
 			return mind
 				.loadTrees()
@@ -525,7 +532,7 @@
 							if (trees[i].Texts()[n].Title() === TreeName) {
 								lang = trees[i].Texts()[n].Lang() || trees[i].Lang()
 								mind.currentTree(trees[i]);
-								return { redirect: '#/' + TreeName + '/' + ViewName };
+								return { redirect: '#/' + forest + '/' + TreeName + '/' + ViewName };
 							} //if Title === TreeName)
 						} //for trees[i].Texts()
 					} //for trees
@@ -541,7 +548,8 @@
 	function openTree(item, event) {
 		var tree = item.LTitle();
 		mind.currentTree(item);
-		router.navigate('#/' + (tree ? tree + '/' : '') + app.settings.map());
+		var forest = app.forest;
+		router.navigate('#/' + forest + '/' + (tree ? tree + '/' : '') + app.settings.map());
 	} //openTree
 
 	var detailsLoaded = false;
@@ -676,7 +684,7 @@
 
 		var currentConnection = mind.currentConnection();
 		var currentNode = currentConnection.ToNode();
-		var parent = currentConnection.FromNode(); 
+		var parent = currentConnection.FromNode();
 		var newConnection = mind.addNode(parent, currCon.Position(), currentNode.class, null);
 		var newNode = newConnection.ToNode();
 
@@ -778,7 +786,7 @@
 		}
 		//select first parent
 		var NodeToDelete = mind.currentConnection();
-		app.select(NodeToDelete.FromNode().ConnectionsFrom()[0]);  
+		app.select(NodeToDelete.FromNode().ConnectionsFrom()[0]);
 
 		mind.deleteNodeAndConnection(NodeToDelete);
 		//mind.saveChanges();

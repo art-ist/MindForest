@@ -1,6 +1,6 @@
 ﻿require.config({
   paths: {
-    //'jquery'        : 'libraries/jquery-1.10.3',
+    'jquery'        : 'libraries/jquery-1.0.3',
     //'knockout'      : 'libraries/knockout-2.2.1',
 
     'text'          : 'libraries/text',

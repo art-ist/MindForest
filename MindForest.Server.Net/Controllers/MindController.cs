@@ -204,14 +204,28 @@ namespace MindForest.Controllers {
 			string lang = Lang ?? "%";
 
 			var result = db.Context
-				.Nodes
-				.Include("Texts")
-				.Where(n => n.IsTreeRoot == true) //TODO: exclude details
+				.GetNodes(user, lang)
 				;
 			return result;
 
 		}
 
+		[HttpGet, BreezeQueryable]
+		public dynamic Connections(string Forest, string Lang = null) {
+
+			var db = new MindContextProvider(Forest);
+			//prepare parameters
+			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+			string lang = Lang ?? "%";
+
+			var availableNodes = db.Context.GetNodes(user, lang).Select(n => n.Id).ToArray();
+			var result = db.Context
+				.Connections
+				.Where(c => availableNodes.Contains(c.FromId))
+				;
+			return result;
+
+		}
 
 		/// <summary>
 		/// Lookup security roles to set permissons 

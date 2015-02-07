@@ -32,11 +32,11 @@
 	//#endregion Private Fields
 	return outline;
 
-	function canActivate(treeName, queryString) {
+	function canActivate(forestName, treeName, queryString) {
 		return app.canOpenTreeByName(treeName, 'outline');
 	} //canActivate
 
-	function activate(treeName, queryString) {
+	function activate(forestName, treeName, queryString) {
 		outline.app.map = outline;
 		outline.title(app.mind.currentTree().LTitle());
 	} //activate

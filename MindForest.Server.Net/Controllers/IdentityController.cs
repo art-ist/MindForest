@@ -46,9 +46,8 @@ namespace MindForest.Controllers {
 
 		public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-		// GET api/Identity/UserInfo
-		[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-		[Route("UserInfo")]
+		// GET api/Identity/Login  früher /Identity/UserInfo
+		[Route("Login"), HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
 		public UserInfoResult GetUserInfo() {
 			ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
@@ -60,7 +59,7 @@ namespace MindForest.Controllers {
 		}
 
 		// POST api/Identity/Logout
-		[Route("Logout")]
+		[Route("Logout"), AllowAnonymous]
 		public IHttpActionResult Logout() {
 			Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
 			return Ok();
@@ -262,7 +261,7 @@ namespace MindForest.Controllers {
 					Url = Url.Route("ExternalLogin", new {
 						provider = description.AuthenticationType,
 						response_type = "token",
-						client_id = Startup.PublicClientId,
+						client_id = Auth.PublicClientId,
 						redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
 						state = state
 					}),
