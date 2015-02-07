@@ -195,6 +195,24 @@ namespace MindForest.Controllers {
 				.NodeLookup(RootNodeId, user, lang);
 		}
 
+		[HttpGet, BreezeQueryable]
+		public dynamic Nodes(string Forest, string Lang = null) {
+
+			var db = new MindContextProvider(Forest);
+			//prepare parameters
+			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+			string lang = Lang ?? "%";
+
+			var result = db.Context
+				.Nodes
+				.Include("Texts")
+				.Where(n => n.IsTreeRoot == true) //TODO: exclude details
+				;
+			return result;
+
+		}
+
+
 		/// <summary>
 		/// Lookup security roles to set permissons 
 		/// </summary>

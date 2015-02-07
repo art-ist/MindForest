@@ -15,9 +15,12 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using MindForest.Models;
 using MindForest.Providers;
+using System.Web.Http.Cors;
 
 namespace MindForest.Controllers {
+
 	[Authorize]
+	[EnableCors("*", "*", "*")]
 	[RoutePrefix("api/Identity")]
 	public class IdentityController : ApiController {
 		private const string LocalLoginProvider = "Local";

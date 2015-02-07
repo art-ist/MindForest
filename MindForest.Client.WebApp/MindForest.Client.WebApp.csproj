@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{66FEAA58-286A-4420-9369-DC016D002E9B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MindForest</RootNamespace>
+    <AssemblyName>MindForest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App\app.config.js" />
+    <Content Include="App\app.Debug.config.js" />
+    <Content Include="App\app.Release.config.js" />
+    <Content Include="App\appConfig.base.js" />
+    <Content Include="App\bindingHandlers\class-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\datepicker-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\fadeVisible-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\select2-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\textDate-bindingHandler.js" />
+    <Content Include="App\bindingHandlers\_instance-bindingProvider.js" />
+    <Content Include="App\libraries\knockout-mapping.js" />
+    <Content Include="App\libraries\knockout-sortable.min.js" />
+    <Content Include="App\libraries\moment-with-langs.js" />
+    <Content Include="App\libraries\moment-with-langs.min.js" />
+    <Content Include="App\libraries\moment.js" />
+    <Content Include="App\libraries\moment.min.js" />
+    <Content Include="App\libraries\select2\select2.js" />
+    <Content Include="App\libraries\select2\select2.min.js" />
+    <Content Include="App\libraries\select2\select2_locale_ar.js" />
+    <Content Include="App\libraries\select2\select2_locale_bg.js" />
+    <Content Include="App\libraries\select2\select2_locale_ca.js" />
+    <Content Include="App\libraries\select2\select2_locale_cs.js" />
+    <Content Include="App\libraries\select2\select2_locale_da.js" />
+    <Content Include="App\libraries\select2\select2_locale_de.js" />
+    <Content Include="App\libraries\select2\select2_locale_el.js" />
+    <Content Include="App\libraries\select2\select2_locale_es.js" />
+    <Content Include="App\libraries\select2\select2_locale_et.js" />
+    <Content Include="App\libraries\select2\select2_locale_eu.js" />
+    <Content Include="App\libraries\select2\select2_locale_fa.js" />
+    <Content Include="App\libraries\select2\select2_locale_fi.js" />
+    <Content Include="App\libraries\select2\select2_locale_fr.js" />
+    <Content Include="App\libraries\select2\select2_locale_gl.js" />
+    <Content Include="App\libraries\select2\select2_locale_he.js" />
+    <Content Include="App\libraries\select2\select2_locale_hr.js" />
+    <Content Include="App\libraries\select2\select2_locale_hu.js" />
+    <Content Include="App\libraries\select2\select2_locale_id.js" />
+    <Content Include="App\libraries\select2\select2_locale_is.js" />
+    <Content Include="App\libraries\select2\select2_locale_it.js" />
+    <Content Include="App\libraries\select2\select2_locale_ja.js" />
+    <Content Include="App\libraries\select2\select2_locale_ka.js" />
+    <Content Include="App\libraries\select2\select2_locale_ko.js" />
+    <Content Include="App\libraries\select2\select2_locale_lt.js" />
+    <Content Include="App\libraries\select2\select2_locale_lv.js" />
+    <Content Include="App\libraries\select2\select2_locale_mk.js" />
+    <Content Include="App\libraries\select2\select2_locale_ms.js" />
+    <Content Include="App\libraries\select2\select2_locale_nl.js" />
+    <Content Include="App\libraries\select2\select2_locale_no.js" />
+    <Content Include="App\libraries\select2\select2_locale_pl.js" />
+    <Content Include="App\libraries\select2\select2_locale_pt-BR.js" />
+    <Content Include="App\libraries\select2\select2_locale_pt-PT.js" />
+    <Content Include="App\libraries\select2\select2_locale_ro.js" />
+    <Content Include="App\libraries\select2\select2_locale_rs.js" />
+    <Content Include="App\libraries\select2\select2_locale_ru.js" />
+    <Content Include="App\libraries\select2\select2_locale_sk.js" />
+    <Content Include="App\libraries\select2\select2_locale_sv.js" />
+    <Content Include="App\libraries\select2\select2_locale_th.js" />
+    <Content Include="App\libraries\select2\select2_locale_tr.js" />
+    <Content Include="App\libraries\select2\select2_locale_uk.js" />
+    <Content Include="App\libraries\select2\select2_locale_vi.js" />
+    <Content Include="App\libraries\select2\select2_locale_zh-CN.js" />
+    <Content Include="App\libraries\select2\select2_locale_zh-TW.js" />
+    <Content Include="App\services\auth.js" />
+    <Content Include="App\services\mind.metadata.js" />
+    <Content Include="App\services\mind.js" />
+    <Content Include="App\services\logger.js" />
+    <Content Include="App\services\platform.js" />
+    <Content Include="App\services\storage.js" />
+    <Content Include="App\services\_globals.js" />
+    <Content Include="App\bindingHandlers\plumb-bindingHandlers.js" />
+    <Content Include="App\styles\images\select2-spinner.gif" />
+    <Content Include="App\styles\images\select2.png" />
+    <Content Include="App\styles\images\select2x2.png" />
+    <Content Include="App\styles\select2-bootstrap.css" />
+    <Content Include="App\styles\select2.css" />
+    <Content Include="App\styles\_definitions.css">
+      <DependentUpon>_definitions.less</DependentUpon>
+    </Content>
+    <Content Include="App\styles\_definitions.min.css">
+      <DependentUpon>_definitions.css</DependentUpon>
+    </Content>
+    <Content Include="App\styles\app.css">
+      <DependentUpon>app.less</DependentUpon>
+    </Content>
+    <Content Include="App\styles\app.min.css">
+      <DependentUpon>app.css</DependentUpon>
+    </Content>
+    <Content Include="App\styles\toastr.css" />
+    <Content Include="App\themes\Transformap.css" />
+    <Content Include="App\views\details\lightbox.css">
+      <DependentUpon>lightbox.less</DependentUpon>
+    </Content>
+    <Content Include="App\views\details\lightbox.js" />
+    <Content Include="App\views\details\dock.js" />
+    <Content Include="App\views\details\editor.css" />
+    <Content Include="App\views\details\editor.html" />
+    <Content Include="App\views\details\editor.js" />
+    <Content Include="App\views\details\lightbox.min.css">
+      <DependentUpon>lightbox.css</DependentUpon>
+    </Content>
+    <Content Include="App\views\forest.html" />
+    <Content Include="App\views\mmOld.html" />
+    <Content Include="App\views\mmOld.js" />
+    <Content Include="App\views\mm.js" />
+    <Content Include="App\views\forest.js" />
+    <Content Include="App\views\modals\register.html" />
+    <Content Include="App\views\modals\register.js" />
+    <Content Include="App\libraries\select2\bower.json" />
+    <Content Include="App\libraries\select2\component.json" />
+    <Content Include="App\libraries\select2\composer.json" />
+    <Content Include="App\libraries\select2\package.json" />
+    <Content Include="App\libraries\select2\select2.jquery.json" />
+    <None Include="App\views\details\lightbox.less" />
+    <Content Include="App\views\details\lightbox.html" />
+    <Content Include="App\views\mm.css" />
+    <Content Include="App\views\mm.html" />
+    <Content Include="App\views\details\dock.html" />
+    <Content Include="App\views\modals\login.js" />
+    <Content Include="App\views\modals\login.html" />
+    <Content Include="App\views\details\webPage.html" />
+    <Content Include="App\views\_menu.html" />
+    <Content Include="App\views\_menu.js" />
+    <Content Include="App\views\_shell.html" />
+    <Content Include="App\views\_shell.js" />
+    <Content Include="App\styles\colorpicker\pick-a-color-1.1.7.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-icons.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-responsive.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro-ui-light.css" />
+    <Content Include="App\styles\themes\bootmetro\css\bootmetro.css" />
+    <Content Include="App\styles\themes\bootmetro\css\datepicker.css" />
+    <Content Include="App\styles\themes\bootmetro\css\fonts.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-icons.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-responsive.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro-ui-light.min.css" />
+    <Content Include="App\styles\themes\bootmetro\css\min\bootmetro.min.css" />
+    <Content Include="App\styles\themes\bootmetro\font\icomoon.dev.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\LICENSE.txt" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.svg" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-light.gif" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-ring-light-small.gif" />
+    <Content Include="App\styles\themes\bootmetro\img\progress-indeterminate-ring-light.gif" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-charms.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-icons-ie7.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-panorama.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro-pivot.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootmetro.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootstrap-datepicker.js" />
+    <Content Include="App\styles\themes\bootmetro\js\bootstrap.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery-1.10.0.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery-1.10.0.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.mousewheel.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.mousewheel.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.touchSwipe.js" />
+    <Content Include="App\styles\themes\bootmetro\js\jquery.touchSwipe.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-charms.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-icons-ie7.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-panorama.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro-pivot.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootmetro.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\min\bootstrap.min.js" />
+    <Content Include="App\styles\themes\bootmetro\js\modernizr-2.6.2.min.js" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap-responsive.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap-responsive.min.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.css" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.min.css" />
+    <Content Include="App\styles\images\glyphicons-halflings-white.png" />
+    <Content Include="App\styles\images\glyphicons-halflings.png" />
+    <Content Include="App\styles\qunit.css" />
+    <Content Include="App\styles\themes\normalize.css" />
+    <Content Include="Images\alert.png" />
+    <Content Include="Images\buttonback.png" />
+    <Content Include="Images\buttondown.png" />
+    <Content Include="Images\buttonright.png" />
+    <Content Include="Images\buttonup.png" />
+    <Content Include="Images\camera.png" />
+    <Content Include="Images\export.png" />
+    <Content Include="Images\fullscreen.png" />
+    <Content Include="Images\fullscreenoff.png" />
+    <Content Include="Images\gotoend.png" />
+    <Content Include="Images\gotostart.png" />
+    <Content Include="Images\arrowleft.png" />
+    <Content Include="Images\arrowdown.png" />
+    <Content Include="Images\arrowup.png" />
+    <Content Include="Images\arrowright.png" />
+    <Content Include="Images\directionleft.png" />
+    <Content Include="Images\directionback.png" />
+    <Content Include="Images\directionright.png" />
+    <Content Include="Images\directionfront.png" />
+    <Content Include="Images\checkmark.png" />
+    <Content Include="Images\help.png" />
+    <Content Include="Images\link.png" />
+    <Content Include="Images\question.png" />
+    <Content Include="Images\import.png" />
+    <Content Include="Images\linkexternal.png" />
+    <Content Include="Images\linkinternal.png" />
+    <Content Include="Images\list.png" />
+    <Content Include="Images\mindmap.png" />
+    <Content Include="Images\new.png" />
+    <Content Include="Images\pause.png" />
+    <Content Include="Images\play.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\search.png" />
+    <Content Include="Images\settings.png" />
+    <Content Include="Images\tree.png" />
+    <Content Include="Images\view.png" />
+    <Content Include="Images\zoomin.png" />
+    <Content Include="Images\zoomout.png" />
+    <Content Include="App\main.js" />
+    <Content Include="index.html" />
+    <Content Include="README.html">
+      <DependentUpon>README.md</DependentUpon>
+    </Content>
+    <Content Include="App\libraries\Base64.js" />
+    <Content Include="App\libraries\colorpicker-ui.js" />
+    <Content Include="App\libraries\colorpicker.js" />
+    <Content Include="App\libraries\d3.v3.js" />
+    <Content Include="App\libraries\d3.v3.min.js" />
+    <Content Include="App\libraries\durandal\activator.js" />
+    <Content Include="App\libraries\durandal\app.js" />
+    <Content Include="App\libraries\durandal\binder.js" />
+    <Content Include="App\libraries\durandal\composition.js" />
+    <Content Include="App\libraries\durandal\events.js" />
+    <Content Include="App\libraries\durandal\plugins\dialog.js" />
+    <Content Include="App\libraries\durandal\plugins\history.js" />
+    <Content Include="App\libraries\durandal\plugins\http.js" />
+    <Content Include="App\libraries\durandal\plugins\observable.js" />
+    <Content Include="App\libraries\durandal\plugins\router.js" />
+    <Content Include="App\libraries\durandal\plugins\serializer.js" />
+    <Content Include="App\libraries\durandal\plugins\widget.js" />
+    <Content Include="App\libraries\durandal\system.js" />
+    <Content Include="App\libraries\durandal\transitions\entrance.js" />
+    <Content Include="App\libraries\durandal\viewEngine.js" />
+    <Content Include="App\libraries\durandal\viewLocator.js" />
+    <Content Include="App\libraries\eye.js" />
+    <Content Include="App\languagepacks\app.json.txt" />
+    <Content Include="App\languagepacks\app-de.json.txt" />
+    <Content Include="App\styles\_definitions.less" />
+    <None Include="App\libraries\jquery-2.0.3.intellisense.js" />
+    <Content Include="App\libraries\glimpse-knockout.js" />
+    <Content Include="App\libraries\r.js" />
+    <Content Include="App\libraries\require.js" />
+    <Content Include="App\libraries\text.js" />
+    <Content Include="App\libraries\toastr.js" />
+    <Content Include="App\libraries\toastr.min.js" />
+    <Content Include="App\libraries\typings\requirejs\require.d.ts" />
+    <Content Include="App\libraries\jquery-2.0.3.js" />
+    <Content Include="App\libraries\jquery-2.0.3.min.js" />
+    <Content Include="App\libraries\jquery.js" />
+    <Content Include="App\libraries\jquery.jsPlumb-1.5.2-min.js" />
+    <Content Include="App\libraries\jquery.jsPlumb-1.5.2.js" />
+    <Content Include="App\libraries\jquery.localize.js" />
+    <Content Include="App\libraries\knockout-sortable.js" />
+    <Content Include="App\libraries\colorpicker\pick-a-color-1.1.7.min.js" />
+    <Content Include="App\libraries\colorpicker\tinycolor-0.9.15.min.js" />
+    <Content Include="App\libraries\modernizr-2.6.2.js" />
+    <Content Include="App\libraries\q.js" />
+    <Content Include="App\libraries\q.min.js" />
+    <None Include="App\libraries\_references.js" />
+    <None Include="App\libraries\breeze.intellisense.js" />
+    <Content Include="App\libraries\breeze.debug.js" />
+    <Content Include="App\libraries\breeze.min.js" />
+    <Content Include="App\libraries\jquery-2.0.3.min.map" />
+    <Content Include="App\libraries\toastr.min.js.map" />
+    <Content Include="App\libraries\utils.js" />
+    <Content Include="App\styles\colorpicker.css" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\IcoMoon.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-bold-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-light-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-regular-webfont.woff" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.eot" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.ttf" />
+    <Content Include="App\styles\themes\bootmetro\font\opensans-semibold-webfont.woff" />
+    <None Include="Properties\PublishProfiles\w3.pubxml" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.js" />
+    <Content Include="App\styles\themes\bootstrap\bootstrap.min.js" />
+    <Content Include="App\libraries\jquery-ui-1.10.3.js" />
+    <Content Include="App\libraries\jquery-ui-1.10.3.min.js" />
+    <Content Include="App\libraries\jquery.scrollTo-1.4.3.1.js" />
+    <Content Include="App\libraries\knockout-2.2.1.debug.js" />
+    <Content Include="App\libraries\knockout-2.2.1.js" />
+    <Content Include="App\services\app.js" />
+    <None Include="App\styles\app.less" />
+    <Content Include="App\views\details\dock.css" />
+    <Content Include="App\styles\themes\modern\modern-responsive.css" />
+    <Content Include="App\styles\themes\modern\modern.css" />
+    <Content Include="App\views\outline.css" />
+    <Content Include="App\themes\MartialArts.css" />
+    <Content Include="App\themes\Mutmacherei.css" />
+    <Content Include="App\views\outline.html" />
+    <Content Include="App\views\outline.js" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App\styles\themes\base\images\" />
+    <Folder Include="App\styles\themes\base\minified\images\" />
+    <Folder Include="App\styles\unused\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>43753</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:42201/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>
