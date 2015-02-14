@@ -8,6 +8,7 @@ using Breeze.ContextProvider;
 using Newtonsoft.Json.Linq;
 using MindForest.Models;
 using System.Web.Http.Cors;
+using System.Web.Http.OData;
 
 namespace MindForest.Controllers {
 
@@ -177,7 +178,7 @@ namespace MindForest.Controllers {
 			};
 		}
 
-		[HttpGet]
+		[HttpGet, EnableQuery]
 		public dynamic GetNodeLookup(string Forest, int? RootNodeId = null, string Lang = null) {
 			var db = new MindContextProvider(Forest);
 			//prepare parameters
@@ -191,8 +192,11 @@ namespace MindForest.Controllers {
 					.FirstOrDefault();
 			}
 
-			return db.Context
-				.NodeLookup(RootNodeId, user, lang);
+			var result = db.Context
+				.NodeLookup(RootNodeId, user, lang)
+				.ToArray()
+				;
+			return result;
 		}
 
 		[HttpGet, BreezeQueryable]

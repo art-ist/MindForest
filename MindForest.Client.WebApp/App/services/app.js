@@ -50,7 +50,7 @@
 		detailsVisible: false,
 
 		settings: {
-			map: ko.observable('outline'), // mm
+			//map: ko.observable('outline'), // mm
 			animationDuration: ko.observable(500),
 			//throttleComputed: { throttle: 500 },
 			cycleNavigation: ko.observable(false),
@@ -116,31 +116,53 @@
 
 	//#region Private Functions
 
-	function _getForestFromPath() {
-		var forest = null;
-		//parse Url and get name of firstlevel directory
-		var parts = window.location.hash	//get hash
+	function _setContext() {
+		/*
+		setzt app.forest, app.map, app.lang, app(.setings).detailViewIndex
+		*/
+		var forest = map = null;
+
+		if (QueryString.forest || QueryString.Forest) {
+			var tree = (QueryString.forest || QueryString.Forest).replace('/', '');
+			console.log("[ app | _setContext ] QueryString = ", QueryString);
+		}
+		if (QueryString.map || QueryString.Map) {
+			var map = (QueryString.map || QueryString.Map).replace('/', '');
+			console.log("[ app | _setContext ] QueryString = ", QueryString);
+		}
+
+		var hashStr = window.location.hash.split('?')[0];
+		var hashArray = hashStr
 			.replace(/^#\/?/, '')			//remove hash-sign and leading /
 			.replace(/\?.*/, '')			//strip parameters
 			.split('/');					//finally split virtual path
-		if (parts.length > 0) {
-			forest = parts[0];				//get first level
+
+		if (!forest) {
+			forest = hashArray[0];
 		}
-		return forest;
+		if (!map) {
+			map = hashArray[2] || '';
+		}
+
+		forest = forest === '' ? config.defaults.forest : forest;
+		app.forest = forest;
+		map = map === '' ? config.defaults.map : map;
+		app.map = map;
 	}
 
 	function initialize() {
 		logger.log('app initializing', 'app - initialize');
 
-		//TODO: get/store app.settings from localstorage
-		app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+		////TODO: get/store app.settings from localstorage
+		//app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
+		_setContext();
 
 		//override defaults
 		//TODO: get to config somewhere
-		if (app.forest.toLowerCase() == 'mutmacherei') {
-			app.settings.map = ko.observable('mm');
-			app.settings.detailViewIndex(0);
-		}
+		//if (app.forest.toLowerCase() == 'mutmacherei') {
+		//	app.settings.map = ko.observable('mm');
+		//	app.settings.detailViewIndex(0);
+		//}
 
 		app.lang((QueryString.lang || QueryString.Lang || $.defaultLanguage.split('-')[0] || app.lang()).toLowerCase());
 
@@ -160,7 +182,7 @@
 		//hook global up keyboard functions
 		document.onkeypress = onkeypress_document;
 
-		logger.log('app initialized', 'app - initialize'/*, app*/);
+		logger.log('app initialized', 'app - initialize', app);
 	} //initialize
 
 	//#endregion Private Functions
@@ -519,7 +541,7 @@
 				return false;
 			}
 			//if no view provided->redirect to deafult view
-			ViewName = ViewName || app.settings.map();
+			ViewName = ViewName || app.map;
 			var forest = app.forest;
 			//search for tree
 			return mind
@@ -546,10 +568,17 @@
 	}
 
 	function openTree(item, event) {
+
+		console.log("[ app | openTree ] parameters: ", { item: item, event: event });
+		console.log("[ app | openTree ] app.forest = ", app.forest);
+
 		var tree = item.LTitle();
 		mind.currentTree(item);
 		var forest = app.forest;
-		router.navigate('#/' + forest + '/' + (tree ? tree + '/' : '') + app.settings.map());
+
+		console.log("[ app | openTree ] router.navigate gets ", '#/' + forest + '/' + (tree ? tree + '/' : '') + app.map);
+
+		router.navigate('#/' + forest + '/' + (tree ? tree + '/' : '') + app.map);
 	} //openTree
 
 	var detailsLoaded = false;

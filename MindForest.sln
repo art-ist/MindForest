@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6D604FC5-5647-4E10-876E-BE44B387058E}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,15 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6D604F
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindForest.Server.Net", "MindForest.Server.Net\MindForest.Server.Net.csproj", "{1AE2BD95-1452-4DF4-8762-9329745CEEF3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindForest.Client.WebApp", "MindForest.Client.WebApp\MindForest.Client.WebApp.csproj", "{66FEAA58-286A-4420-9369-DC016D002E9B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{964F8C0B-90A9-4C9B-AEF0-EB7822F8F0A6}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\onYOURway\onYOURway\LICENCE.md = ..\..\..\onYOURway\onYOURway\LICENCE.md
+		..\..\onYOURway\onYOURway\LICENCE.md = ..\..\onYOURway\onYOURway\LICENCE.md
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindForest.Server.Net", "MindForest.Server.Net\MindForest.Server.Net.csproj", "{1AE2BD95-1452-4DF4-8762-9329745CEEF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +26,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66FEAA58-286A-4420-9369-DC016D002E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66FEAA58-286A-4420-9369-DC016D002E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66FEAA58-286A-4420-9369-DC016D002E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66FEAA58-286A-4420-9369-DC016D002E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE2BD95-1452-4DF4-8762-9329745CEEF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
