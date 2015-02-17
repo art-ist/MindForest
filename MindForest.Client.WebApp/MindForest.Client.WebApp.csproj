@@ -134,6 +134,9 @@
     </Content>
     <Content Include="App\styles\toastr.css" />
     <Content Include="App\themes\Transformap.css" />
+    <Content Include="App\views\details\search.css" />
+    <Content Include="App\views\details\search.html" />
+    <Content Include="App\views\details\search.js" />
     <Content Include="App\views\details\lightbox.css">
       <DependentUpon>lightbox.less</DependentUpon>
     </Content>

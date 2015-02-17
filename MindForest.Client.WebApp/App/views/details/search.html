@@ -1,0 +1,32 @@
+﻿<div id="detailsPage" class="page detail modal lightbox">
+	<!--<div id="detail-lightbox">-->
+
+	<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" /><!--everything relative to index.(cs)html-->
+
+	<a id="details-command-close"
+	   class="win-command win-command-small"
+	   rel="tootlip" title="Close details"
+	   data-bind="click: $root.app.hideDetails">
+		<span class="win-commandicon win-commandring icon-close"></span>
+	</a>
+
+	<!-- <div class="page-region">-->
+
+	<div class="page-region-content">
+		
+		<h1 class="text-title">Search</h1>
+
+		<input type="search" data-bind="value: searchString" />
+
+		<article data-bind="foreach: searchResults">
+			<p data-bind="class: CssClass">
+
+				<span class="item-title" data-bind="html: Title"></span>
+
+			</p>
+		</article>
+
+	</div> <!--.page-region-content-->
+	<!--</div>-->
+	<!--</div>-->
+</div>
