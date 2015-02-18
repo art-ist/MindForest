@@ -18,7 +18,7 @@
 		var routes = [
 			{ moduleId: 'forest', route: ['', '(:forest)', '(:forest/)', '(:forest/)home', '(:forest/)forest'], title: '', nav: false }
 
-		  , { moduleId: 'maps/mindmap', route: ['(:forest/)(:tree/)mindmap', '(:forest/)(:tree/)mm'], title: 'Mind Map', nav: false }
+		  , { moduleId: 'maps/mindmap', route: ['(:forest/)(:tree/)mindmap', '(:forest/)(:tree/)mm', '(:forest/)(:tree/)mm/(:id)'], title: 'Mind Map', nav: false }
 		  , { moduleId: 'maps/mmOld'	, route: ['(:forest/)(:tree/)mmOld'], title: 'Mind Map (Old)', nav: false }
 		  , { moduleId: 'maps/outline'	, route: ['(:forest/)(:tree/)outline'], title: 'Outline', nav: false }
 

@@ -19,11 +19,11 @@
 		<input type="search" data-bind="value: searchString" />
 
 		<article data-bind="foreach: searchResults">
-			<p data-bind="class: CssClass">
+			<div class="item" data-bind="class: CssClass">
 
 				<span class="item-title" data-bind="html: Title"></span>
 
-			</p>
+			</div>
 		</article>
 
 	</div> <!--.page-region-content-->

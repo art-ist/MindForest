@@ -41,6 +41,7 @@
 		var manager = mind.manager;
 		var query = new breeze.EntityQuery()
 			.from('GetNodeLookup')
+			.withParameters({ Lang: vm.app.lang, Forest: vm.app.forest, RootNodeId: vm.app.mind.currentTree().Id })
 			.where('Title', 'contains', searchStr)
 			.take(10)
 		;
@@ -54,4 +55,5 @@
 				console.error("[ search.js | searchString subscribtion ] error: ", e);
 			});
 	}
+
 }); //define

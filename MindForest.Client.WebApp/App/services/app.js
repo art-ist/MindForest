@@ -122,7 +122,9 @@
 		/*
 		setzt app.forest, app.map, app.lang, app(.setings).detailViewIndex
 		*/
-		var forest = map = null;
+		var forest = null,
+			map = null,
+			nodeId = null;
 
 		if (QueryString.forest || QueryString.Forest) {
 			var tree = (QueryString.forest || QueryString.Forest).replace('/', '');
@@ -132,6 +134,7 @@
 			var map = (QueryString.map || QueryString.Map).replace('/', '');
 			console.log("[ app | _setContext ] QueryString = ", QueryString);
 		}
+
 
 		var hashStr = window.location.hash.split('?')[0];
 		var hashArray = hashStr
@@ -144,6 +147,10 @@
 		}
 		if (!map) {
 			map = hashArray[2] || '';
+		}
+		if (hashArray[3]) {
+			nodeId = hashArray[3];
+			console.log("[ app | _setContext ] nodeId", nodeId);
 		}
 
 		forest = forest === '' ? config.defaults.forest : forest;
