@@ -157,6 +157,8 @@
 		app.forest = forest;
 		map = map === '' ? config.defaults.map : map;
 		app.map = map;
+
+		return nodeId;
 	}
 
 	function initialize() {
@@ -164,7 +166,7 @@
 
 		////TODO: get/store app.settings from localstorage
 		//app.forest = QueryString.forest || QueryString.Forest || _getForestFromPath();
-		_setContext();
+		var nodeId = _setContext();
 
 		//override defaults
 		//TODO: get to config somewhere
@@ -178,6 +180,25 @@
 		//to prevent circular dependency
 		mind.initialize(app); //
 		auth.initialize(app);
+
+		if (nodeId) {
+			var manager = app.mind.manager;
+			var query = new breeze.EntityQuery()
+				.from('Test')
+				.where('Id', 'eq', parseInt(nodeId))
+			;
+			manager.executeQuery(query)
+				.then(function (data) {
+					console.log("[ app | initialize ] node = ", data.results[0]);
+					app.mind.currentNode(data.results[0]);
+					app.showDetails();
+					//console.log("[ search.js | searchString subscribtion ] data = ", data);
+					//console.log("[ search.js | searchString subscribtion ] vm.searchResult = ", vm.searchResults);
+				})
+				.fail(function (e) {
+					console.error("[ app | initialize ] error: ", e);
+				});
+		}
 
 		storage.get('user', function (value) {
 			if (value) {

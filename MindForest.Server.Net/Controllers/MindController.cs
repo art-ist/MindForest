@@ -215,6 +215,21 @@ namespace MindForest.Controllers {
 		}
 
 		[HttpGet, BreezeQueryable]
+		public dynamic Test(string Forest, string Lang = null)
+		{
+
+			var db = new MindContextProvider(Forest);
+			//prepare parameters
+			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+			string lang = Lang ?? "%";
+
+			var result = db.Context.Nodes
+				;
+			return result;
+
+		}
+
+		[HttpGet, BreezeQueryable]
 		public dynamic Connections(string Forest, string Lang = null) {
 
 			var db = new MindContextProvider(Forest);
