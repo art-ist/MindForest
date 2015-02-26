@@ -63,9 +63,7 @@
 			detailViews: [
 				{ name: 'Lightbox', view: 'views/details/lightbox', css: 'lightbox', edit: false },
 				{ name: 'Right', view: 'views/details/dock', css: 'dock right', edit: false },
-				{ name: 'Edit (Right)', view: 'views/details/dock', css: 'dock right', edit: true },
-
-				{ name: 'Search', view: 'views/details/search', css: 'lightbox', edit: false }
+				{ name: 'Edit (Right)', view: 'views/details/dock', css: 'dock right', edit: true }
 			],
 			detailViewIndex: ko.observable(1)
 		}, //settings
@@ -94,6 +92,7 @@
 		showWebPage: showWebPage,
 		hideWebPage: hideWebPage,
 		toggleEdit: toggleEdit,
+		toggleSearch: toggleSearch,
 
 		addChild: addChild,
 		addSibling: addSibling,
@@ -682,6 +681,10 @@
 	} //toggleEdit
 
 	//#region edit
+
+	function toggleSearch() {
+		$('#searchPage').toggleClass('open');
+	}
 
 	function addChild() {
 		logger.log("addChild", 'app - addChild');

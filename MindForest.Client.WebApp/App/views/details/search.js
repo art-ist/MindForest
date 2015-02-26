@@ -43,7 +43,7 @@
 			.from('GetNodeLookup')
 			.withParameters({ Lang: vm.app.lang, Forest: vm.app.forest, RootNodeId: vm.app.mind.currentTree().Id })
 			.where('Title', 'contains', searchStr)
-			.take(10)
+			.take(25)
 		;
 		manager.executeQuery(query)
 			.then(function (data) {

@@ -1,43 +1,12 @@
-﻿/*#detailsPage .page-region-content {
-  padding-left: 80px;  
-  padding-right: 60px;
-}*/
-
-#detailsPage.dock-right {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
+﻿
+#searchPage.tool.left {
+  position: absolute;
+  top: 0; left: 0; bottom: 0; 
+  width: 300px;
+  max-width: 75%;
+  z-index: 1000;
+  display: none;
 }
-
-#details-dock li {
-	clear: both;
-	display: block;
-	padding: 5px 0 5px 5px;
-	margin: 0 0 5px 5px;
-	position: relative;
-}
-
-#details-dock .item {
-	position: relative;
-	padding: 5px 0 5px 5px;
-	margin: 0px 0px 0px 0px;
-	background-color: #e6e7e8;
-	color: black;
-	border: 1px solid ActiveBorder;
-}
-
-	#details-dock .item:hover { /*siehe moden.css,2974: .tile:hover*/
-		outline: 3px #3a3a3a solid;
+	#searchPage.tool.left.open {
+		display: block;
 	}
-
-#details-dock .item-title {
-	display: inline-block;
-}
-
-#details-dock .detail-area {
-	background-color: #f4f4f4 !important;
-	padding: 3px;
-	margin-bottom: 3px;
-	margin-top: 3px;
-}

@@ -1,14 +1,18 @@
-﻿<div id="detailsPage" class="page detail modal lightbox">
-	<!--<div id="detail-lightbox">-->
+﻿<div id="searchPage" class="page tool left">
 
-	<link rel="stylesheet" type="text/css" href="App/views/details/lightbox.css" /><!--everything relative to index.(cs)html-->
+	<link rel="stylesheet" type="text/css" href="App/views/details/search.css" /><!--everything relative to index.(cs)html-->
 
 	<a id="details-command-close"
 	   class="win-command win-command-small"
 	   rel="tootlip" title="Close details"
-	   data-bind="click: $root.app.hideDetails">
+	   data-bind="click: $root.app.toggleSearch">
 		<span class="win-commandicon win-commandring icon-close"></span>
 	</a>
+
+	<!--<a class="win-command pull-right" title="Close Search" data-bind="click: $root.app.toggleSearch">
+		<span class="win-commandicon win-commandring icon-close"></span>
+		<span class="win-label">Close</span>
+	</a>-->
 
 	<!-- <div class="page-region">-->
 
