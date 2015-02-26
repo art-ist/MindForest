@@ -45,6 +45,9 @@ a.two-lines {
   overflow: auto;
   background-color: #fff;
 }
+.detail {
+  z-index: 15;
+}
 .dock {
   -mox-transition: all 0.3s;
   -webkit-transition: all 0.3s;

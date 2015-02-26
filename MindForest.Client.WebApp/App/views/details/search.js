@@ -14,6 +14,8 @@
 		searchString: ko.observable(''),
 		searchResults: ko.observableArray([]),
 
+		openDetail: openDetail,
+
 		//Lifecycle Events
 		canActivate: canActivate,
 		//activate: activate,
@@ -55,5 +57,22 @@
 				console.error("[ search.js | searchString subscribtion ] error: ", e);
 			});
 	}
+	function openDetail(data, event) {
 
+		var manager = vm.app.mind.manager; // TODO: serverside-search
+		var query = new breeze.EntityQuery()
+			.from('Test')
+			.where('Id', 'eq', parseInt(data.Id))
+		;
+		manager.executeQuery(query)
+			.then(function (data) {
+				console.log("[ app | initialize ] node = ", data.results[0]);
+				vm.app.mind.currentNode(data.results[0]);
+				vm.app.showDetails();
+			})
+			.fail(function (e) {
+				console.error("[ app | initialize ] error: ", e);
+			});
+
+	}
 }); //define

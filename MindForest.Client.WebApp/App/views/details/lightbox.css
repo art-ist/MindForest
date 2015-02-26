@@ -13,7 +13,7 @@
   margin: 0 0 5px 5px;
   position: relative;
 }
-#detailsPage.lightbox .item {
+#detailsPage.lightbox .item, #searchPage .item {
   position: relative;
   padding: 5px 0 5px 5px;
   margin: 0;
@@ -21,12 +21,12 @@
   color: black;
   border: 1px solid ActiveBorder;
 }
-#detailsPage.lightbox .item:hover {
+#detailsPage.lightbox .item:hover, #searchPage .item:hover {
   /*siehe moden.css,2974: .tile:hover*/
   outline: 3px #3a3a3a solid;
   z-index: 99;
 }
-#detailsPage.lightbox .item-title {
+#detailsPage.lightbox .item-title, #searchPage .item-title {
   display: inline-block;
 }
 #detailsPage.lightbox h1 {
