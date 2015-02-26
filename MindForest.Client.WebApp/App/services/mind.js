@@ -30,6 +30,12 @@
 		currentTree: ko.observable(null),		//Node
 		currentConnection: ko.observable(null),	//Connection
 		currentNode: ko.observable(null),		//Node
+		direktURL: ko.computed({
+			read: function () {
+				return window.location.href + '/' + mind.currentNode().Id();
+			},
+			deferEvaluation: true
+		}),
 
 		lookupNodes: ko.observableArray([]),	//infos about Nodes (Id, Title, Parent(Title), Lang, CssClass) for lookup
 		lookupRoles: ko.observableArray([]),	//user-roles that can be used to assign permissions
