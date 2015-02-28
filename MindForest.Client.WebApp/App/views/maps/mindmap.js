@@ -248,13 +248,12 @@
 
 		$('.mm-node-container').click(function (event) { nodeClick(event); });
 		app.lang.subscribe(function (newValue) {
-			//$('.mm-node-container').each(function (index, element) {
-			//	var $element = $(element);
-			//	var node = manager.getEntityByKey('Node', $element.attr('data-key'));
-			//	if (node) {
-			//		$element.children('span.item-title').text(node.LTitle());
-			//	}
-			//});
+			//console.log("[ mindmap | app.lang.subscribe ] newValue:", newValue);
+			$('.mm-node-container').each(function (index, element) {
+				var $element = $(element),
+					node = manager.getEntityByKey('Node', $element.attr('data-key'));
+				if (node) element.firstChild.firstChild.innerHTML = node.LTitle();
+			});
 		});
 
 		mm.app.mmAPI = {
