@@ -223,7 +223,10 @@ namespace MindForest.Controllers {
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
 
-			var result = db.Context.Nodes
+			var result = db.Context
+				.Nodes
+				.Include("Texts")
+				.Include("ConnectionsFrom")
 				;
 			return result;
 

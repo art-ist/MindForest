@@ -6,6 +6,7 @@
   max-width: 75%;
   z-index: 10;
   display: none;
+  background-color: rgba(128, 128, 128, 0.5);
 }
 	#searchPage.tool.left.open {
 		display: block;
