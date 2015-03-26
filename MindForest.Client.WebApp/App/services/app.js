@@ -178,7 +178,7 @@
 
 		//to prevent circular dependency
 		mind.initialize(app); //
-		auth.initialize(app);
+		//auth.initialize(app);
 
 		if (nodeId) {
 			var manager = app.mind.manager;

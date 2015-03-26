@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -7,90 +12,96 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
 using MindForest.Models;
 using MindForest.Providers;
-using System.Web.Http.Cors;
+using MindForest.StartUp;
 
 namespace MindForest.Controllers {
 
-	[Authorize]
-	[EnableCors("*", "*", "*")]
-	[RoutePrefix("api/Identity")]
+	/// <summary>
+	/// The AccountController manages Accounts, Roles, Permissions and Profiles
+	/// </summary>
+	/// <remarks>Actions on this controller can be called via the route /Account
+	/// Routes are set via attributes via attributes, relative to controllers RoutePrefix. Accounts are not part of the realm API.
+	/// </remarks>
+	[Authorize, RoutePrefix("Account")]
 	public class IdentityController : ApiController {
+		//see: http://www.codeproject.com/Articles/843445/ASP-NET-Web-Api-and-Identity-Customizing-Identity?msg=5001696#xx5001696xx
+		//see: https://github.com/TypecastException/AspNetIdentity2WebApi-RBA/blob/master/AspNetIdentity2WebApiCustomize/Controllers/AccountController.cs
+
 		private const string LocalLoginProvider = "Local";
 		private AppUserManager _userManager;
 
 		public IdentityController() {
 		}
-
 		public IdentityController(AppUserManager userManager,
-				ISecureDataFormat<AuthenticationTicket> accessTokenFormat) {
+			ISecureDataFormat<AuthenticationTicket> accessTokenFormat) {
 			UserManager = userManager;
 			AccessTokenFormat = accessTokenFormat;
 		}
 
-		public AppUserManager UserManager {
+		private AppUserManager UserManager {
 			get {
 				return _userManager ?? Request.GetOwinContext().GetUserManager<AppUserManager>();
 			}
-			private set {
+			set {
 				_userManager = value;
 			}
 		}
 
 		public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-		// GET api/Identity/Login  früher /Identity/UserInfo
-		[Route("Login"), HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-		public UserInfoResult GetUserInfo() {
+		// GET api/Account/UserInfo
+		[Route("UserInfo"), HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+		public /*UserInfoViewModel*/ dynamic GetUserInfo() {
 			ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-			return new UserInfoResult {
-				Email = User.Identity.GetUserName(),
+			// We wouldn't normally be likely to do this:
+			var user = UserManager.FindByName(User.Identity.Name);
+			return new /*UserInfoViewModel*/ {
+				UserName = User.Identity.GetUserName(),
+				Email = user.Email,
 				HasRegistered = externalLogin == null,
-				LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+				LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null,
+				Logins = user.Logins,
+				Roles = user.Roles, //TODO: get roles
+				AccessFailedCount = user.AccessFailedCount 
 			};
 		}
 
-		// POST api/Identity/Logout
-		[Route("Logout"), AllowAnonymous]
+		// POST api/Account/Logout
+		[Route("Logout")]
 		public IHttpActionResult Logout() {
 			Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
 			return Ok();
 		}
 
-		// GET api/Identity/ManageInfo?returnUrl=%2F&generateState=true
+		// GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
 		[Route("ManageInfo")]
-		public async Task<ManageInfoResultModel> GetManageInfo(string returnUrl, bool generateState = false) {
-			IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+		public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false) {
+			User user = await UserManager.FindByIdAsync(int.Parse(User.Identity.GetUserId()));
 
 			if (user == null) {
 				return null;
 			}
 
-			List<UserLoginInfoResult> logins = new List<UserLoginInfoResult>();
+			List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
 
-			foreach (IdentityUserLogin linkedAccount in user.Logins) {
-				logins.Add(new UserLoginInfoResult {
+			foreach (UserExternalLogin linkedAccount in user.Logins) {
+				logins.Add(new UserLoginInfoViewModel {
 					LoginProvider = linkedAccount.LoginProvider,
 					ProviderKey = linkedAccount.ProviderKey
 				});
 			}
 
 			if (user.PasswordHash != null) {
-				logins.Add(new UserLoginInfoResult {
+				logins.Add(new UserLoginInfoViewModel {
 					LoginProvider = LocalLoginProvider,
 					ProviderKey = user.UserName,
 				});
 			}
 
-			return new ManageInfoResultModel {
+			return new ManageInfoViewModel {
 				LocalLoginProvider = LocalLoginProvider,
 				Email = user.UserName,
 				Logins = logins,
@@ -98,15 +109,18 @@ namespace MindForest.Controllers {
 			};
 		}
 
-		// POST api/Identity/ChangePassword
+		// POST api/Account/ChangePassword
 		[Route("ChangePassword")]
-		public async Task<IHttpActionResult> ChangePassword(ChangePasswordRequest model) {
+		public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
 
-			IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-					model.NewPassword);
+			IdentityResult result = await UserManager.ChangePasswordAsync(
+				int.Parse(User.Identity.GetUserId()), 
+				model.OldPassword,
+				model.NewPassword
+			);
 
 			if (!result.Succeeded) {
 				return GetErrorResult(result);
@@ -115,14 +129,14 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// POST api/Identity/SetPassword
+		// POST api/Account/SetPassword
 		[Route("SetPassword")]
-		public async Task<IHttpActionResult> SetPassword(SetPasswordRequest model) {
+		public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
 
-			IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+			IdentityResult result = await UserManager.AddPasswordAsync(int.Parse(User.Identity.GetUserId()), model.NewPassword);
 
 			if (!result.Succeeded) {
 				return GetErrorResult(result);
@@ -131,9 +145,9 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// POST api/Identity/AddExternalLogin
+		// POST api/Account/AddExternalLogin
 		[Route("AddExternalLogin")]
-		public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginRequest model) {
+		public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
@@ -143,8 +157,8 @@ namespace MindForest.Controllers {
 			AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
 			if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-					&& ticket.Properties.ExpiresUtc.HasValue
-					&& ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow)) {
+				&& ticket.Properties.ExpiresUtc.HasValue
+				&& ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow)) {
 				return BadRequest("External login failure.");
 			}
 
@@ -154,8 +168,8 @@ namespace MindForest.Controllers {
 				return BadRequest("The external login is already associated with an account.");
 			}
 
-			IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
-					new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
+			IdentityResult result = await UserManager.AddLoginAsync(int.Parse(User.Identity.GetUserId()),
+				new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
 			if (!result.Succeeded) {
 				return GetErrorResult(result);
@@ -164,9 +178,9 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// POST api/Identity/RemoveLogin
+		// POST api/Account/RemoveLogin
 		[Route("RemoveLogin")]
-		public async Task<IHttpActionResult> RemoveLogin(RemoveLoginRequestModel model) {
+		public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
@@ -174,11 +188,11 @@ namespace MindForest.Controllers {
 			IdentityResult result;
 
 			if (model.LoginProvider == LocalLoginProvider) {
-				result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
+				result = await UserManager.RemovePasswordAsync(int.Parse(User.Identity.GetUserId()));
 			}
 			else {
-				result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-						new UserLoginInfo(model.LoginProvider, model.ProviderKey));
+				result = await UserManager.RemoveLoginAsync(int.Parse(User.Identity.GetUserId()),
+					new UserLoginInfo(model.LoginProvider, model.ProviderKey));
 			}
 
 			if (!result.Succeeded) {
@@ -188,11 +202,8 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// GET api/Identity/ExternalLogin
-		[OverrideAuthentication]
-		[HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
-		[AllowAnonymous]
-		[Route("ExternalLogin", Name = "ExternalLogin")]
+		// GET api/Account/ExternalLogin
+		[Route("ExternalLogin", Name = "ExternalLogin"), OverrideAuthentication, AllowAnonymous, HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
 		public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null) {
 			if (error != null) {
 				return Redirect(Url.Content("~/") + "#error=" + Uri.EscapeDataString(error));
@@ -213,8 +224,8 @@ namespace MindForest.Controllers {
 				return new ChallengeResult(provider, this);
 			}
 
-			AppUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
-					externalLogin.ProviderKey));
+			User user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+				externalLogin.ProviderKey));
 
 			bool hasRegistered = user != null;
 
@@ -222,9 +233,9 @@ namespace MindForest.Controllers {
 				Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
 				ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-					 OAuthDefaults.AuthenticationType);
+				   OAuthDefaults.AuthenticationType);
 				ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
-						CookieAuthenticationDefaults.AuthenticationType);
+					CookieAuthenticationDefaults.AuthenticationType);
 
 				AuthenticationProperties properties = OAuthProvider.CreateProperties(user);
 				Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
@@ -238,12 +249,11 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// GET api/Identity/ExternalLogins?returnUrl=%2F&generateState=true
-		[AllowAnonymous]
-		[Route("ExternalLogins")]
-		public IEnumerable<ExternalLoginResult> GetExternalLogins(string returnUrl, bool generateState = false) {
+		// GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
+		[AllowAnonymous, Route("ExternalLogins")]
+		public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false) {
 			IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-			List<ExternalLoginResult> logins = new List<ExternalLoginResult>();
+			List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
 
 			string state;
 
@@ -256,12 +266,12 @@ namespace MindForest.Controllers {
 			}
 
 			foreach (AuthenticationDescription description in descriptions) {
-				ExternalLoginResult login = new ExternalLoginResult {
+				ExternalLoginViewModel login = new ExternalLoginViewModel {
 					Name = description.Caption,
 					Url = Url.Route("ExternalLogin", new {
 						provider = description.AuthenticationType,
 						response_type = "token",
-						client_id = Auth.PublicClientId,
+						client_id = IdentityConfig.PublicClientId,
 						redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
 						state = state
 					}),
@@ -273,15 +283,14 @@ namespace MindForest.Controllers {
 			return logins;
 		}
 
-		// POST api/Identity/Register
-		[AllowAnonymous]
-		[Route("Register")]
-		public async Task<IHttpActionResult> Register(RegisterRequest model) {
+		// POST api/Account/Register
+		[Route("Register"), AllowAnonymous]
+		public async Task<IHttpActionResult> Register(RegisterBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
 
-			var user = new AppUser() { UserName = model.UserName, Email = model.Email };
+			var user = new User() { UserName = model.Email, Email = model.Email };
 
 			IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -292,11 +301,9 @@ namespace MindForest.Controllers {
 			return Ok();
 		}
 
-		// POST api/Identity/RegisterExternal
-		[OverrideAuthentication]
-		[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-		[Route("RegisterExternal")]
-		public async Task<IHttpActionResult> RegisterExternal(RegisterExternalRequest model) {
+		// POST api/Account/RegisterExternal
+		[Route("RegisterExternal"), OverrideAuthentication, HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+		public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
@@ -306,7 +313,7 @@ namespace MindForest.Controllers {
 				return InternalServerError();
 			}
 
-			var user = new AppUser() { UserName = model.Email, Email = model.Email };
+			var user = new User() { UserName = model.Email, Email = model.Email };
 
 			IdentityResult result = await UserManager.CreateAsync(user);
 			if (!result.Succeeded) {
@@ -381,7 +388,7 @@ namespace MindForest.Controllers {
 				Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
 				if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-						|| String.IsNullOrEmpty(providerKeyClaim.Value)) {
+					|| String.IsNullOrEmpty(providerKeyClaim.Value)) {
 					return null;
 				}
 

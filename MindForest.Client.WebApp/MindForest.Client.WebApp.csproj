@@ -113,6 +113,7 @@
     <Content Include="App\services\logger.js" />
     <Content Include="App\services\platform.js" />
     <Content Include="App\services\storage.js" />
+    <Content Include="App\services\tell.js" />
     <Content Include="App\services\_globals.js" />
     <Content Include="App\bindingHandlers\plumb-bindingHandlers.js" />
     <Content Include="App\styles\images\select2-spinner.gif" />
@@ -350,6 +351,13 @@
     <Content Include="App\themes\Mutmacherei.css" />
     <Content Include="App\views\maps\outline.html" />
     <Content Include="App\views\maps\outline.js" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

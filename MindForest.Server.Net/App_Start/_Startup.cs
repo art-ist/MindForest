@@ -5,6 +5,7 @@ using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
 using System.Web.Mvc;
+using MindForest.StartUp;
 
 [assembly: OwinStartup(typeof(MindForest.Auth))]
 
@@ -12,14 +13,13 @@ namespace MindForest {
 
 	public partial class Auth {
 		public Auth() {
-			Auth.Startup();
 		}
 
 		public void Configuration(IAppBuilder app) {
 
 			GlobalFilters.Filters.Add(new HandleErrorAttribute());
 
-			Auth.Configure(app); 
+			IdentityConfig.Configure(app); 
 
 			GlobalConfiguration.Configure(WebApiConfig.Register);
 

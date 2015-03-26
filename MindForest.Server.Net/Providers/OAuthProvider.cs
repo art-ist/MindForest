@@ -13,23 +13,35 @@ using System.Linq;
 namespace MindForest.Providers {
 
 	public class OAuthProvider : OAuthAuthorizationServerProvider {
-
-		private readonly string _publicClientId;
-
 		public OAuthProvider(string publicClientId) {
 			if (publicClientId == null) {
 				throw new ArgumentNullException("publicClientId");
 			}
-
-			_publicClientId = publicClientId;
+			this._publicClientId = publicClientId;
 		}
 
+		private readonly string _publicClientId;
+
+		//// validate client app -> Realm secret
+		//public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context) {
+		//	if (context.ClientId == "xxx") {
+		//		context.Validated();
+		//	}
+		//	else {
+
+		//	}
+		//}
+
+		//// validate the username and password sent to the authorization server’s token endpoint
 		public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context) {
 			var userManager = context.OwinContext.GetUserManager<AppUserManager>();
 
-			AppUser user = await userManager.FindAsync(context.UserName, context.Password);
+			//enable CORS for the token request handled by the OWIN middleware (CORS for the API is enabled in WebApiConfig.cs)
+			context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+
+			User user = await userManager.FindAsync(context.UserName, context.Password);
 			if (user == null) {
-				context.SetError("invalid_grant", "The user name or password is incorrect.");
+				context.SetError("invalid_grant", "The user name or password is incorrect."); //TODO: localize
 				return;
 			}
 
@@ -40,6 +52,7 @@ namespace MindForest.Providers {
 			AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 			context.Validated(ticket);
 			context.Request.Context.Authentication.SignIn(cookiesIdentity);
+
 		}
 
 		public override Task TokenEndpoint(OAuthTokenEndpointContext context) {
@@ -51,9 +64,10 @@ namespace MindForest.Providers {
 		}
 
 		public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context) {
+			bool isValidated = false;
 			// Resource owner password credentials does not provide a client ID.
 			if (context.ClientId == null) {
-				context.Validated();
+				isValidated = context.Validated();
 			}
 
 			return Task.FromResult<object>(null);
@@ -71,7 +85,7 @@ namespace MindForest.Providers {
 			return Task.FromResult<object>(null);
 		}
 
-		public static AuthenticationProperties CreateProperties(AppUser user) {
+		public static AuthenticationProperties CreateProperties(User user) {
 			IDictionary<string, string> data = new Dictionary<string, string> {
 				{ "userName", user.UserName }
       };
@@ -79,5 +93,4 @@ namespace MindForest.Providers {
 		}
 
 	} //class
-
 } //ns

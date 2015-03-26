@@ -1,112 +1,171 @@
 ﻿define([
-  'require',
   'durandal/system',
-  'services/logger'
-], function (require, system, logger) {
+  'services/tell',
+  'services/platform'
+], function (system, tell, platform) {
+	var self = this;
 
-	//#region Private Fields
-
-	var authServiceUri = config.host + '/api{forest}Identity';
-
-	//#endregion Private Fields
-
-	var auth = {
-		initialize: initialize,
-
-		//Properties
-		app: null,
-
-		//Methods
-		login: login,
-		logout: logout,
-		register: register
+	// Routes
+	var routes = {
+		siteUrl: config.host + "/",
+		addExternalLoginUrl: config.host + "/Identity/AddExternalLogin",
+		changePasswordUrl: config.host + "/Identity/ChangePassword",
+		loginUrl: config.host + "/Token",
+		logoutUrl: config.host + "/Identity/Logout",
+		registerUrl: config.host + "/Identity/Register",
+		registerExternalUrl: config.host + "/Identity/RegisterExternal",
+		removeLoginUrl: config.host + "/Identity/RemoveLogin",
+		setPasswordUrl: config.host + "/Identity/SetPassword",
+		userInfoUrl: config.host + "/Identity/UserInfo",
+		externalLoginsUrl: function externalLoginsUrl(returnUrl, generateState) {
+			return config.host + "/Identity/ExternalLogins"
+				+ "?returnUrl=" + (encodeURIComponent(returnUrl))
+				+ "&generateState=" + (generateState ? "true" : "false");
+		},
+		manageInfoUrl: function manageInfoUrl(returnUrl, generateState) {
+			return config.host + "/Identity/ManageInfo"
+				+ "?returnUrl=" + (encodeURIComponent(returnUrl))
+				+ "&generateState=" + (generateState ? "true" : "false");
+		}
 	};
 
-	//#region Constructor
-	//#endregion Constructor
-
-	return auth;
-
-	function initialize(app) {
-		auth.app = app;
-		//authServiceUri = authServiceUri.replace(/{forest}/, app.forest ? '/' + app.forest + '/' : '/');
-		authServiceUri = authServiceUri.replace(/{forest}/, '/');
-
-		// add auth header to breeze calls
-		var ajaxAdapter = breeze.config.getAdapterInstance("ajax");
-		ajaxAdapter.defaultSettings = {
-			beforeSend: function (xhr, settings) {
-				if (app.user.access_token()) {
-					xhr.setRequestHeader("Authorization", 'Bearer ' + app.user.access_token());
-				}
-			}
-		};
+	// Other private operations
+	function getSecurityHeaders() {
+		var accessToken = sessionStorage["accessToken"] || localStorage["accessToken"];
+		if (accessToken) {
+			return { "Authorization": "Bearer " + accessToken };
+		}
+		return {};
 	}
 
-	//#region Private Functions
-	//#endregion Private Functions
+	var auth = {
+		// Data
+		returnUrl: routes.siteUrl, //window.location
 
-	//#region Methods
+		//make available for api unit tests
+		routes: routes,
 
-	function login(username, password) {
-		return $.ajax({
-			type: "POST",
-			url: authServiceUri + "/Login",
-			contentType: 'application/x-www-form-urlencoded',
-			data: 'grant_type=password&username=' + username + '&password=' + password,
-		}).done(function (result, textStatus, jqXHR) {
+		// Operations
+		securityHeaders: getSecurityHeaders,
+		clearAccessToken: function () {
+			localStorage.removeItem("accessToken");
+			sessionStorage.removeItem("accessToken");
+		},
+		setAccessToken: function (accessToken, persistent) {
+			if (persistent) {
+				localStorage["accessToken"] = accessToken;
+			} else {
+				sessionStorage["accessToken"] = accessToken;
+			}
+		},
+		toErrorsArray: function (data) {
+			var errors = [],
+				items;
 
-			//function success(claims) {
-			//	$.each(claims, function (i, claim) {
-			//		switch (claim.Type) {
-			//			case "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":
-			//				app.user.name(claim.Value);
-			//				break;
-			//			case "http://schemas.microsoft.com/ws/2008/06/identity/claims/role":
-			//				app.user.roles.push(claim.Value);
-			//				break;
-			//		}
-			//	});
-			//	console.log('[app.js - login] success', app.user);
-			//}
+			if (!data || !data.message) {
+				return null;
+			}
+			if (data.modelState) {
+				for (var key in data.modelState) {
+					items = data.modelState[key];
 
-			logger.success(result.userName + ' logged in', 'auth - login', result);
-		}).fail(function (jqXHR, textStatus, errorThrown) {
-			logger.error('Login failed: ' + textStatus, 'auth - login', errorThrown);
-		});
-	} //login
+					if (items.length) {
+						for (var i = 0; i < items.length; i++) {
+							errors.push(items[i]);
+						}
+					}
+				}
+			}
+			if (errors.length === 0) {
+				errors.push(data.message);
+			}
+			return errors;
+		},
 
-	function logout() {
-		var user = auth.app.user;
-		user.name('Anonymous');
-		//user.email(null);
-		user.access_token(null);
-		//user.roles.removeAll();
-		user.roles([]);
-		//server logout
-		return $.ajax({
-			type: "POST",
-			url: authServiceUri + "/Logout"
-		}).fail(function (jqXHR, textStatus, errorThrown) {
-			logger.logError('Logout failed: ' + textStatus, 'auth - logout', errorThrown);
-		}).always(function () {
-			logger.info('Logged out');
-		});
-	} //logout
+		// Data access operations
+		addExternalLogin: function (data) {
+			return $.ajax(routes.addExternalLoginUrl, {
+				type: "POST",
+				data: data,
+				headers: getSecurityHeaders()
+			});
+		},
+		changePassword: function (data) {
+			return $.ajax(routes.changePasswordUrl, {
+				type: "POST",
+				data: data,
+				headers: getSecurityHeaders()
+			});
+		},
+		getExternalLogins: function (returnUrl, generateState) {
+			return $.ajax(routes.externalLoginsUrl(returnUrl, generateState), {
+				cache: false,
+				headers: getSecurityHeaders()
+			});
+		},
+		getManageInfo: function (returnUrl, generateState) {
+			return $.ajax(routes.manageInfoUrl(returnUrl, generateState), {
+				cache: false,
+				headers: getSecurityHeaders()
+			});
+		},
+		getUserInfo: function (accessToken) {
+			var headers;
+			if (typeof (accessToken) !== "undefined") {
+				headers = {
+					"Authorization": "Bearer " + accessToken
+				};
+			} else {
+				headers = getSecurityHeaders();
+			}
+			return $.ajax(routes.userInfoUrl, {
+				cache: false,
+				headers: headers
+			});
+		},
+		login: function (data) {
+			return $.ajax(routes.loginUrl, {
+				type: "POST",
+				data: data
+			});
+		},
+		logout: function () {
+			return $.ajax(routes.logoutUrl, {
+				type: "POST",
+				headers: getSecurityHeaders()
+			});
+		},
+		register: function (data) {
+			return $.ajax(routes.registerUrl, {
+				type: "POST",
+				data: data
+			});
+		},
+		registerExternal: function (accessToken, data) {
+			return $.ajax(routes.registerExternalUrl, {
+				type: "POST",
+				data: data,
+				headers: {
+					"Authorization": "Bearer " + accessToken
+				}
+			});
+		},
+		removeLogin: function (data) {
+			return $.ajax(routes.removeLoginUrl, {
+				type: "POST",
+				data: data,
+				headers: getSecurityHeaders()
+			});
+		},
+		setPassword: function (data) {
+			return $.ajax(routes.setPasswordUrl, {
+				type: "POST",
+				data: data,
+				headers: getSecurityHeaders()
+			});
+		}
 
-	function register(username, email, password, confirm) {
-		return $.ajax({
-			type: "POST",
-			url: authServiceUri + "/Register",
-			contentType: 'application/x-www-form-urlencoded',
-			data: 'username=' + username + '&email=' + email + '&password=' + password + '&confirm=' + confirm,
-		}).done(function (result, textStatus, jqXHR) {
-			logger.success(username + ' registered successfullly', 'auth - register', result);
-		}).fail(function (jqXHR, textStatus, errorThrown) {
-			logger.error('Registration failed: ' + textStatus, 'auth - register', errorThrown);
-		});
-	} //register
+	};
+	return auth;
 
-	//#endregion Methods
-
-});
+});//module

@@ -66,14 +66,13 @@
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -117,9 +116,8 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -247,24 +245,8 @@
     <Content Include="_sql\1 Create Database.sql" />
     <Content Include="_sql\1 DB Updates.sql" />
     <Content Include="_sql\2 Import FreeMind.sql" />
-    <EntityDeploy Include="Models\Forest.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Forest.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Forest.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Forest.edmx</DependentUpon>
-      <LastGenOutput>Forest.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Forest.edmx.diagram">
-      <DependentUpon>Forest.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\Forest.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Forest.edmx</DependentUpon>
-      <LastGenOutput>Forest.cs</LastGenOutput>
-    </Content>
     <Content Include="packages.config" />
+    <Compile Include="Models\MindDbContext.cs" />
     <None Include="Properties\PublishProfiles\w3.pubxml" />
     <None Include="WebConfig.base.config">
       <SubType>Designer</SubType>
@@ -278,69 +260,26 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AppUserManager.cs" />
-    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
+    <Compile Include="Controllers\IdentityControllerModels.cs" />
     <Compile Include="Controllers\MindController.cs" />
-    <Compile Include="Models\Connection.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ConnectionText.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Forest.Views.cs" />
-    <Compile Include="Models\IdentityControlerModels.cs" />
-    <Compile Include="Models\ChallengeResult.cs" />
-    <Compile Include="Models\ConnectionExtensions.cs" />
-    <Compile Include="Models\Forest.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Forest.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\IdentityContext.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\MindResult.cs" />
-    <Compile Include="Models\MindContext.cs" />
-    <Compile Include="Models\MindContextProvider.cs" />
-    <Compile Include="Models\Node.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NodeExtensions.cs" />
-    <Compile Include="Models\Forest.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Forest.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Forest.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NodeLookupInfo.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NodeText.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Permission.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Role.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserClaim.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserExternalLogin.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserRole.cs">
-      <DependentUpon>Forest.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Mind\Connection.cs" />
+    <Compile Include="Models\Identity\IdentityManagers.cs" />
+    <Compile Include="Models\Identity\IdentityModels.cs" />
+    <Compile Include="Models\Identity\IdentityStores.cs" />
+    <Compile Include="Models\Identity\Role.cs" />
+    <Compile Include="Models\Identity\User.cs" />
+    <Compile Include="Models\Identity\UserExternalLogin.cs" />
+    <Compile Include="Models\Identity\UserRole.cs" />
+    <Compile Include="Models\Mind\ConnectionText.cs" />
+    <Compile Include="Controllers\MindResult.cs" />
+    <Compile Include="Models\MindDbContextProvider.cs" />
+    <Compile Include="Models\Mind\Node.cs" />
+    <Compile Include="Controllers\NodeLookupInfo.cs" />
+    <Compile Include="Models\Mind\NodeText.cs" />
+    <Compile Include="Models\Mind\Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\OAuthProvider.cs" />
     <Compile Include="App_Start\_Startup.cs" />

@@ -7,7 +7,8 @@ using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 
 namespace MindForest.Models {
-	public class MindContextProvider : EFContextProvider<ForestEntities> {
+	public class MindDbContextProvider : EFContextProvider<MindDbContext> {
+
 
 		static TraceSwitch trace = new TraceSwitch("Data", "Data API");
 
@@ -15,7 +16,7 @@ namespace MindForest.Models {
 		/// Custom constructor for EFContextProvider
 		/// </summary>
 		/// <param name="Forest">Forest (Database) to use</param>
-		public MindContextProvider(string Forest)
+		public MindDbContextProvider(string Forest)
 			: base() {
 			if (string.IsNullOrEmpty(Forest)) {
 				Forest = ConfigurationManager.AppSettings["DefaultForest"];
@@ -128,8 +129,6 @@ namespace MindForest.Models {
 				} //foreach
 			} //foreach
 		}
-
-
 
 		//ToDo: Implement iDisposable?
 	}

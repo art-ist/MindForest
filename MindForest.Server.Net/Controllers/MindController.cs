@@ -12,8 +12,7 @@ using System.Web.Http.OData;
 
 namespace MindForest.Controllers {
 
-	[EnableCors("*", "*", "*")]
-	[BreezeController]
+	[BreezeController, EnableCors("*", "*", "*")]
 	public class MindController : ApiController {
 
 		// ~/api/Mind/Metadata
@@ -28,7 +27,7 @@ namespace MindForest.Controllers {
 		/// </example>
 		[HttpGet]
 		public string Metadata(string Forest = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			return db.Metadata();
 		}
 
@@ -46,7 +45,7 @@ namespace MindForest.Controllers {
 		/// </example>
 		[HttpGet]
 		public dynamic GetTrees(string Forest = null, string Lang = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			var trees = new MindResult();
 
 			//prepare parameters
@@ -90,7 +89,7 @@ namespace MindForest.Controllers {
 		/// <returns>Connections</returns>
 		[HttpGet]
 		public dynamic GetChildren(string Forest, int? NodeId = null, int Levels = 1, int SkipLevels = 0, string Lang = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -121,7 +120,7 @@ namespace MindForest.Controllers {
 		/// <returns>Connections</returns>
 		[HttpGet]
 		public dynamic GetParents(string Forest, int NodeId, int Levels = 1, int SkipLevels = 0, string Lang = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -152,7 +151,7 @@ namespace MindForest.Controllers {
 		/// <returns>Connections</returns>
 		[HttpGet]
 		public dynamic GetNeighbours(string Forest, int? NodeId = null, int Levels = 1, int SkipLevels = 0, string Lang = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -180,7 +179,7 @@ namespace MindForest.Controllers {
 
 		[HttpGet, EnableQuery]
 		public dynamic GetNodeLookup(string Forest, int? RootNodeId = null, string Lang = null) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -202,7 +201,7 @@ namespace MindForest.Controllers {
 		[HttpGet, BreezeQueryable]
 		public dynamic Nodes(string Forest, string Lang = null) {
 
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -218,7 +217,7 @@ namespace MindForest.Controllers {
 		public dynamic Test(string Forest, string Lang = null)
 		{
 
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -235,7 +234,7 @@ namespace MindForest.Controllers {
 		[HttpGet, BreezeQueryable]
 		public dynamic Connections(string Forest, string Lang = null) {
 
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
@@ -255,7 +254,7 @@ namespace MindForest.Controllers {
 		/// <returns>Roles</returns>
 		[HttpGet, Authorize]
 		public dynamic Roles(string Forest) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 			return db.Context
 				.Roles;
 		}
@@ -268,7 +267,7 @@ namespace MindForest.Controllers {
 		/// <returns>SaveBundle with updated entities</returns>    
 		[HttpPost, Authorize(Roles = "Admin, Author")]
 		public SaveResult SaveChanges(string Forest, JObject saveBundle) {
-			var db = new MindContextProvider(Forest);
+			var db = new MindDbContextProvider(Forest);
 
 			//TODO: intercept updates: check permissions, if node deleted, which has other connctions, ignore delete of node (delete connection only)
 
