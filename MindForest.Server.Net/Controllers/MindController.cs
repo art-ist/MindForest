@@ -120,17 +120,23 @@ namespace MindForest.Controllers {
 		/// <param name="Lang">Two letter language code (if omitted all languages)</param>
 		/// <returns>Connections</returns>
 		[HttpGet]
-		public dynamic GetParents(string Forest, int NodeId, int Levels = 1, int SkipLevels = 0, string Lang = null) {
+		public dynamic GetParents(string Forest, int NodeId, int Levels = 1, int SkipLevels = 0, string Lang = null, bool IncludeSiblings = false) {
 			var db = new MindContextProvider(Forest);
 			//prepare parameters
 			string user = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 			string lang = Lang ?? "%";
 			//get the connections
 			var connections = db.Context
-			  .GetParentConnections(NodeId, user, Levels, SkipLevels, lang)
+			  .GetParentConnections(NodeId, user, Levels, SkipLevels, lang, IncludeSiblings)
 			  .ToArray();
 			//get nodes
-			var ids = connections.Select(c => c.FromId).ToArray();
+			List<long> ids;
+			if (IncludeSiblings) {
+				ids = connections.Select(c => c.ToId).ToList();
+				ids.AddRange(connections.Select(c => c.FromId));
+			} else {
+				ids = connections.Select(c => c.FromId).ToList();
+			}
 			return new MindResult() {
 				Connections = connections,
 				Nodes = db.Context.Nodes
@@ -162,7 +168,7 @@ namespace MindForest.Controllers {
 			  .ToList();
 			var ids = connections.Select(c => c.ToId).ToList();
 			var parents = db.Context
-			  .GetParentConnections(NodeId, user, Levels, SkipLevels, lang)
+			  .GetParentConnections(NodeId, user, Levels, SkipLevels, lang, false)
 			  .ToArray();
 			ids.AddRange(parents.Select(c => c.FromId).ToList());
 			connections.AddRange(parents);
@@ -196,6 +202,34 @@ namespace MindForest.Controllers {
 				.NodeLookup(RootNodeId, user, lang)
 				.ToArray()
 				;
+			return result;
+		}
+
+		[HttpGet, BreezeQueryable]
+		public dynamic SearchNodes(string Forest, string SearchStr, string Lang = null) {
+			var db = new MindContextProvider(Forest);
+			string searchStr = SearchStr.ToLower();
+
+			string lang = Lang == null ? "de" : Lang; // TODO: a solution
+
+			var result = db.Context.Nodes
+				.Include("Permissions")
+				.Include("Texts")
+				.Where(n =>
+					n.Texts
+					.Select(t => 
+						(t.Lang == Lang
+						&& (
+								t.Title.ToLower().Contains(searchStr)
+								//|| t.RichTitle.ToLower().Contains(searchStr) // currently contains german and english text in nearly all nodes !?
+							)
+						)
+					)
+					.ToList()
+					.Contains(true)
+				)
+				.ToArray();
+
 			return result;
 		}
 

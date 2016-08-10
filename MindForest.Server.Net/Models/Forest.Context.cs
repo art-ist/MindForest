@@ -99,7 +99,7 @@ namespace MindForest.Models
         }
     
         [EdmFunction("ForestEntities", "GetParentConnections")]
-        public virtual IQueryable<Connection> GetParentConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang)
+        public virtual IQueryable<Connection> GetParentConnections(Nullable<int> nodeId, string user, Nullable<int> levels, Nullable<int> skipLevels, string lang, Nullable<Boolean> includeSiblings)
         {
             var nodeIdParameter = nodeId.HasValue ?
                 new ObjectParameter("NodeId", nodeId) :
@@ -120,8 +120,12 @@ namespace MindForest.Models
             var langParameter = lang != null ?
                 new ObjectParameter("Lang", lang) :
                 new ObjectParameter("Lang", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter);
+
+			var includeSiblingsParameter = includeSiblings.HasValue ?
+				new ObjectParameter("IncludeSiblings", includeSiblings) :
+				new ObjectParameter("IncludeSiblings", typeof(Boolean));
+
+			return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Connection>("[ForestEntities].[GetParentConnections](@NodeId, @User, @Levels, @SkipLevels, @Lang, @IncludeSiblings)", nodeIdParameter, userParameter, levelsParameter, skipLevelsParameter, langParameter, includeSiblingsParameter);
         }
     
         [EdmFunction("ForestEntities", "GetNodes")]

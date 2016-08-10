@@ -27,6 +27,7 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -201,52 +202,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="media\Transformap\Transformap-logo.png" />
-    <Content Include="_sql\mind.pics Rename Class 2 CssClass.sql" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1362011911881491897.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_1536885918101686518.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_160823999387444819.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2314113340864404837.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2408254117573553143.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_243496517750814866.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2443685099352430516.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_256785661890026960.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_2850829171476211725.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_381829620600780052.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_3884993239420279788.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4078771207467609191.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4134186827465947519.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4507383825116029775.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_4741555578914932290.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5333517035776781069.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5639296371360788734.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_5828332802814624990.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_603446392551889536.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6043904736788817895.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6336022234909600267.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6396869968406929992.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6417983437059407855.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_6768050311751866222.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7116577930431918253.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7931319110052864497.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_7934471615216587340.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_795291888637639394.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8235230054481586486.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8311813795078639346.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8376053451461750942.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8448379864530392050.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_8534133408988300417.png" />
-    <Content Include="media\MartialArts\Ju Jutsu - Schule Vlado Schmidt_997429383053809492.png" />
-    <Content Include="media\Mutmacherei\logo.png" />
-    <Content Include="media\Mutmacherei\logo_en.png" />
-    <Content Include="_sql\3 DB Update to Preview 2.sql" />
-    <Content Include="_sql\3a DB Update to Preview 2 - Rearrange Connection Properties.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="_sql\1 Create Database.sql" />
-    <Content Include="_sql\1 DB Updates.sql" />
-    <Content Include="_sql\2 Import FreeMind.sql" />
     <EntityDeploy Include="Models\Forest.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Forest.Designer.cs</LastGenOutput>
@@ -265,16 +223,17 @@
       <LastGenOutput>Forest.cs</LastGenOutput>
     </Content>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\default.pubxml" />
     <None Include="Properties\PublishProfiles\w3.pubxml" />
-    <None Include="WebConfig.base.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WebConfig.base.config">
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

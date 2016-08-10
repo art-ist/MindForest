@@ -398,6 +398,7 @@
           <Parameter Name="Levels" Type="int" Mode="In" />
           <Parameter Name="SkipLevels" Type="int" Mode="In" />
           <Parameter Name="Lang" Type="varchar" Mode="In" />
+		  <Parameter Name="IncludeSiblings" Type="bit" />
           <ReturnType>
             <CollectionType>
               <RowType>
@@ -536,6 +537,7 @@
             <Parameter Name="Levels" Mode="In" Type="Int32" />
             <Parameter Name="SkipLevels" Mode="In" Type="Int32" />
             <Parameter Name="Lang" Mode="In" Type="String" />
+			<Parameter Name="IncludeSiblings" Type="Boolean" />
           </FunctionImport>
 					<FunctionImport Name="GetNodes" IsComposable="true" EntitySet="Nodes" ReturnType="Collection(MindForest.Models.Node)">
             <Parameter Name="User" Mode="In" Type="String" />
