@@ -1,6 +1,10 @@
 ﻿MindForest
 ==========
 
+**Stalled** we are reimplementing the client app in the new project mind.pics. Stay tuned!
+
+---
+
 An open and flexible tool to structure, collaborativeley work on, and share your knowledge.
 
 [![Intro Video (german)](http://b.vimeocdn.com/ts/330/272/330272531_640.jpg)](http://vimeo.com/47621876)
